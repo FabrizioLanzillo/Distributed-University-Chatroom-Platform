@@ -1,4 +1,4 @@
-package it.unipi.dsmt.student-platform;
+package it.unipi.dsmt.student_platform;
 
 /**
  * Hello world!
