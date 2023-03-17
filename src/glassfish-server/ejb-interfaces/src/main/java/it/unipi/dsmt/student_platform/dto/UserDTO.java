@@ -2,7 +2,9 @@ package it.unipi.dsmt.student_platform.dto;
 
 import it.unipi.dsmt.student_platform.enums.UserRole;
 
-public class UserDTO {
+import java.io.Serializable;
+
+public class UserDTO implements Serializable {
 	private String username;
 	private UserRole role;
 	
