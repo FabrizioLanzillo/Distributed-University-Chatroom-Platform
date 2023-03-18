@@ -1,5 +1,7 @@
 package it.unipi.dsmt.student_platform.dto;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 
 public class CourseDTO implements Serializable {
@@ -9,7 +11,11 @@ public class CourseDTO implements Serializable {
 	private ProfessorDTO professor;
 	private String description;
 	
-	public CourseDTO(String id, String name, ProfessorDTO professor, String description) {
+	public CourseDTO (@NotNull String id,
+	                  @NotNull String name,
+	                  @NotNull ProfessorDTO professor,
+	                  @NotNull String description)
+	{
 		this.id = id;
 		this.name = name;
 		this.professor = professor;
