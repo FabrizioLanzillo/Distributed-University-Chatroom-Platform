@@ -1,4 +1,5 @@
 <%@ page import="it.unipi.dsmt.student_platform.dto.CourseDTO" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 
 <%
