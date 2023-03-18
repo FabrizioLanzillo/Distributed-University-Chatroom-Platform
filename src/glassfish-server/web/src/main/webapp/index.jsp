@@ -1,9 +1,10 @@
-<%@ page import="it.unipi.dsmt.student_platform.dto.UserDTO" %>
+<%@ page import="it.unipi.dsmt.student_platform.dto.LoginInformationDTO" %>
+<%@ page import="it.unipi.dsmt.student_platform.utility.UserRedirection" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>PlaceholderName</title>
-    <!-- TODO css + -->
+    <!-- TODO css + icon -->
 </head>
 <body>
 <h1>Welcome to PlaceholderName!</h1>
@@ -13,27 +14,44 @@
     <div class="form">
         <form method="post" action="${pageContext.request.contextPath}/login">
             <label>
+                Username:
                 <input type="text" name="username" placeholder="username" required />
             </label>
+            <br>
             <label>
+                Password:
                 <input type="password" name="password" placeholder="password" required />
             </label>
-            <button type="submit">login</button>
+            <br>
+            <label>
+                Role:
+                <select name="role">
+                    <option value="student">Student</option>
+                    <option value="professor">Professor</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </label>
+            <br>
+            <button type="submit">LOGIN</button>
         </form>
     </div>
 </div>
 
 <%
-    HttpSession httpSession = request.getSession();
-	UserDTO logged_user = (UserDTO) httpSession.getAttribute("logged_user");
-    if (logged_user == null && tried_login) {
+    // Check if the user failed the login
+	String rParam = request.getParameter("r");
+    if (rParam != null && rParam.equals("error")) {
 %>
-    <div>Login failed!</div>
+    <div>Error: failed login</div>
 <%
     }
-	else if (logged_user != null) {
-		response.sendRedirect();
+
+	// Redirect user is already logged
+    LoginInformationDTO logged_user = (LoginInformationDTO) request.getSession().getAttribute("logged_user");
+	if (logged_user != null) {
+        UserRedirection.redirectUser(request, response, logged_user.getRole());
     }
+
 %>
 
 </body>
