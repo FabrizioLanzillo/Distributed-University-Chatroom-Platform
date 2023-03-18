@@ -1,6 +1,6 @@
 package it.unipi.dsmt.student_platform.servlets;
 
-import it.unipi.dsmt.student_platform.interfaces.;
+import it.unipi.dsmt.student_platform.interfaces.SignupEJB;
 import jakarta.ejb.EJB;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -8,7 +8,8 @@ import jakarta.servlet.http.*;
 
 
 import java.io.IOException;
-import java.util.Optional;
+import java.sql.SQLException;
+
 
 @WebServlet(name = "SignUpServlet", value="/student/SignUpServlet")
 public class SignupServlet extends HttpServlet {
@@ -26,15 +27,20 @@ public class SignupServlet extends HttpServlet {
         String _degree = request.getParameter("degree");
         String _language = request.getParameter("language");
 
+        boolean r = false;
+
         //Some SQL call to store the data (remember to hash the pwd (?))
         try{
-            signupEJB.signup(_username, _password, _email, _name, _surname, _degree, _language);
+            r = signupEJB.signup(_username, _password, _email, _name, _surname, _degree, _language);
         }
         catch(SQLException error){
             error.printStackTrace();
         }
-        //Let's proceed with login now
+        //Let's proceed to login page if signup succeded, otherwise show an error
+        if(!r) {
+            response.sendRedirect(request.getContextPath() + "/signup.jsp?r=error");
+            return;
+        }
         response.sendRedirect(request.getContextPath() + "/student/login.jsp");
-
     }
 }
