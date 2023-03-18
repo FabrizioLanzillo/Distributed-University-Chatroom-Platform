@@ -4,11 +4,11 @@ import it.unipi.dsmt.student_platform.enums.UserRole;
 
 import java.io.Serializable;
 
-public class UserDTO implements Serializable {
+public class LoginInformationDTO implements Serializable {
 	private String username;
 	private UserRole role;
 	
-	public UserDTO(String username, UserRole role) {
+	public LoginInformationDTO(String username, UserRole role) {
 		this.username = username;
 		this.role = role;
 	}

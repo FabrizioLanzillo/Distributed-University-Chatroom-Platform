@@ -1,11 +1,10 @@
 package it.unipi.dsmt.student_platform.servlets;
 
-import it.unipi.dsmt.student_platform.dto.UserDTO;
+import it.unipi.dsmt.student_platform.dto.LoginInformationDTO;
 import it.unipi.dsmt.student_platform.enums.UserRole;
 import it.unipi.dsmt.student_platform.interfaces.UserEJB;
 import it.unipi.dsmt.student_platform.utility.UserRedirection;
 import jakarta.ejb.EJB;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
@@ -29,7 +28,7 @@ public class LoginServlet extends HttpServlet {
 				? UserRole.valueOf(request.getParameter("role")) : UserRole.invalid;
 		
 		// Execute login and set session variable
-		UserDTO loggedUser = userEJB.login(username, password, role);
+		LoginInformationDTO loggedUser = userEJB.login(username, password, role);
 		
 		
 		// a) Failed login

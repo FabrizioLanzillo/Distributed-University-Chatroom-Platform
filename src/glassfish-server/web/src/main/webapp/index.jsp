@@ -1,4 +1,4 @@
-<%@ page import="it.unipi.dsmt.student_platform.dto.UserDTO" %>
+<%@ page import="it.unipi.dsmt.student_platform.dto.LoginInformationDTO" %>
 <%@ page import="it.unipi.dsmt.student_platform.utility.UserRedirection" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -47,7 +47,7 @@
     }
 
 	// Redirect user is already logged
-    UserDTO logged_user = (UserDTO) request.getSession().getAttribute("logged_user");
+    LoginInformationDTO logged_user = (LoginInformationDTO) request.getSession().getAttribute("logged_user");
 	if (logged_user != null) {
         UserRedirection.redirectUser(request, response, logged_user.getRole());
     }
