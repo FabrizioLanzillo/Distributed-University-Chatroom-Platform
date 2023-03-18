@@ -12,8 +12,8 @@ import javax.sql.DataSource;
 @Stateless
 public class UserEJBImpl implements UserEJB {
 	
-	@Resource(lookup = "jdbc/StudentPlatformPool")
-	private DataSource dataSource;
+//	@Resource(lookup = "jdbc/StudentPlatformPool")
+//	private DataSource dataSource;
 	
 	public LoginInformationDTO login(@NotNull String username, @NotNull String password, @NotNull UserRole role) {
 		/*
