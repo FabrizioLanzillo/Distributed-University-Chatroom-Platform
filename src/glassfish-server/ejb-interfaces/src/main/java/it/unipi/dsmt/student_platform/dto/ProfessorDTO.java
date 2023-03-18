@@ -8,6 +8,12 @@ public class ProfessorDTO implements Serializable {
 	private String name;
 	private String surname;
 	
+	public ProfessorDTO(String id, String name, String surname) {
+		this.id = id;
+		this.name = name;
+		this.surname = surname;
+	}
+	
 	public String getId() {
 		return id;
 	}
@@ -30,5 +36,18 @@ public class ProfessorDTO implements Serializable {
 	
 	public void setSurname(String surname) {
 		this.surname = surname;
+	}
+	
+	public String getFullName() {
+		return getName() + " " + getSurname();
+	}
+	
+	@Override
+	public String toString() {
+		return "ProfessorDTO{" +
+				"id='" + id + '\'' +
+				", name='" + name + '\'' +
+				", surname='" + surname + '\'' +
+				'}';
 	}
 }
