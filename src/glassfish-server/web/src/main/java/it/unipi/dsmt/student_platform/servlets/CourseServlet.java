@@ -31,8 +31,8 @@ public class CourseServlet extends HttpServlet {
 		// Get course's data
 		CourseDTO course = courseEJB.getCourse(id);
 		request.setAttribute("course", course);
-		RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/student/course.jsp");
-		requestDispatcher.forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/jsp/student/course.jsp")
+				.forward(request, response);
 	}
 	
 }
