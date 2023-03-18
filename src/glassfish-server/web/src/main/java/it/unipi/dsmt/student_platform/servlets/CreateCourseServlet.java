@@ -1,6 +1,7 @@
 package it.unipi.dsmt.student_platform.servlets;
 
 import it.unipi.dsmt.student_platform.dto.CourseCreationDTO;
+import it.unipi.dsmt.student_platform.dto.LoggedUserDTO;
 import it.unipi.dsmt.student_platform.interfaces.CourseEJB;
 import jakarta.ejb.EJB;
 import jakarta.servlet.ServletException;
@@ -37,10 +38,16 @@ public class CreateCourseServlet extends HttpServlet {
 	{
 		// Fetch GET parameters
 		String _name = request.getParameter("name");
-		String _professorId = request.getParameter("professorId");
 		String _description = request.getParameter("description");
-		if (_name == null || _professorId == null || _description == null) {
-			request.setAttribute("create-successful", false);
+		LoggedUserDTO loggedUser = (LoggedUserDTO) request.getSession().getAttribute("logged_user");
+		if (_name == null || _description == null || loggedUser == null) {
+			request.setAttribute("successful-creation", false);
+			redirectToJsp(request, response);
+			return;
+		}
+		String _professorId = loggedUser.getId();
+		if (_professorId == null) {
+			request.setAttribute("successful-creation", false);
 			redirectToJsp(request, response);
 			return;
 		}
@@ -55,7 +62,7 @@ public class CreateCourseServlet extends HttpServlet {
 		);
 		
 		// Return to jsp page and notify operation result
-		request.setAttribute("create-successful", successful);
+		request.setAttribute("successful-creation", successful);
 		redirectToJsp(request, response);
 	}
 	
