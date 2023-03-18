@@ -1,21 +1,15 @@
 package it.unipi.dsmt.student_platform.dto;
 
 import it.unipi.dsmt.student_platform.enums.UserRole;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
 public class LoginInformationDTO implements Serializable {
 	private String username;
-	private String password;
 	private UserRole role;
 	
-	public LoginInformationDTO (@NotNull String username,
-	                            @NotNull String password,
-	                            @NotNull UserRole role)
-	{
+	public LoginInformationDTO(String username, UserRole role) {
 		this.username = username;
-		this.password = password;
 		this.role = role;
 	}
 	
@@ -25,14 +19,6 @@ public class LoginInformationDTO implements Serializable {
 	
 	public void setUsername(String username) {
 		this.username = username;
-	}
-	
-	public String getPassword() {
-		return password;
-	}
-	
-	public void setPassword(String password) {
-		this.password = password;
 	}
 	
 	public UserRole getRole() {
