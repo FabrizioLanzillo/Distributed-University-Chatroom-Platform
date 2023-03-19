@@ -49,6 +49,6 @@ public class LoginServlet extends HttpServlet {
 		request.getSession().setAttribute("logged_user", loggedUser);
 		
 		// Redirect to correct webpage
-		UserRedirection.redirectUser(request, response, role);
+		UserRedirection.redirectToPortalPage(request, response, role);
 	}
 }

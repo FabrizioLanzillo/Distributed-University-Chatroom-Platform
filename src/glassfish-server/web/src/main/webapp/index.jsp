@@ -49,7 +49,7 @@
 	// Redirect user is already logged
     LoggedUserDTO logged_user = (LoggedUserDTO) request.getSession().getAttribute("logged_user");
 	if (logged_user != null) {
-        UserRedirection.redirectUser(request, response, logged_user.getRole());
+        UserRedirection.redirectToPortalPage(request, response, logged_user.getRole());
     }
 
 %>
