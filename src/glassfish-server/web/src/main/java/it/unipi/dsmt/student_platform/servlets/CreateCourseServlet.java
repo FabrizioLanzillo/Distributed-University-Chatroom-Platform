@@ -2,7 +2,9 @@ package it.unipi.dsmt.student_platform.servlets;
 
 import it.unipi.dsmt.student_platform.dto.CourseCreationDTO;
 import it.unipi.dsmt.student_platform.dto.LoggedUserDTO;
+import it.unipi.dsmt.student_platform.enums.UserRole;
 import it.unipi.dsmt.student_platform.interfaces.CourseEJB;
+import it.unipi.dsmt.student_platform.utility.AccessController;
 import jakarta.ejb.EJB;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -29,6 +31,10 @@ public class CreateCourseServlet extends HttpServlet {
 	public void doGet (HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException
 	{
+		// Check if logged user is a professor
+		if (!AccessController.checkAccess(request, response, UserRole.professor)) {
+			return;
+		}
 		redirectToJsp(request, response);
 	}
 	
@@ -36,6 +42,11 @@ public class CreateCourseServlet extends HttpServlet {
 	public void doPost (HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException
 	{
+		// Check if logged user is a professor
+		if (!AccessController.checkAccess(request, response, UserRole.professor)) {
+			return;
+		}
+		
 		// Fetch GET parameters
 		String _name = request.getParameter("name");
 		String _description = request.getParameter("description");

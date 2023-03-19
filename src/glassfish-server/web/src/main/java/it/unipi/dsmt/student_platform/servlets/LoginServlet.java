@@ -4,7 +4,7 @@ import it.unipi.dsmt.student_platform.dto.LoggedUserDTO;
 import it.unipi.dsmt.student_platform.dto.LoginInformationDTO;
 import it.unipi.dsmt.student_platform.enums.UserRole;
 import it.unipi.dsmt.student_platform.interfaces.UserEJB;
-import it.unipi.dsmt.student_platform.utility.UserRedirection;
+import it.unipi.dsmt.student_platform.utility.ClientRedirector;
 import jakarta.ejb.EJB;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
@@ -19,7 +19,7 @@ public class LoginServlet extends HttpServlet {
 	private UserEJB userEJB;
 	
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException	{
+	protected void doPost (HttpServletRequest request, HttpServletResponse response) throws IOException	{
 		// Extract parameters for login
 		String username = Optional.ofNullable(request.getParameter("username"))
 				.orElse("");
@@ -49,6 +49,6 @@ public class LoginServlet extends HttpServlet {
 		request.getSession().setAttribute("logged_user", loggedUser);
 		
 		// Redirect to correct webpage
-		UserRedirection.redirectUser(request, response, role);
+		ClientRedirector.redirectToPortalPage(request, response, role);
 	}
 }

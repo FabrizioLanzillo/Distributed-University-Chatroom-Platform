@@ -1,9 +1,10 @@
 package it.unipi.dsmt.student_platform.servlets;
 
 import it.unipi.dsmt.student_platform.dto.CourseDTO;
+import it.unipi.dsmt.student_platform.enums.UserRole;
 import it.unipi.dsmt.student_platform.interfaces.CourseEJB;
+import it.unipi.dsmt.student_platform.utility.AccessController;
 import jakarta.ejb.EJB;
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -22,6 +23,11 @@ public class CourseServlet extends HttpServlet {
 	protected void doGet (HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException
 	{
+		// Check if logged user is a student
+		if (!AccessController.checkAccess(request, response, UserRole.student)) {
+			return;
+		}
+		
 		// Get course id from GET parameters
 		String id = request.getParameter("id");
 		if (id == null) {
