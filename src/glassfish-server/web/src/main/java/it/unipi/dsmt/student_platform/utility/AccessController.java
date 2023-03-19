@@ -21,13 +21,13 @@ public class AccessController {
 		LoggedUserDTO loggedUser = (LoggedUserDTO) request.getSession().getAttribute("loggedUser");
 		if (loggedUser == null) {
 			// User not logged
-			UserRedirection.redirectToLogin(request, response);
+			ClientRedirector.redirectToLogin(request, response);
 			return false;
 		}
 		
 		if (loggedUser.getRole() != requiredRole) {
 			// User not allowed to access
-			UserRedirection.redirectToPortalPage(request, response, loggedUser.getRole());
+			ClientRedirector.redirectToPortalPage(request, response, loggedUser.getRole());
             return false;
 		}
 		

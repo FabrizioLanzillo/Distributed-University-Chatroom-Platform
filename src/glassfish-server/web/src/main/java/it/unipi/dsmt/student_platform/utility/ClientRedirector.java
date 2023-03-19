@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
-public class UserRedirection {
+public class ClientRedirector {
 	
 	public static void redirectToPortalPage (@NotNull HttpServletRequest request,
 	                                         @NotNull HttpServletResponse response,
