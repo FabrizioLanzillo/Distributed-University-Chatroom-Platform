@@ -29,7 +29,7 @@ public class AccessController {
 			throw new IllegalArgumentException("Invalid required role");
 		}
 		
-		LoggedUserDTO loggedUser = (LoggedUserDTO) request.getSession().getAttribute("loggedUser");
+		LoggedUserDTO loggedUser = (LoggedUserDTO) request.getSession().getAttribute("logged_user");
 		if (loggedUser == null) {
 			// User not logged
 			ClientRedirector.redirectToLogin(request, response);
