@@ -1,5 +1,6 @@
 package it.unipi.dsmt.student_platform.servlets;
 
+import it.unipi.dsmt.student_platform.dto.SignupDTO;
 import it.unipi.dsmt.student_platform.interfaces.SignupEJB;
 import jakarta.ejb.EJB;
 import jakarta.servlet.ServletException;
@@ -31,12 +32,21 @@ public class SignupServlet extends HttpServlet {
 
         //Some SQL call to store the data (remember to hash the pwd (?))
         try{
-            r = signupEJB.signup(_username, _password, _email, _name, _surname, _degree, _language);
+            r = signupEJB.signup(
+                    new SignupDTO(
+                            _username,
+                            _password,
+                            _email,
+                            _name,
+                            _surname,
+                            _degree,
+                            _language)
+            );
         }
         catch(SQLException error){
             error.printStackTrace();
         }
-        //Let's proceed to login page if signup succeded, otherwise show an error
+        //Let's proceed to login page if signup succeeded, otherwise show an error
         if(!r) {
             response.sendRedirect(request.getContextPath() + "/signup.jsp?r=error");
             return;
