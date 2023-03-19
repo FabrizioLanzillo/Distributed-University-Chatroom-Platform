@@ -10,6 +10,17 @@ import java.io.IOException;
 
 public class AccessController {
 	
+	/**
+	 * Checks if the logged user is allowed to access the requested resource.
+	 * It redirects the user to its portal page if the user is not allowed or
+	 * to the login page if they are not logged.
+	 *
+	 * @param request HttpServletRequest object
+	 * @param response HttpServletResponse object
+	 * @param requiredRole required role to access the requested resource
+	 * @return true if the user is allowed to access, false otherwise
+	 * @throws IOException if redirecting fails
+	 */
 	public static boolean checkAccess (@NotNull HttpServletRequest request,
 	                                   @NotNull HttpServletResponse response,
 	                                   @NotNull UserRole requiredRole) throws IOException

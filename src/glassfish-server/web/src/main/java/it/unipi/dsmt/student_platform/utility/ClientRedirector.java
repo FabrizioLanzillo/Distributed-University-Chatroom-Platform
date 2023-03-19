@@ -9,6 +9,13 @@ import java.io.IOException;
 
 public class ClientRedirector {
 	
+	/**
+	 * Redirects the user to its portal page
+	 * @param request HttpServletRequest instance
+	 * @param response HttpServletResponse instance
+	 * @param role user role
+	 * @throws IOException if redirect fails
+	 */
 	public static void redirectToPortalPage (@NotNull HttpServletRequest request,
 	                                         @NotNull HttpServletResponse response,
 	                                         @NotNull UserRole role) throws IOException
@@ -28,6 +35,12 @@ public class ClientRedirector {
 		}
 	}
 	
+	/**
+	 * Redirects the user to the login page.
+	 * @param request HttpServletRequest instance
+	 * @param response HttpServletResponse instance
+	 * @throws IOException if redirect fails
+	 */
 	public static void redirectToLogin (@NotNull HttpServletRequest request,
 	                                    @NotNull HttpServletResponse response) throws IOException
 	{
