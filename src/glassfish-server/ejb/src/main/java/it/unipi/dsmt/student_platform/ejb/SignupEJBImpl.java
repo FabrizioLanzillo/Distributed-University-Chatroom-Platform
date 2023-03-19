@@ -7,21 +7,20 @@ import org.jetbrains.annotations.NotNull;
 @Stateless
 public class SignupEJBImpl implements SignupEJB {
     @Override
-    public boolean signup(@NotNull String username, @NotNull String password, @NotNull String email, @NotNull String name,
-                            @NotNull String surname, @NotNull String degree, @NotNull String language) {
+    public boolean signup(SignupDTO signupDTO) {
     /*      try(Connection connection = dataSource.getConnection()) {
             String query = "INSERT INTO Users (username, password, email, name, surname, degree, language, role)
                             VALUES(?, ?, ?, ?, ? ,?, ?, ?)");
 
                 try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                     // Set parameters in prepared statement
-                    preparedStatement.setString(1, username);
-                    preparedStatement.setString(2, password);
-                    preparedStatement.setString(3, email);
-                    preparedStatement.setString(4, name);
-                    preparedStatement.setString(5, surname);
-                    preparedStatement.setString(6, degree);
-                    preparedStatement.setString(7, language);
+                    preparedStatement.setString(1, signupDTO.getUsername());
+                    preparedStatement.setString(2, signupDTO.getPassword());
+                    preparedStatement.setString(3, signupDTO.getEmail());
+                    preparedStatement.setString(4, signupDTO.getName());
+                    preparedStatement.setString(5, signupDTO.getSurname());
+                    preparedStatement.setString(6, signupDTO.getDegree());
+                    preparedStatement.setString(7, signupDTO.getLanguage());
                     preparedStatement.setString(8, UserRole.student);
 
                     // Execute query

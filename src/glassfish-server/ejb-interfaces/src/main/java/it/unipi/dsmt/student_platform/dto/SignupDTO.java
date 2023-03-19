@@ -1,7 +1,5 @@
 package it.unipi.dsmt.student_platform.dto;
 
-import it.unipi.dsmt.student_platform.enums.UserRole;
-
 public class SignupDTO {
     private String username;
     private String password;
@@ -10,7 +8,6 @@ public class SignupDTO {
     private String surname;
     private String degree;
     private String language;
-    private UserRole role;
 
 
     public SignupDTO(String username, String password, String email, String name, String surname, String degree, String language) {
@@ -21,7 +18,6 @@ public class SignupDTO {
         this.surname = surname;
         this.degree = degree;
         this.language = language;
-        this.role = UserRole.student; //Default, only students can sign up
     }
 
     public String getUsername() {
@@ -30,14 +26,6 @@ public class SignupDTO {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public UserRole getRole() {
-        return role;
-    }
-
-    public void setRole(UserRole role) {
-        this.role = role;
     }
 
     public String getPassword() {
