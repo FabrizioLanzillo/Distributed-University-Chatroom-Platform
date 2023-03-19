@@ -14,20 +14,20 @@ import java.sql.*;
 @Stateless
 public class UserEJBImpl implements UserEJB {
 	
-//	@Resource(lookup = "jdbc/StudentPlatformPool")
+	@Resource(lookup = "jdbc/StudentPlatformPool")
 	private DataSource dataSource;
 	
 	private @Nullable LoggedUserDTO loginTodo (@NotNull LoginInformationDTO loginInformation) { // todo change name
 		
 		try (Connection connection = dataSource.getConnection()) {
-			// Check if username, password and role is correct
-			String query = "SELECT id FROM user WHERE username = ? AND password = ? AND role = ?";
+			// Check if username and password is correct
+			String query = "SELECT `id` FROM ? WHERE `username` = ? AND `password` = ?";
 			
 			try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 				// Set parameters in prepared statement
-				preparedStatement.setString(1, loginInformation.getUsername());
-				preparedStatement.setString(2, loginInformation.getPassword());
-				preparedStatement.setString(3, loginInformation.getRole().name());
+				preparedStatement.setString(1, loginInformation.getRole().name());
+				preparedStatement.setString(2, loginInformation.getUsername());
+				preparedStatement.setString(3, loginInformation.getPassword());
 				
 				// Execute query
 				try (ResultSet resultSet = preparedStatement.executeQuery()) {
