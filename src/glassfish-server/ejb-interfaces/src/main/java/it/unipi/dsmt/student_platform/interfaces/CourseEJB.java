@@ -7,6 +7,6 @@ import org.jetbrains.annotations.NotNull;
 
 @Remote
 public interface CourseEJB {
-	CourseDTO getCourse (@NotNull String id);
+	CourseDTO getCourse (int id);
 	boolean createCourse (@NotNull CourseCreationDTO course);
 }
