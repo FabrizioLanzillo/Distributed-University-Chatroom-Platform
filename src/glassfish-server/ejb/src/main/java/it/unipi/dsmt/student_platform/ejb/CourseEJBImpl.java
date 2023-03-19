@@ -1,5 +1,6 @@
 package it.unipi.dsmt.student_platform.ejb;
 
+import it.unipi.dsmt.student_platform.dto.CourseCreationDTO;
 import it.unipi.dsmt.student_platform.dto.CourseDTO;
 import it.unipi.dsmt.student_platform.dto.ProfessorDTO;
 import it.unipi.dsmt.student_platform.interfaces.CourseEJB;
@@ -20,4 +21,10 @@ public class CourseEJBImpl implements CourseEJB {
 				"This is a description"
 		);
 	}
+	
+	@Override
+	public boolean createCourse(@NotNull CourseCreationDTO course) {
+		return true;
+	}
+	
 }

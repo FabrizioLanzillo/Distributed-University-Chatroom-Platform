@@ -12,16 +12,16 @@ public class UserRedirection {
 	                                 UserRole role) throws IOException 	{
 		switch (role) {
 			case student:
-				response.sendRedirect(request.getContextPath() + "/student/portal.jsp");
+				response.sendRedirect(request.getContextPath() + "/student/portal");
 				return;
 			case professor:
-				response.sendRedirect(request.getContextPath() + "/professor/portal.jsp");
+				response.sendRedirect(request.getContextPath() + "/professor/portal");
 				return;
 			case admin:
-				response.sendRedirect(request.getContextPath() + "/admin/portal.jsp");
+				response.sendRedirect(request.getContextPath() + "/admin/portal");
 				return;
 			default:
-				response.sendRedirect(request.getContextPath() + "/index.jsp?r=error");
+				response.sendRedirect(request.getContextPath() + "/index?r=error");
 		}
 	}
 }
