@@ -28,10 +28,16 @@ public class CourseServlet extends HttpServlet {
 			return;
 		}
 		
-		// Get course id from GET parameters
-		String id = request.getParameter("id");
-		if (id == null) {
-			throw new RuntimeException("course id not set");
+		int id;
+		try {
+			// Get course id from GET parameters
+			String stringId = request.getParameter("id");
+			if (stringId == null) {
+				throw new RuntimeException("course id not set");
+			}
+			id = Integer.parseInt(stringId);
+		} catch (NumberFormatException e) {
+			throw new RuntimeException("course id is not a number");
 		}
 		
 		// Get course's data

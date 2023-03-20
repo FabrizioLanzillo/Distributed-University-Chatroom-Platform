@@ -6,12 +6,12 @@ import java.io.Serializable;
 
 public class CourseDTO implements Serializable {
 	
-	private String id;
+	private int id;
 	private String name;
 	private ProfessorDTO professor;
 	private String description;
 	
-	public CourseDTO (@NotNull String id,
+	public CourseDTO (int id,
 	                  @NotNull String name,
 	                  @NotNull ProfessorDTO professor,
 	                  @NotNull String description)
@@ -22,11 +22,11 @@ public class CourseDTO implements Serializable {
 		this.description = description;
 	}
 	
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 	
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	
