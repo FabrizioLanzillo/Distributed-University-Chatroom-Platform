@@ -1,8 +1,8 @@
 package it.unipi.dsmt.student_platform.ejb;
 
+import it.unipi.dsmt.student_platform.dto.SignupDTO;
 import it.unipi.dsmt.student_platform.interfaces.SignupEJB;
 import jakarta.ejb.Stateless;
-import org.jetbrains.annotations.NotNull;
 
 @Stateless
 public class SignupEJBImpl implements SignupEJB {
