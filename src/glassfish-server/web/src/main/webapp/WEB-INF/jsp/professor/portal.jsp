@@ -9,7 +9,7 @@
 <body>
 
 <%
-    LoggedUserDTO loggedUser = (LoggedUserDTO) request.getSession().getAttribute("logged-user");
+    LoggedUserDTO loggedUser = (LoggedUserDTO) request.getSession().getAttribute("logged_user");
 %>
 
     <h1>Welcome to your portal, <%= loggedUser.getUsername() %>!</h1>
