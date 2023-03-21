@@ -12,14 +12,15 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 
-@WebServlet(name = "SignUpServlet", value="/student/SignUpServlet")
+@WebServlet(name = "SignUpServlet", value="/student/signup")
 public class SignupServlet extends HttpServlet {
     @EJB
     private SignupEJB signupEJB;
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
+
         String _username = request.getParameter("username");
         String _password = request.getParameter("password");
         String _email = request.getParameter("email");
@@ -32,7 +33,7 @@ public class SignupServlet extends HttpServlet {
 
         //Some SQL call to store the data (remember to hash the pwd (?))
         try{
-            r = signupEJB.signup(
+            r = signupEJB. signup(
                     new SignupDTO(
                             _username,
                             _password,
@@ -42,15 +43,23 @@ public class SignupServlet extends HttpServlet {
                             _degree,
                             _language)
             );
+            System.out.println("Ciaonee!");
         }
-        catch(SQLException error){
+        catch(Exception error){
             error.printStackTrace();
+            System.out.println("Catchhhh");
         }
         //Let's proceed to login page if signup succeeded, otherwise show an error
         if(!r) {
-            response.sendRedirect(request.getContextPath() + "/signup.jsp?r=error");
+            response.sendRedirect(request.getContextPath() + "/student/signup?r=error");
             return;
         }
         response.sendRedirect(request.getContextPath() + "/student/login.jsp");
+    }
+
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/WEB-INF/jsp/student/signup.jsp")
+                .forward(request, response);
     }
 }

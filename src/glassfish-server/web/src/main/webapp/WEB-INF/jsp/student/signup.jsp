@@ -1,5 +1,7 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="it.unipi.dsmt.student_platform.dto.LoginInformationDTO"%>
+<%@ page import="it.unipi.dsmt.student_platform.utility.ClientRedirector" %>
+
 <html>
 <head>
     <title>StudentChat</title>
@@ -10,7 +12,7 @@
 <div>
     <h2>Sign up today!</h2>
     <div class="form">
-        <form method="post" action="${pageContext.request.contextPath}/login">
+        <form method="post" action="${pageContext.request.contextPath}/student/signup">
             <label>
                 Username:
                 <input type="text" name="username" placeholder="username" required />
@@ -61,7 +63,7 @@
     }
     LoginInformationDTO logged_user = (LoginInformationDTO) request.getSession().getAttribute("logged_user");
     if (logged_user != null) {
-        UserRedirection.redirectUser(request, response, logged_user.getRole());
+        ClientRedirector.redirectToPortalPage(request, response, logged_user.getRole());
     }
 %>
 </body>

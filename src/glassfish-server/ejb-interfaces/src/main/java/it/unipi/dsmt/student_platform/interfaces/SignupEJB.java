@@ -7,5 +7,5 @@ import java.sql.SQLException;
 
 @Remote
 public interface SignupEJB {
-	boolean signup(SignupDTO signupDTO) throws SQLException;
+	boolean signup(SignupDTO signupDTO);
 }
