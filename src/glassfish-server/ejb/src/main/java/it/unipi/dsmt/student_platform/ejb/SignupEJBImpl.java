@@ -4,10 +4,12 @@ import it.unipi.dsmt.student_platform.dto.SignupDTO;
 import it.unipi.dsmt.student_platform.interfaces.SignupEJB;
 import jakarta.ejb.Stateless;
 
+import java.sql.SQLException;
+
 @Stateless
 public class SignupEJBImpl implements SignupEJB {
     @Override
-    public boolean signup(SignupDTO signupDTO) {
+    public boolean signup(SignupDTO signupDTO){
     /*      try(Connection connection = dataSource.getConnection()) {
             String query = "INSERT INTO Users (username, password, email, name, surname, degree, language, role)
                             VALUES(?, ?, ?, ?, ? ,?, ?, ?)");
@@ -36,6 +38,6 @@ public class SignupEJBImpl implements SignupEJB {
                 return false;
                 }
              */
-    return true;
+        return true;
     }
 }
