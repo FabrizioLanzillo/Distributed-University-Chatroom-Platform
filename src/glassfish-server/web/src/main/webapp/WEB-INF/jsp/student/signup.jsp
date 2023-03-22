@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="it.unipi.dsmt.student_platform.dto.LoginInformationDTO"%>
 <%@ page import="it.unipi.dsmt.student_platform.utility.ClientRedirector" %>
 
@@ -12,7 +12,7 @@
 <div>
     <h2>Sign up today!</h2>
     <div class="form">
-        <form method="post" action="${pageContext.request.contextPath}/student/signup">
+        <form method="post" action="${pageContext.request.contextPath}/login">
             <label>
                 Username:
                 <input type="text" name="username" placeholder="username" required />
