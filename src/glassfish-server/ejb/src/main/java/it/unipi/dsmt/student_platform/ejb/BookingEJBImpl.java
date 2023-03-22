@@ -21,7 +21,7 @@ public class BookingEJBImpl implements BookingEJB {
     public @Nullable ArrayList<BookingDTO> getSlots(int id, int offset){
         // Get the available dates for the month in which the user wants to book
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.MONTH, offset);
+        cal.add(Calendar.MONTH, offset + 1);
 
         // If is not the current month set starting day to the first of the month otherwise leave current one
         if(offset != 0){
@@ -56,7 +56,7 @@ public class BookingEJBImpl implements BookingEJB {
             //Until next month add all dates to ArrayList
             while( day.isBefore( stop ) ) {
                 // Create a list of all possible slots
-                monthlySlots.add(new BookingDTO(slot.getStart(), day));
+                monthlySlots.add(new BookingDTO(slot.getStart(), day, slot.getDayOfWeek()));
                 // Set up the next loop.
                 day = day.plusWeeks( 1 );
             }

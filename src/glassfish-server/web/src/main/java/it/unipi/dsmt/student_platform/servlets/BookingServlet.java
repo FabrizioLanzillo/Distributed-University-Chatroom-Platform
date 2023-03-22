@@ -72,6 +72,9 @@ public class BookingServlet extends HttpServlet {
         ArrayList<BookingDTO> bDTOs = bookingEJB.getSlots(id, offset);
         request.setAttribute("slots", bDTOs);
 
+        System.out.println(bDTOs.get(0).toString());
+        System.out.println(bDTOs.get(0).getDayOfWeek());
+
         request.getRequestDispatcher("/WEB-INF/jsp/student/booking.jsp")
                 .forward(request, response);
 

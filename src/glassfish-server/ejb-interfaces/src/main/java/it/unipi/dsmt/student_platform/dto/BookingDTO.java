@@ -19,6 +19,13 @@ public class BookingDTO implements Serializable {
         this.date = date;
     }
 
+    public BookingDTO(Time start, LocalDate date, int dayOfWeek){
+        this.start = start;
+        this.date = date;
+        this.dayOfWeek = dayOfWeek;
+    }
+
+
     public Time getStart() {
         return start;
     }
@@ -40,21 +47,28 @@ public class BookingDTO implements Serializable {
         switch(dayOfWeek){
             case 1:
                  day="Monday";
+                 break;
             case 2:
                 day="Tuesday";
+                break;
             case 3:
                 day="Wednesday";
+                break;
             case 4:
                 day="Thursday";
+                break;
             case 5:
                 day="Friday";
-            case 6:
+                break;
+            case 7:
                 day="Saturday";
+                break;
             default:
                 day="Sunday";
+                break;
         }
 
-        return day + " " + start.toString();
+        return day + " " + date.toString() + " - " + start.toString();
     }
 
     public LocalDate getDate() {

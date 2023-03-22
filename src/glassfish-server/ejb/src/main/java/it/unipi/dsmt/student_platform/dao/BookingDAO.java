@@ -36,8 +36,10 @@ public class BookingDAO {
 
     public @Nullable ArrayList<BookingDTO> getAllBookedSlots(LocalDate date, int id) {
         BookingDTO bookingDTO = new BookingDTO(new Time(12,0,0), 1);
+        BookingDTO bookingDTO2 = new BookingDTO(new Time(12,0,0), 2);
         ArrayList<BookingDTO> list = new ArrayList<>();
         list.add(bookingDTO);
+        list.add(bookingDTO2);
         return list;
     }
 
