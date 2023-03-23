@@ -5,6 +5,8 @@
 <%
     // List of available slots
     ArrayList<BookingDTO> bookingDTOS = (ArrayList<BookingDTO>)request.getAttribute("slots");
+    int id = Integer.parseInt(request.getParameter("id"));
+    int offset = Integer.parseInt(request.getParameter("offset"));
 %>
 <html>
 <head>
@@ -15,16 +17,17 @@
 
 <div>
     <h2>All available slots:</h2>
-    <form name="selected_slot" method="post" action="${pageContext.request.contextPath}/student/booking">
+    <form name="selected_slot" method="post"
+          action="${pageContext.request.contextPath}/student/booking?id=<%=id%>&offset=<%=offset%>">
         <%
             int i=0;
             for(BookingDTO bDTO : bookingDTOS){%>
-                <option id="<%=i%>"><%=bDTO.toString()%></option>
+                <input type="submit" class="timeslotbox" name="timeslot" value=<%=i%>><%=bDTO.toString()%></input>
+                <br>
                 <%
                 i++;
             }
         %>
-        <button type="submit">Book this meeting</button>
     </form>
     <div name="response">
         <%

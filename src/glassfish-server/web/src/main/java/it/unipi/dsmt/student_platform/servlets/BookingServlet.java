@@ -22,23 +22,25 @@ public class BookingServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
-        String course_id = request.getParameter("id");
+        int id = request.getParameter("id").isEmpty()? 0 : Integer.parseInt(request.getParameter("id"));
+        int offset = request.getParameter("offset").isEmpty()? 0 : Integer.parseInt(request.getParameter("offset"));
 
         // List of available slots
-        ArrayList<BookingDTO> bookingDTOS = (ArrayList<BookingDTO>)request.getAttribute("slots");
+        ArrayList<BookingDTO> bDTOs = bookingEJB.getSlots(id, offset);
 
-        int id = Integer.parseInt(request.getParameter("selected_slot"));
+        int iterator = request.getParameter("timeslot").isEmpty() ? -1 : Integer.parseInt(request.getParameter("timeslot"));
+        if(iterator == -1){
+            response.sendRedirect(request.getContextPath() + "/student/booking?id=" + id + "&r=error");
+            System.out.println("Error: no timeslot selected");
+        }
 
-        // Get selected slot DTO
-        BookingDTO bookingDTO = bookingDTOS.get(id);
         // Send the query
-        boolean ret = bookingEJB.bookASlot(id, bookingDTO);
+        boolean ret = bookingEJB.bookASlot(id, bDTOs.get(iterator));
 
         if(!ret){
-            response.sendRedirect(request.getContextPath() + "/student/booking?r=error");
+            response.sendRedirect(request.getContextPath() + "/student/booking?id=" + id + "&r=error&offset=" + offset);
         }
-        response.sendRedirect(request.getContextPath() + "/student/booking?r=success");
-
+        response.sendRedirect(request.getContextPath() + "/student/booking?id=" + id + "&r=success&offset=" + offset);
     }
 
     @Override
