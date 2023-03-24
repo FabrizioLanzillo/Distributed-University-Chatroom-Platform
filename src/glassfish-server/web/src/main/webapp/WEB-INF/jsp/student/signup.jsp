@@ -11,46 +11,45 @@
 
 <div>
     <h2>Sign up today!</h2>
-    <div class="form">
-        <form method="post" action="${pageContext.request.contextPath}/login">
-            <label>
-                Username:
-                <input type="text" name="username" placeholder="username" required />
-            </label>
-            <br>
-            <label>
-                Password:
-                <input type="password" name="password" placeholder="password" required />
-            </label>
-            <br>
-            <label>
-                email:
-                <input type="text" name="email" placeholder="email" required />
-            </label>
-            <br>
-            <label>
-                name:
-                <input type="text" name="name" placeholder="name" required />
-            </label>
-            <br>
-            <label>
-                surname:
-                <input type="text" name="surname" placeholder="surname" required />
-            </label>
-            <br>
-            <label>
-                degree:
-                <input type="text" name="degree" placeholder="degree" required />
-            </label>
-            <br>
-            <label>
-                language:
-                <input type="text" name="language" placeholder="language" required />
-            </label>
-            <br>
-            <button type="submit" name="signupButton">Join us!</button>
-        </form>
-    </div>
+    <form name="try_signup" method="post"
+          action="${pageContext.request.contextPath}/student/signup">
+        <label>
+            Username:
+            <input type="text" name="username" placeholder="username" required />
+        </label>
+        <br>
+        <label>
+            Password:
+            <input type="password" name="password" placeholder="password" required />
+        </label>
+        <br>
+        <label>
+            email:
+            <input type="text" name="email" placeholder="email" required />
+        </label>
+        <br>
+        <label>
+            name:
+            <input type="text" name="name" placeholder="name" required />
+        </label>
+        <br>
+        <label>
+            surname:
+            <input type="text" name="surname" placeholder="surname" required />
+        </label>
+        <br>
+        <label>
+            degree:
+            <input type="text" name="degree" placeholder="degree" required />
+        </label>
+        <br>
+        <label>
+            language:
+            <input type="text" name="language" placeholder="language" required />
+        </label>
+        <br>
+        <button type="submit">Join us!</button>
+    </form>
 </div>
 
 <%
