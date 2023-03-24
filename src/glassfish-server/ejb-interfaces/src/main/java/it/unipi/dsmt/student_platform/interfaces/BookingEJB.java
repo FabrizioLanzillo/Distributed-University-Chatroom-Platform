@@ -2,14 +2,15 @@ package it.unipi.dsmt.student_platform.interfaces;
 
 import it.unipi.dsmt.student_platform.dto.BookingDTO;
 import jakarta.ejb.Remote;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Remote
 public interface BookingEJB {
 
     // This method extract required data of a specific course of known id
-    ArrayList<BookingDTO> getSlots(int id, int offset);
+    @Nullable List<BookingDTO> getSlots(int id, int offset);
 
-    boolean bookASlot(int course_id, BookingDTO dto);
+    boolean bookSlot(int course_id, BookingDTO dto);
 }

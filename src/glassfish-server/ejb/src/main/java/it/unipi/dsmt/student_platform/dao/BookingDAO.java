@@ -10,6 +10,7 @@ import javax.sql.DataSource;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class BookingDAO {
@@ -17,7 +18,7 @@ public class BookingDAO {
     @Resource(lookup = "jdbc/StudentPlatformPool")
     private DataSource dataSource;
 
-    public @Nullable ArrayList<BookingDTO> getBookedSlots(LocalDate date, int id){
+    public @Nullable List<BookingDTO> getBookedSlots(LocalDate date, int id){
         /*try (Connection connection = dataSource.getConnection()) {
             // Check if username and password is correct
             String query = "SELECT * " +
@@ -34,7 +35,7 @@ public class BookingDAO {
         return null;
     }
 
-    public @Nullable ArrayList<BookingDTO> getAllBookedSlots(LocalDate date, int id) {
+    public @Nullable List<BookingDTO> getAllPossibleSlots(LocalDate date, int id) {
         BookingDTO bookingDTO = new BookingDTO(new Time(12,0,0), 1);
         BookingDTO bookingDTO2 = new BookingDTO(new Time(12,0,0), 2);
         ArrayList<BookingDTO> list = new ArrayList<>();
@@ -43,7 +44,7 @@ public class BookingDAO {
         return list;
     }
 
-    public boolean bookASlot(int courseId, BookingDTO dto) {
+    public boolean bookSlot(int courseId, BookingDTO dto) {
         return true;
     }
 }

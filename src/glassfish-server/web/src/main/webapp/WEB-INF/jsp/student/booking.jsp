@@ -1,10 +1,17 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ page import="it.unipi.dsmt.student_platform.dto.BookingDTO" %>
-<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.List" %>
 
 <%
     // List of available slots
-    ArrayList<BookingDTO> bookingDTOS = (ArrayList<BookingDTO>)request.getAttribute("slots");
+    List<BookingDTO> bookingDTOS;
+    try{
+        bookingDTOS = (List<BookingDTO>)request.getAttribute("slots");
+    }catch(Exception e){
+        System.out.println(e.getMessage());
+        bookingDTOS = null;
+    }
+
     int id = Integer.parseInt(request.getParameter("id"));
     int offset = Integer.parseInt(request.getParameter("offset"));
 %>

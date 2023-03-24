@@ -12,13 +12,14 @@ import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 @Stateless
 public class BookingEJBImpl implements BookingEJB {
     BookingDAO bookingDAO = new BookingDAO();
 
     // This method extract required data of a specific course of known id
-    public @Nullable ArrayList<BookingDTO> getSlots(int id, int offset){
+    public @Nullable List<BookingDTO> getSlots(int id, int offset){
         // Get the available dates for the month in which the user wants to book
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.MONTH, offset + 1);
@@ -30,12 +31,12 @@ public class BookingEJBImpl implements BookingEJB {
         LocalDate result = LocalDate.of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
 
         // Get data
-        ArrayList<BookingDTO> bookedSlots = bookingDAO.getBookedSlots(result, id);
-        ArrayList<BookingDTO> allSlots = bookingDAO.getAllBookedSlots(result, id);
+        List<BookingDTO> bookedSlots = bookingDAO.getBookedSlots(result, id);
+        List<BookingDTO> allSlots = bookingDAO.getAllPossibleSlots(result, id);
 
         if(allSlots == null){
             System.out.println("Error: No slots available");
-            return null;
+            return new ArrayList<BookingDTO>();
         }
 
         ArrayList<BookingDTO> monthlySlots = new ArrayList<>();
@@ -77,8 +78,8 @@ public class BookingEJBImpl implements BookingEJB {
     }
 
 
-    public boolean bookASlot(int course_id, BookingDTO dto){
-        return bookingDAO.bookASlot(course_id, dto);
+    public boolean bookSlot(int course_id, BookingDTO dto){
+        return bookingDAO.bookSlot(course_id, dto);
     }
 
 }

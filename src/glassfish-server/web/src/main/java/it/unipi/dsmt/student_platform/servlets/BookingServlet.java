@@ -12,6 +12,7 @@ import jakarta.servlet.http.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet(name = "BookingServlet", value = "/student/booking")
 public class BookingServlet extends HttpServlet {
@@ -26,7 +27,7 @@ public class BookingServlet extends HttpServlet {
         int offset = request.getParameter("offset").isEmpty()? 0 : Integer.parseInt(request.getParameter("offset"));
 
         // List of available slots
-        ArrayList<BookingDTO> bDTOs = bookingEJB.getSlots(id, offset);
+        List<BookingDTO> bDTOs = bookingEJB.getSlots(id, offset);
 
         int iterator = request.getParameter("timeslot").isEmpty() ? -1 : Integer.parseInt(request.getParameter("timeslot"));
         if(iterator == -1){
@@ -35,7 +36,7 @@ public class BookingServlet extends HttpServlet {
         }
 
         // Send the query
-        boolean ret = bookingEJB.bookASlot(id, bDTOs.get(iterator));
+        boolean ret = bookingEJB.bookSlot(id, bDTOs.get(iterator));
 
         if(!ret){
             response.sendRedirect(request.getContextPath() + "/student/booking?id=" + id + "&r=error&offset=" + offset);
@@ -47,9 +48,9 @@ public class BookingServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         // Check if logged user is a student
         int id;
-        // if (!AccessController.checkAccess(request, response, UserRole.student)) {
-        //    return;
-        //}
+        if (!AccessController.checkAccess(request, response, UserRole.student)) {
+           return;
+        }
 
         try {
             // Get course id from GET parameters
@@ -71,7 +72,7 @@ public class BookingServlet extends HttpServlet {
             offset = Integer.parseInt(offsetString);
         }
 
-        ArrayList<BookingDTO> bDTOs = bookingEJB.getSlots(id, offset);
+        List<BookingDTO> bDTOs = bookingEJB.getSlots(id, offset);
         request.setAttribute("slots", bDTOs);
 
         System.out.println(bDTOs.get(0).toString());
