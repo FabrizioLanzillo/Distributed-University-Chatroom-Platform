@@ -35,13 +35,14 @@ public class BookingDAO {
         return null;
     }
 
-    public @Nullable List<BookingDTO> getAllPossibleSlots(LocalDate date, int id) {
+    public List<BookingDTO> getAllPossibleSlots(LocalDate date, int id) {
         BookingDTO bookingDTO = new BookingDTO(new Time(12,0,0), 1);
         BookingDTO bookingDTO2 = new BookingDTO(new Time(12,0,0), 2);
         ArrayList<BookingDTO> list = new ArrayList<>();
         list.add(bookingDTO);
         list.add(bookingDTO2);
         return list;
+        // If no slots available return empty list not null one
     }
 
     public boolean bookSlot(int courseId, BookingDTO dto) {
