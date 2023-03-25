@@ -6,16 +6,25 @@ import java.sql.Time;
 import java.time.LocalDate;
 
 public class MeetingDTO implements Serializable {
-    private String studentName;
-    private int courseId;
-    private LocalDate date;
-    private Time time;
+
+    private String meetingId = "";
+    private String studentName = "";
+
+    private String studentSurname = "";
+    private int courseId = -1;
+    private LocalDate date = null;
+    private Time time = null;
+
+    private String studentLanguage = "";
 
     public MeetingDTO(String studentName, int courseId, LocalDate date, Time time) {
         this.studentName = studentName;
         this.courseId = courseId;
         this.date = date;
         this.time = time;
+    }
+
+    public MeetingDTO() {
     }
 
     public String getStudentName() {
@@ -54,5 +63,29 @@ public class MeetingDTO implements Serializable {
         return studentName +
                 " on " + date +
                 " at " + time;
+    }
+
+    public String getMeetingId() {
+        return meetingId;
+    }
+
+    public void setMeetingId(String meetingId) {
+        this.meetingId = meetingId;
+    }
+
+    public String getStudentSurname() {
+        return studentSurname;
+    }
+
+    public void setStudentSurname(String studentSurname) {
+        this.studentSurname = studentSurname;
+    }
+
+    public String getStudentLanguage() {
+        return studentLanguage;
+    }
+
+    public void setStudentLanguage(String studentLanguage) {
+        this.studentLanguage = studentLanguage;
     }
 }

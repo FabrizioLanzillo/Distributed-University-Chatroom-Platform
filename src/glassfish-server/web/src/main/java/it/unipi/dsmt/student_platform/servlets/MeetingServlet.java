@@ -26,7 +26,7 @@ public class MeetingServlet extends HttpServlet {
         int offset = request.getParameter("offset").isEmpty()? 0 : Integer.parseInt(request.getParameter("offset"));
 
         // List of available slots
-        List<MeetingDTO> bDTOs = meetingEJB.getSlots(id, offset);
+        List<MeetingDTO> mDTOs = meetingEJB.getSlots(id, offset);
 
         int iterator = request.getParameter("timeslot").isEmpty() ? -1 : Integer.parseInt(request.getParameter("timeslot"));
         if(iterator == -1){
@@ -34,8 +34,8 @@ public class MeetingServlet extends HttpServlet {
             System.out.println("Error: no timeslot selected");
         }
 
-        MeetingDTO meetingDTO = bDTOs.get(iterator);
-        boolean ret = meetingEJB.removeSlot(id, meetingDTO);
+        MeetingDTO meetingDTO = mDTOs.get(iterator);
+        boolean ret = meetingEJB.removeSlot(meetingDTO);
 
         if(!ret){
             response.sendRedirect(request.getContextPath() + "/professor/meeting?id=" + id + "&r=error&offset=" + offset);

@@ -20,9 +20,8 @@ public class SignupEJBImpl implements SignupEJB {
 
     @Override
     public boolean signup(@NotNull SignupDTO signupDTO){
-        System.out.println("CIAO WAJO");
         try(Connection connection = dataSource.getConnection()) {
-            String query = "INSERT INTO `student` VALUES (?, ?, ?, ?, ? ,?, ?, ?);";
+            String query = "INSERT INTO `student` VALUES ( UUID_TO_BIN(UUID()) ,?, ?, ?, ?, ? ,?, ?);";
 
                 try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                     // Set parameters in prepared statement
@@ -33,7 +32,6 @@ public class SignupEJBImpl implements SignupEJB {
                     preparedStatement.setString(5, signupDTO.getSurname());
                     preparedStatement.setString(6, signupDTO.getDegree());
                     preparedStatement.setString(7, signupDTO.getLanguage());
-                    preparedStatement.setString(8, UserRole.student.toString());
 
                     // Execute query
                     int result = preparedStatement.executeUpdate();

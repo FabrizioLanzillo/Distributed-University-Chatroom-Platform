@@ -52,7 +52,7 @@ public class SignupServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/student/signup?r=error");
             return;
         }
-        response.sendRedirect(request.getContextPath() + "/student/index");
+        response.sendRedirect(request.getContextPath() + "/login");
     }
 
     @Override
