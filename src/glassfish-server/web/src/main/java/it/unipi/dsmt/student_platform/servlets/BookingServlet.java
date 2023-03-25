@@ -1,6 +1,7 @@
 package it.unipi.dsmt.student_platform.servlets;
 
 import it.unipi.dsmt.student_platform.dto.BookingDTO;
+import it.unipi.dsmt.student_platform.dto.LoggedUserDTO;
 import it.unipi.dsmt.student_platform.enums.UserRole;
 import it.unipi.dsmt.student_platform.interfaces.BookingEJB;
 import it.unipi.dsmt.student_platform.utility.AccessController;
@@ -34,8 +35,9 @@ public class BookingServlet extends HttpServlet {
             System.out.println("Error: no timeslot selected");
         }
 
-        // Send the query
-        boolean ret = bookingEJB.bookSlot(id, bDTOs.get(iterator));
+        LoggedUserDTO loggedUser = (LoggedUserDTO) request.getSession().getAttribute("logged_user");
+        // Send the query for the requesting user
+        boolean ret = bookingEJB.bookSlot("d487e29f-ca63-11ed-a7e5-58ce2a8b6d20", id, bDTOs.get(iterator), offset);
 
         if(!ret){
             response.sendRedirect(request.getContextPath() + "/student/booking?id=" + id + "&r=error&offset=" + offset);
@@ -73,9 +75,6 @@ public class BookingServlet extends HttpServlet {
 
         List<BookingDTO> bDTOs = bookingEJB.getSlots(id, offset);
         request.setAttribute("slots", bDTOs);
-
-        System.out.println(bDTOs.get(0).toString());
-        System.out.println(bDTOs.get(0).getDayOfWeek());
 
         request.getRequestDispatcher("/WEB-INF/jsp/student/booking.jsp")
                 .forward(request, response);

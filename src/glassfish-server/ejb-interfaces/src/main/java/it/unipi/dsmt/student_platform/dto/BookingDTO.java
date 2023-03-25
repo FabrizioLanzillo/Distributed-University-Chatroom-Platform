@@ -5,13 +5,16 @@ import java.sql.Time;
 import java.time.LocalDate;
 
 public class BookingDTO implements Serializable {
+
+    private String id="";
     private int dayOfWeek = -1;
     private Time start;
     private LocalDate date = null;
 
-    public BookingDTO(Time start, int dayOfWeek){
+    public BookingDTO(Time start, int dayOfWeek, String id){
             this.start = start;
             this.dayOfWeek = dayOfWeek;
+            this.id = id;
     }
 
     public BookingDTO(Time start, LocalDate date){
@@ -19,10 +22,11 @@ public class BookingDTO implements Serializable {
         this.date = date;
     }
 
-    public BookingDTO(Time start, LocalDate date, int dayOfWeek){
+    public BookingDTO(Time start, LocalDate date, int dayOfWeek, String id){
         this.start = start;
         this.date = date;
         this.dayOfWeek = dayOfWeek;
+        this.id = id;
     }
 
 
@@ -77,5 +81,13 @@ public class BookingDTO implements Serializable {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

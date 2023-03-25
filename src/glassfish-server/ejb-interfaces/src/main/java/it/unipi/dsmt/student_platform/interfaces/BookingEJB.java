@@ -12,5 +12,5 @@ public interface BookingEJB {
     // This method extract required data of a specific course of known id
     @Nullable List<BookingDTO> getSlots(int id, int offset);
 
-    boolean bookSlot(int course_id, BookingDTO dto);
+    boolean bookSlot(String studentID, int courseID, BookingDTO dto, int offset);
 }
