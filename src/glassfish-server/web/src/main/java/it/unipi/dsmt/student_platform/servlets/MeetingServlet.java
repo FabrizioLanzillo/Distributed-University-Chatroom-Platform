@@ -32,6 +32,7 @@ public class MeetingServlet extends HttpServlet {
         if(iterator == -1){
             response.sendRedirect(request.getContextPath() + "/professor/meeting?id=" + id + "&r=error");
             System.out.println("Error: no timeslot selected");
+            return;
         }
 
         MeetingDTO meetingDTO = mDTOs.get(iterator);
@@ -39,6 +40,7 @@ public class MeetingServlet extends HttpServlet {
 
         if(!ret){
             response.sendRedirect(request.getContextPath() + "/professor/meeting?id=" + id + "&r=error&offset=" + offset);
+            return;
         }
         response.sendRedirect(request.getContextPath() + "/professor/meeting?id=" + id + "&r=success&offset=" + offset);
 

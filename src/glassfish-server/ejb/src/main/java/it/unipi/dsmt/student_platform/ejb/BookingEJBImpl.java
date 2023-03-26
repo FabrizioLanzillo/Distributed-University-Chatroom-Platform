@@ -27,7 +27,7 @@ public class BookingEJBImpl implements BookingEJB {
     BookingDAO bookingDAO = new BookingDAO();
 
     // This method extract required data of a specific course of known id
-    public @Nullable List<BookingDTO> getSlots(int id, int offset){
+    public List<BookingDTO> getSlots(int id, int offset){
         // Get the available dates for the month in which the user wants to book
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.MONTH, offset + 1);

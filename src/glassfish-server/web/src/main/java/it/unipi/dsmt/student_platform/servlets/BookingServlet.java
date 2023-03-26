@@ -33,14 +33,16 @@ public class BookingServlet extends HttpServlet {
         if(iterator == -1){
             response.sendRedirect(request.getContextPath() + "/student/booking?id=" + id + "&r=error");
             System.out.println("Error: no timeslot selected");
+            return;
         }
 
         LoggedUserDTO loggedUser = (LoggedUserDTO) request.getSession().getAttribute("logged_user");
-        // Send the query for the requesting user
-        boolean ret = bookingEJB.bookSlot("d487e29f-ca63-11ed-a7e5-58ce2a8b6d20", id, bDTOs.get(iterator), offset);
+        // Send the query for the requesting user TODO Check correctness after Rick's login changes
+        boolean ret = bookingEJB.bookSlot(loggedUser.getId(), id, bDTOs.get(iterator), offset);
 
         if(!ret){
             response.sendRedirect(request.getContextPath() + "/student/booking?id=" + id + "&r=error&offset=" + offset);
+            return;
         }
         response.sendRedirect(request.getContextPath() + "/student/booking?id=" + id + "&r=success&offset=" + offset);
     }

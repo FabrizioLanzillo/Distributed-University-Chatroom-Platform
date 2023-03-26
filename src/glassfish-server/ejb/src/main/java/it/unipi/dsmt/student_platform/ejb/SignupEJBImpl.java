@@ -35,6 +35,9 @@ public class SignupEJBImpl implements SignupEJB {
 
                     // Execute query
                     int result = preparedStatement.executeUpdate();
+                    // evaluate the return value
+                    if(result != 1)
+                        return false;
                     return true;
                 }
             }
