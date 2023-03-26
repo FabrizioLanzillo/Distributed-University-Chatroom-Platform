@@ -20,7 +20,6 @@ public class SignupServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-
         String _username = request.getParameter("username");
         String _password = request.getParameter("password");
         String _email = request.getParameter("email");
@@ -31,30 +30,29 @@ public class SignupServlet extends HttpServlet {
 
         boolean r = false;
 
+        SignupDTO dto = new SignupDTO(
+                _username,
+                _password,
+                _email,
+                _name,
+                _surname,
+                _degree,
+                _language);
+
+
         //Some SQL call to store the data (remember to hash the pwd (?))
         try{
-            r = signupEJB. signup(
-                    new SignupDTO(
-                            _username,
-                            _password,
-                            _email,
-                            _name,
-                            _surname,
-                            _degree,
-                            _language)
-            );
-            System.out.println("Ciaonee!");
+            r = signupEJB.signup(dto);
         }
         catch(Exception error){
             error.printStackTrace();
-            System.out.println("Catchhhh");
         }
         //Let's proceed to login page if signup succeeded, otherwise show an error
         if(!r) {
             response.sendRedirect(request.getContextPath() + "/student/signup?r=error");
             return;
         }
-        response.sendRedirect(request.getContextPath() + "/student/login.jsp");
+        response.sendRedirect(request.getContextPath() + "/");
     }
 
     @Override

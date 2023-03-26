@@ -1,6 +1,8 @@
 package it.unipi.dsmt.student_platform.dto;
 
-public class SignupDTO {
+import java.io.Serializable;
+
+public class SignupDTO implements Serializable {
     private String username;
     private String password;
     private String email;
