@@ -17,7 +17,8 @@ public class UserEJBImpl implements UserEJB {
 	@Resource(lookup = "jdbc/StudentPlatformPool")
 	private DataSource dataSource;
 	
-	private @Nullable LoggedUserDTO loginTodo (@NotNull LoginInformationDTO loginInformation) { // todo change name
+	@Override
+	public @Nullable LoggedUserDTO login (@NotNull LoginInformationDTO loginInformation) {
 		
 		try (Connection connection = dataSource.getConnection()) {
 			// Check if username and password is correct
@@ -46,15 +47,6 @@ public class UserEJBImpl implements UserEJB {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
-	}
-	
-	@Override
-	public LoggedUserDTO login (@NotNull LoginInformationDTO loginInformation) { // todo remove
-		return new LoggedUserDTO(
-				"1",
-				loginInformation.getUsername(),
-				loginInformation.getRole()
-		);
 	}
 	
 }
