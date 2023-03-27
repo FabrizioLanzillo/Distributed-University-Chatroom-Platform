@@ -22,6 +22,57 @@ else {
 
     <head>
         <title> <%= courseDTO.getName() %> </title>
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+        <script type="text/javascript">
+            function starCourse(){
+                const params = {
+                    action: "star",
+                    courseId: <%= courseDTO.getId() %>
+                };
+                
+                $.post(
+                    "${pageContext.request.contextPath}/student/course",
+                    params,
+                    function () {
+                        alert("Course starred");
+                    }
+                ).fail(
+                    function() {
+                        alert('Error');
+                    }
+                ).always(
+                    function() {
+                        location.reload();
+                    }
+                );
+            }
+
+            function unstarCourse(){
+                const params = {
+                    action: "unstar",
+                    courseId: <%= courseDTO.getId() %>
+                };
+
+                $.post(
+                    "${pageContext.request.contextPath}/student/course",
+                    params,
+                    function () {
+                        alert("Course unstarred");
+                    }
+                ).fail(
+                    function() {
+                        alert("Error");
+                    }
+                ).always(
+                    function() {
+                        location.reload();
+                    }
+                );
+            }
+            
+        </script>
+        
     </head>
 
     <body>
@@ -44,7 +95,19 @@ else {
         <a href="${pageContext.request.contextPath}/student/booking?id=<%= courseDTO.getId() %>">
             <button>Book a meeting</button>
         </a>
-
+        
+<%
+    if (courseDTO.isStarred()) {
+%>
+        <button onclick="unstarCourse()">Unstar this course</button>
+<%
+    }
+    else {
+%>
+        <button onclick="starCourse()">Star this course</button>
+<%
+    }
+%>
     </body>
 <%
 }

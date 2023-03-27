@@ -9,10 +9,15 @@ import java.util.List;
 
 @Remote
 public interface CourseEJB {
+	
+	boolean createCourse(@NotNull CourseCreationDTO course);
+	
 	CourseDTO getCourse (int id);
-	public List<CourseDTO> getCourse (String name);
-	public List<CourseDTO> getAllCourses ();
-	public List<CourseDTO> getStarredCourses(String username);
-	public boolean addStarredCourse(String student, String id);
-	boolean createCourse (@NotNull CourseCreationDTO course);
+	List<CourseDTO> getCourse (String name);
+	List<CourseDTO> getAllCourses ();
+	List<CourseDTO> getStarredCourses(String username);
+	
+	boolean addStarredCourse(@NotNull String studentId, int courseId);
+	boolean removeStarredCourse(@NotNull String studentId, int courseId);
+	
 }

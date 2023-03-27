@@ -59,10 +59,11 @@ public class CourseEJBImpl implements CourseEJB {
 			throw new RuntimeException(e);
 		}
 	}
-
+	
+	
 	@Override
 	public List<CourseDTO> getCourse (String name) {
-		List<CourseDTO> courses = new ArrayList<CourseDTO>();
+		List<CourseDTO> courses = new ArrayList<>();
 
 		try (Connection connection = dataSource.getConnection()) {
 			// Get details of requested course
@@ -100,10 +101,11 @@ public class CourseEJBImpl implements CourseEJB {
 		}
 		return courses;
 	}
-
+	
+	
 	@Override
 	public List<CourseDTO> getAllCourses () {
-		List<CourseDTO> courses = new ArrayList<CourseDTO>();
+		List<CourseDTO> courses = new ArrayList<>();
 
 		try (Connection connection = dataSource.getConnection()) {
 			// Get details of requested course
@@ -139,9 +141,11 @@ public class CourseEJBImpl implements CourseEJB {
 		}
 		return courses;
 	}
+	
+	
 	@Override
 	public List<CourseDTO> getStarredCourses(String username){
-		List<CourseDTO> courses = new ArrayList<CourseDTO>();
+		List<CourseDTO> courses = new ArrayList<>();
 
 		try (Connection connection = dataSource.getConnection()) {
 			// Get details of requested course
@@ -180,29 +184,48 @@ public class CourseEJBImpl implements CourseEJB {
 		}
 		return courses;
 	}
+	
+	
 	@Override
-	public boolean addStarredCourse(String student, String course){
+	public boolean addStarredCourse (@NotNull String studentId, int courseId){
 		try (Connection connection = dataSource.getConnection()) {
-			// Check if username and password is correct
-			String query = "INSERT INTO student_starred_courses (student, course) " +
-					"VALUES ((SELECT id FROM student WHERE username = ?), " +
-							"(SELECT id FROM course WHERE name = ?));";
+			// Add relationship between student and course
+			String query = "INSERT INTO `student_starred_courses` VALUES (UUID_TO_BIN(?), ?)";
 
 			try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 				// Set parameters in prepared statement
-				preparedStatement.setString(1, student);
-				preparedStatement.setString(2, course);
+				preparedStatement.setString(1, studentId);
+				preparedStatement.setInt(2, courseId);
 
 				// Execute query
-				int ret = preparedStatement.executeUpdate();
-				System.out.println(ret);
-				return (ret == 1) ? true: false;
+				return 1 == preparedStatement.executeUpdate();
 			}
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	
+	@Override
+	public boolean removeStarredCourse (@NotNull String studentId, int courseId) {
+		try (Connection connection = dataSource.getConnection()) {
+			// Remove relationship between student and course
+			String query = "DELETE FROM `student_starred_courses` WHERE `student` = UUID_TO_BIN(?) AND `course` = ?";
+			
+			try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+				// Set parameters in prepared statement
+				preparedStatement.setString(1, studentId);
+				preparedStatement.setInt(2, courseId);
+				
+				// Execute query
+				return 1 == preparedStatement.executeUpdate();
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	
 	@Override
 	public boolean createCourse(@NotNull CourseCreationDTO course) {
 		try (Connection connection = dataSource.getConnection()) {
