@@ -22,13 +22,14 @@ public class UserEJBImpl implements UserEJB {
 		
 		try (Connection connection = dataSource.getConnection()) {
 			// Check if username and password is correct
-			String query = "SELECT `id` FROM ? WHERE `username` = ? AND `password` = ?";
+			String query = "SELECT `id` FROM "
+					+ loginInformation.getRole().name()
+					+ " WHERE `username` = ? AND `password` = ?";
 			
 			try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 				// Set parameters in prepared statement
-				preparedStatement.setString(1, loginInformation.getRole().name());
-				preparedStatement.setString(2, loginInformation.getUsername());
-				preparedStatement.setString(3, loginInformation.getPassword());
+				preparedStatement.setString(1, loginInformation.getUsername());
+				preparedStatement.setString(2, loginInformation.getPassword());
 				
 				// Execute query
 				try (ResultSet resultSet = preparedStatement.executeQuery()) {
