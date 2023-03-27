@@ -22,7 +22,7 @@ public class UserEJBImpl implements UserEJB {
 		
 		try (Connection connection = dataSource.getConnection()) {
 			// Check if username and password is correct
-			String query = "SELECT `id` FROM "
+			String query = "SELECT BIN_TO_UUID(id) AS id FROM "
 					+ loginInformation.getRole().name()
 					+ " WHERE `username` = ? AND `password` = ?";
 			
