@@ -15,18 +15,22 @@ public class AccessController {
 	
 	/**
 	 * Checks if the logged user is allowed to access the requested resource.
+	 * <br>
 	 * It redirects the user to its portal page if the user is not allowed or
 	 * to the login page if they are not logged.
+	 * In these cases, the method returns null.
 	 *
 	 * @param request HttpServletRequest object
 	 * @param response HttpServletResponse object
 	 * @param requiredRole required role to access the requested resource
-	 * @return true if the user is allowed to access, false otherwise
+	 * @return stored instance of LoggedUserDTO if the user is logged AND
+	 * they're allowed to access the requested resource, null otherwise
 	 * @throws IOException if redirecting fails
 	 */
-	public static boolean checkAccess (@NotNull HttpServletRequest request,
-	                                   @NotNull HttpServletResponse response,
-	                                   @NotNull UserRole requiredRole) throws IOException
+	public static @Nullable LoggedUserDTO checkAccess (
+			@NotNull HttpServletRequest request,
+			@NotNull HttpServletResponse response,
+			@NotNull UserRole requiredRole) throws IOException
 	{
 		if (requiredRole == UserRole.invalid) {
 			throw new IllegalArgumentException("Invalid required role");
@@ -34,16 +38,16 @@ public class AccessController {
 		
 		LoggedUserDTO loggedUser = getLoggedUserWithRedirect(request, response);
 		if (loggedUser == null) {
-			return false;
+			return null;
 		}
 		
 		if (loggedUser.getRole() != requiredRole) {
 			// User not allowed to access
 			ClientRedirector.redirectToPortalPage(request, response, loggedUser.getRole());
-            return false;
+            return null;
 		}
 		
-		return true;
+		return loggedUser;
 	}
 	
 	public static @Nullable LoggedUserDTO getLoggedUserWithRedirect (
