@@ -18,10 +18,10 @@ import java.util.List;
 
 @Stateless
 public class CourseEJBImpl implements CourseEJB {
-	
+
 	@Resource(lookup = "jdbc/StudentPlatformPool")
 	private DataSource dataSource;
-	
+
 	@Override
 	public CourseDTO getCourse (int id) {
 		try (Connection connection = dataSource.getConnection()) {
@@ -30,11 +30,11 @@ public class CourseEJBImpl implements CourseEJB {
 					"FROM course c " +
 					"INNER JOIN professor p on c.professor = p.id " +
 					"WHERE c.id = ?;";
-			
+
 			try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 				// Set parameters in prepared statement
 				preparedStatement.setInt(1, id);
-				
+
 				// Execute query
 				try (ResultSet resultSet = preparedStatement.executeQuery()) {
 					// If the query returned a result set,
@@ -195,7 +195,6 @@ public class CourseEJBImpl implements CourseEJB {
 
 				// Execute query
 				int ret = preparedStatement.executeUpdate();
-				System.out.println(ret);
 				return (ret == 1) ? true: false;
 			}
 		}
@@ -209,13 +208,13 @@ public class CourseEJBImpl implements CourseEJB {
 			// Check if username and password is correct
 			String query = "INSERT INTO `course` (`id`, `name`, `professor`, `description`) " +
 					"VALUES (UUID_TO_BIN(UUID()), ?, ?, ?);";
-			
+
 			try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 				// Set parameters in prepared statement
 				preparedStatement.setString(1, course.getName());
 				preparedStatement.setString(2, course.getProfessorId());
 				preparedStatement.setString(3, course.getDescription());
-				
+
 				// Execute query
 				return preparedStatement.execute();
 			}
@@ -223,5 +222,25 @@ public class CourseEJBImpl implements CourseEJB {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
+	public int deleteCourse(int id){
+		try (Connection connection = dataSource.getConnection()) {
+			// Check if username and password is correct
+			String query = "DELETE " +
+							"FROM course " +
+							"WHERE id = ?;";
+
+			try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+				// Set parameters in prepared statement
+				preparedStatement.setInt(1, id);
+
+				// Execute query
+				int ret = preparedStatement.executeUpdate();
+				return ret;
+			}
+		}
+		catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
 }

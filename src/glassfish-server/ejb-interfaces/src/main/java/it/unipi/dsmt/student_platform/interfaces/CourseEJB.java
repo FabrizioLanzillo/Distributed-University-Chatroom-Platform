@@ -15,4 +15,5 @@ public interface CourseEJB {
 	public List<CourseDTO> getStarredCourses(String username);
 	public boolean addStarredCourse(String student, String id);
 	boolean createCourse (@NotNull CourseCreationDTO course);
+	public int deleteCourse(int id);
 }
