@@ -76,4 +76,15 @@ public class CourseDTO implements Serializable {
 	public void setStarred(Boolean starred) {
 		isStarred = starred;
 	}
+	
+	@Override
+	public String toString() {
+		return "CourseDTO{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", professor=" + professor +
+				", description='" + description + '\'' +
+				", isStarred=" + isStarred +
+				'}';
+	}
 }
