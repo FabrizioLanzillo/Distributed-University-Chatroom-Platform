@@ -4,6 +4,7 @@ import it.unipi.dsmt.student_platform.dto.LoggedUserDTO;
 import it.unipi.dsmt.student_platform.dto.LoginInformationDTO;
 import it.unipi.dsmt.student_platform.enums.UserRole;
 import it.unipi.dsmt.student_platform.interfaces.UserEJB;
+import it.unipi.dsmt.student_platform.utility.AccessController;
 import it.unipi.dsmt.student_platform.utility.ClientRedirector;
 import jakarta.ejb.EJB;
 import jakarta.servlet.annotation.WebServlet;
@@ -46,7 +47,7 @@ public class LoginServlet extends HttpServlet {
 		
 		// b) Successful login
 		// Add user information as sessione variable
-		request.getSession().setAttribute("logged_user", loggedUser);
+		AccessController.setLoggedUser(request, loggedUser);
 		
 		// Redirect to correct webpage
 		ClientRedirector.redirectToPortalPage(request, response, role);
