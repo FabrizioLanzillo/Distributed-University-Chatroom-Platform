@@ -26,16 +26,16 @@ else {
         <script src="${pageContext.request.contextPath}/assets/libs/jquery/js/jquery-3.6.4.min.js"></script>
         <script type="text/javascript">
             
-            function postToCourseServlet(params, userMessage) {
+            function sendPostToCourseServlet(params, successMessage) {
                 $.post(
                     "${pageContext.request.contextPath}/student/course",
                     params,
                     function () {
-                        alert(userMessage);
+                        alert(successMessage);
                     }
                 ).fail(
                     function() {
-                        alert('Error');
+                        alert("Error");
                     }
                 ).always(
                     function() {
@@ -50,7 +50,7 @@ else {
                     courseId: <%= courseDTO.getId() %>
                 };
                 
-                postToCourseServlet(params, "Course starred")
+                sendPostToCourseServlet(params, "Course starred")
             }
 
             function unstarCourse(){
@@ -59,7 +59,7 @@ else {
                     courseId: <%= courseDTO.getId() %>
                 };
 
-                postToCourseServlet(params, "Course unstarred")
+                sendPostToCourseServlet(params, "Course unstarred")
             }
             
         </script>
@@ -88,6 +88,7 @@ else {
         </a>
         
 <%
+    // Insert button to star or unstar a course (depending on from the current state)
     if (courseDTO.isStarred()) {
 %>
         <button onclick="unstarCourse()">Unstar this course</button>
