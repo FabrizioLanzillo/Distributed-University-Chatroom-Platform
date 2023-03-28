@@ -23,7 +23,7 @@ else {
     <head>
         <title> <%= courseDTO.getName() %> </title>
         
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/libs/jquery/js/jquery-3.6.4.min.js"></script>
         <script type="text/javascript">
             
             function postToCourseServlet(params, userMessage) {
