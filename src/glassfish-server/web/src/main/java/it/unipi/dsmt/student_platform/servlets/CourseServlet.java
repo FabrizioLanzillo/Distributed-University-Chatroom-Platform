@@ -27,7 +27,7 @@ public class CourseServlet extends HttpServlet {
 			throws ServletException, IOException
 	{
 		// Check if logged user is a student
-		if (!AccessController.checkAccess(request, response, UserRole.student)) {
+		if (AccessController.checkAccess(request, response, UserRole.student) == null) {
 			return;
 		}
 		
