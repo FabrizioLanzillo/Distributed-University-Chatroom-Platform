@@ -10,16 +10,31 @@ public class CourseDTO implements Serializable {
 	private String name;
 	private ProfessorDTO professor;
 	private String description;
+	private Boolean isStarred;
 	
-	public CourseDTO (int id,
-	                  @NotNull String name,
-	                  @NotNull ProfessorDTO professor,
-	                  @NotNull String description)
+	public CourseDTO(int id,
+	                 @NotNull String name,
+	                 @NotNull ProfessorDTO professor,
+	                 @NotNull String description)
 	{
 		this.id = id;
 		this.name = name;
 		this.professor = professor;
 		this.description = description;
+		this.isStarred = null;
+	}
+	
+	public CourseDTO(int id,
+	                 @NotNull String name,
+	                 @NotNull ProfessorDTO professor,
+	                 @NotNull String description,
+	                 Boolean isStarred)
+	{
+		this.id = id;
+		this.name = name;
+		this.professor = professor;
+		this.description = description;
+		this.isStarred = isStarred;
 	}
 	
 	public int getId() {
@@ -54,13 +69,11 @@ public class CourseDTO implements Serializable {
 		this.description = description;
 	}
 	
-	@Override
-	public String toString() {
-		return "CourseDTO{" +
-				"id='" + id + '\'' +
-				", name='" + name + '\'' +
-				", professor=" + professor +
-				", description='" + description + '\'' +
-				'}';
+	public Boolean isStarred() {
+		return isStarred;
+	}
+	
+	public void setStarred(Boolean starred) {
+		isStarred = starred;
 	}
 }

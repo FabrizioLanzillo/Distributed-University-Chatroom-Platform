@@ -7,6 +7,7 @@ import it.unipi.dsmt.student_platform.interfaces.CourseEJB;
 import jakarta.annotation.Resource;
 import jakarta.ejb.Stateless;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -22,8 +23,33 @@ public class CourseEJBImpl implements CourseEJB {
 	@Resource(lookup = "jdbc/StudentPlatformPool")
 	private DataSource dataSource;
 	
-	@Override
-	public CourseDTO getCourse (int id) {
+	
+	
+	private boolean isCourseStarredByUser (int courseId, String userId) {
+		try (Connection connection = dataSource.getConnection()) {
+			// Check if the user has starred the course
+			String query = "SELECT * FROM student_starred_courses " +
+					"WHERE course = ? AND student = UUID_TO_BIN(?)";
+			
+			try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+				// Set parameters in prepared statement
+				preparedStatement.setInt(1, courseId);
+				preparedStatement.setString(2, userId);
+				
+				// Execute query
+				try (ResultSet resultSet = preparedStatement.executeQuery()) {
+					// If the query returned a result set,
+					// then the course-student relationship exists
+					return resultSet.next();
+				}
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	
+	private @Nullable CourseDTO getCourse (int courseId) {
 		try (Connection connection = dataSource.getConnection()) {
 			// Get details of requested course
 			String query = "SELECT c.id, c.name, c.description, p.id, p.name, p.surname " +
@@ -33,7 +59,7 @@ public class CourseEJBImpl implements CourseEJB {
 			
 			try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 				// Set parameters in prepared statement
-				preparedStatement.setInt(1, id);
+				preparedStatement.setInt(1, courseId);
 				
 				// Execute query
 				try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -58,6 +84,17 @@ public class CourseEJBImpl implements CourseEJB {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	
+	@Override
+	public CourseDTO getCourseDetails (int courseId, String userId) {
+		CourseDTO course = getCourse(courseId);
+		if (course == null) {
+			return null;
+		}
+		course.setStarred(isCourseStarredByUser(courseId, userId));
+		return course;
 	}
 	
 	
@@ -112,7 +149,7 @@ public class CourseEJBImpl implements CourseEJB {
 			String query =  "SELECT c.id, c.name, c.description, p.id, p.name, p.surname " +
 							"FROM course c " +
 							"INNER JOIN professor p on c.professor = p.id " +
-							"ORDER BY c.name ASC;";
+							"ORDER BY c.name";
 
 			try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 

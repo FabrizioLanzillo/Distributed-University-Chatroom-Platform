@@ -31,9 +31,9 @@ public class CourseServlet extends HttpServlet {
 			return;
 		}
 		
+		// Get course id from GET parameters
 		int id;
 		try {
-			// Get course id from GET parameters
 			String stringId = request.getParameter("id");
 			if (stringId == null) {
 				throw new RuntimeException("course id not set");
@@ -43,8 +43,16 @@ public class CourseServlet extends HttpServlet {
 			throw new RuntimeException("course id is not a number");
 		}
 		
+		// Get currently logged user
+		LoggedUserDTO loggedUser = (LoggedUserDTO) request.getSession().getAttribute("logged_user");
+		if (loggedUser == null) {
+			// User not logged
+			ClientRedirector.redirectToLogin(request, response);
+			return;
+		}
+		
 		// Get course's data
-		CourseDTO course = courseEJB.getCourse(id);
+		CourseDTO course = courseEJB.getCourseDetails(id, loggedUser.getId());
 		request.setAttribute("course", course);
 		request.getRequestDispatcher("/WEB-INF/jsp/student/course.jsp")
 				.forward(request, response);
@@ -53,8 +61,7 @@ public class CourseServlet extends HttpServlet {
 	
 	@Override
 	protected void doPost (HttpServletRequest request, HttpServletResponse response)
-			throws IOException
-	{
+			throws IOException, ServletException {
 		// Check if logged user is a student
         if (!AccessController.checkAccess(request, response, UserRole.student)) {
             return;

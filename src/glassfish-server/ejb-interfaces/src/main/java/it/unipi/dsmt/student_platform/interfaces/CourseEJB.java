@@ -12,7 +12,7 @@ public interface CourseEJB {
 	
 	boolean createCourse(@NotNull CourseCreationDTO course);
 	
-	CourseDTO getCourse (int id);
+	CourseDTO getCourseDetails (int id, String userId);
 	List<CourseDTO> getCourse (String name);
 	List<CourseDTO> getAllCourses ();
 	List<CourseDTO> getStarredCourses(String username);

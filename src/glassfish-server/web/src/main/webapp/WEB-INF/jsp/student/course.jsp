@@ -25,17 +25,13 @@ else {
         
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
         <script type="text/javascript">
-            function starCourse(){
-                const params = {
-                    action: "star",
-                    courseId: <%= courseDTO.getId() %>
-                };
-                
+            
+            function postToCourseServlet(params, userMessage) {
                 $.post(
                     "${pageContext.request.contextPath}/student/course",
                     params,
                     function () {
-                        alert("Course starred");
+                        alert(userMessage);
                     }
                 ).fail(
                     function() {
@@ -47,6 +43,15 @@ else {
                     }
                 );
             }
+            
+            function starCourse(){
+                const params = {
+                    action: "star",
+                    courseId: <%= courseDTO.getId() %>
+                };
+                
+                postToCourseServlet(params, "Course starred")
+            }
 
             function unstarCourse(){
                 const params = {
@@ -54,21 +59,7 @@ else {
                     courseId: <%= courseDTO.getId() %>
                 };
 
-                $.post(
-                    "${pageContext.request.contextPath}/student/course",
-                    params,
-                    function () {
-                        alert("Course unstarred");
-                    }
-                ).fail(
-                    function() {
-                        alert("Error");
-                    }
-                ).always(
-                    function() {
-                        location.reload();
-                    }
-                );
+                postToCourseServlet(params, "Course unstarred")
             }
             
         </script>
