@@ -19,7 +19,7 @@ public class MeetingEJBImpl implements MeetingEJB {
 	@Resource(lookup = "jdbc/StudentPlatformPool")
 	private DataSource dataSource;
 	
-	public List<MeetingDTO> getSlots(String id, int offset){
+	public List<MeetingDTO> getSlots(String professorID, int offset){
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.MONTH, offset + 1);
 		
@@ -40,7 +40,7 @@ public class MeetingEJBImpl implements MeetingEJB {
 			"WHERE p.id = UUID_TO_BIN(?) AND bm.date BETWEEN ? AND ?;";
 			
 			try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-				preparedStatement.setString(1, id);
+				preparedStatement.setString(1, professorID);
 				preparedStatement.setDate(2, java.sql.Date.valueOf(start));
 				preparedStatement.setDate(3, java.sql.Date.valueOf(end));
 				

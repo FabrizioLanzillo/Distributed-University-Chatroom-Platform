@@ -60,11 +60,11 @@ public class MeetingServlet extends HttpServlet {
             // Get course id from GET parameters
             user = (LoggedUserDTO)request.getSession().getAttribute("logged_user");
             if (user == null) {
-                throw new RuntimeException("course id not set");
+                throw new RuntimeException("user id is null");
             }
         }
         catch (NumberFormatException e) {
-            throw new RuntimeException("course id is not a number");
+            throw new RuntimeException("user id is not a number");
         }
 
         // Get the offset to load the right page
