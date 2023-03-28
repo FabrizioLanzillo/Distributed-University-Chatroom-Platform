@@ -11,15 +11,15 @@ public class MeetingDTO implements Serializable {
     private String studentName = "";
 
     private String studentSurname = "";
-    private int courseId = -1;
+    private String courseName = "";
     private LocalDate date = null;
     private Time time = null;
 
     private String studentLanguage = "";
 
-    public MeetingDTO(String studentName, int courseId, LocalDate date, Time time) {
+    public MeetingDTO(String studentName, String courseId, LocalDate date, Time time) {
         this.studentName = studentName;
-        this.courseId = courseId;
+        this.courseName = courseName;
         this.date = date;
         this.time = time;
     }
@@ -35,12 +35,12 @@ public class MeetingDTO implements Serializable {
         this.studentName = studentName;
     }
 
-    public int getCourseId() {
-        return courseId;
+    public String getCourseName() {
+        return courseName;
     }
 
-    public void setCourseId(int courseId) {
-        this.courseId = courseId;
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
     }
 
     public LocalDate getDate() {
@@ -62,7 +62,8 @@ public class MeetingDTO implements Serializable {
     public String toString() {
         return studentName +
                 " on " + date +
-                " at " + time;
+                " at " + time +
+                " for course: " + courseName;
     }
 
     public String getMeetingId() {
@@ -88,4 +89,5 @@ public class MeetingDTO implements Serializable {
     public void setStudentLanguage(String studentLanguage) {
         this.studentLanguage = studentLanguage;
     }
+    
 }

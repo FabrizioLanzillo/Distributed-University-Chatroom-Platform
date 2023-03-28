@@ -9,7 +9,7 @@ import java.util.List;
 public interface MeetingEJB {
 
     // This method extract required data of a specific course of known id
-    List<MeetingDTO> getSlots(int id, int offset);
+    List<MeetingDTO> getSlots(String id, int offset);
 
     boolean removeSlot(MeetingDTO dto);
 }
