@@ -1,19 +1,18 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
-<%@ page import="it.unipi.dsmt.student_platform.dto.BookingDTO" %>
 <%@ page import="java.util.List" %>
 <%@ page import="it.unipi.dsmt.student_platform.dto.MeetingDTO" %>
+<%@ page import="java.util.ArrayList" %>
 
 <%
     // List of available slots
-    List<MeetingDTO> bookedSlots;
+    ArrayList<MeetingDTO> bookedSlots;
     try{
-        bookedSlots = (List<MeetingDTO>)request.getAttribute("bookedSlots");
+        bookedSlots = (ArrayList<MeetingDTO>)request.getAttribute("bookedSlots");
     }catch(Exception e){
         System.out.println(e.getMessage());
-        bookedSlots = null;
+		bookedSlots = new ArrayList<>();
     }
 
-    int id = Integer.parseInt(request.getParameter("id"));
     int offset = Integer.parseInt(request.getParameter("offset"));
 %>
 <html>
@@ -26,9 +25,9 @@
 <div>
     <h2>All available slots:</h2>
     <form name="selected_slot" method="post"
-          action="${pageContext.request.contextPath}/professor/meeting?id=<%=id%>&offset=<%=offset%>">
+          action="${pageContext.request.contextPath}/professor/meeting?offset=<%=offset%>">
         <%
-            if(bookedSlots == null){
+            if(bookedSlots.isEmpty()){
                 %>
                 <div class="alert"> No booked meeting yet! </div>
                 <%
