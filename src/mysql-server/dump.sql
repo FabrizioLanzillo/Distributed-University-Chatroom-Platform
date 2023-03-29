@@ -196,7 +196,7 @@ CREATE TABLE `student_starred_courses` (
   `course` int unsigned NOT NULL,
   PRIMARY KEY (`student`,`course`),
   KEY `course` (`course`),
-  CONSTRAINT `student_starred_courses_ibfk_1` FOREIGN KEY (`student`) REFERENCES `student` (`id`),
+  CONSTRAINT `student_starred_courses_ibfk_1` FOREIGN KEY (`student`) REFERENCES `student` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `student_starred_courses_ibfk_2` FOREIGN KEY (`course`) REFERENCES `course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -220,4 +220,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-03-27 18:14:35
+-- Dump completed on 2023-03-29 12:09:44
