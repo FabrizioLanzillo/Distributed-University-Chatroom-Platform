@@ -22,6 +22,48 @@ else {
 
     <head>
         <title> <%= courseDTO.getName() %> </title>
+        
+        <script src="${pageContext.request.contextPath}/assets/libs/jquery/js/jquery-3.6.4.min.js"></script>
+        <script type="text/javascript">
+            
+            function sendPostToCourseServlet(params, successMessage) {
+                $.post(
+                    "${pageContext.request.contextPath}/student/course",
+                    params,
+                    function () {
+                        alert(successMessage);
+                    }
+                ).fail(
+                    function() {
+                        alert("Error");
+                    }
+                ).always(
+                    function() {
+                        location.reload();
+                    }
+                );
+            }
+            
+            function starCourse(){
+                const params = {
+                    action: "star",
+                    courseId: <%= courseDTO.getId() %>
+                };
+                
+                sendPostToCourseServlet(params, "Course starred")
+            }
+
+            function unstarCourse(){
+                const params = {
+                    action: "unstar",
+                    courseId: <%= courseDTO.getId() %>
+                };
+
+                sendPostToCourseServlet(params, "Course unstarred")
+            }
+            
+        </script>
+        
     </head>
 
     <body>
@@ -44,7 +86,20 @@ else {
         <a href="${pageContext.request.contextPath}/student/booking?id=<%= courseDTO.getId() %>">
             <button>Book a meeting</button>
         </a>
-
+        
+<%
+    // Insert button to star or unstar a course (depending on from the current state)
+    if (courseDTO.isStarred()) {
+%>
+        <button onclick="unstarCourse()">Unstar this course</button>
+<%
+    }
+    else {
+%>
+        <button onclick="starCourse()">Star this course</button>
+<%
+    }
+%>
     </body>
 <%
 }
