@@ -14,7 +14,6 @@ public class LogoutServlet extends HttpServlet {
 	private void handleRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		// Invalidate the session
 		request.getSession().invalidate();
-        response.setStatus(HttpServletResponse.SC_OK);
 		// Redirect to login page
 		ClientRedirector.redirectToLogin(request, response);
 	}
