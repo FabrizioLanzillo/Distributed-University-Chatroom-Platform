@@ -13,7 +13,7 @@ import java.util.List;
 public interface UserEJB {
 	LoggedUserDTO login (@NotNull LoginInformationDTO loginInformationDTO);
 
-	List<GeneralUserDTO> getUsers(String entered_string, UserRole role);
+	List<GeneralUserDTO> searchUsers(String entered_string, UserRole role);
 
 	boolean banUser(String id, UserRole role);
 }

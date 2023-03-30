@@ -110,7 +110,7 @@ public class UsersServlet extends HttpServlet {
     }
     
     private void update (HttpServletRequest request, HttpServletResponse response, UserRole role, String searchInput) throws IOException, ServletException {
-        ArrayList<GeneralUserDTO> users = (ArrayList<GeneralUserDTO>) userEJB.getUsers(searchInput, role);
+        ArrayList<GeneralUserDTO> users = (ArrayList<GeneralUserDTO>) userEJB.searchUsers(searchInput, role);
         request.setAttribute("userList", users);
         
         if(role == UserRole.student) {

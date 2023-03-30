@@ -54,7 +54,7 @@ public class UserEJBImpl implements UserEJB {
 		}
 	}
 
-	public List<GeneralUserDTO> getUsers(String entered_string, UserRole role){
+	public List<GeneralUserDTO> searchUsers(String entered_string, UserRole role){
 		List<GeneralUserDTO> users = new ArrayList<>();
 		try (Connection connection = dataSource.getConnection()) {
 			String query = "SELECT BIN_TO_UUID(`id`) as id, `username` as username, `email` as email, `name` as name, `surname` as surname FROM ";
