@@ -1,6 +1,8 @@
 package it.unipi.dsmt.student_platform.dto;
 
-public class UserDTO {
+import java.io.Serializable;
+
+public class GeneralUserDTO implements Serializable {
     private String id;
     private String username;
     private String email;
@@ -45,5 +47,11 @@ public class UserDTO {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+    
+    public String toString(){
+        return this.name + " " + this.surname + "\n" +
+                this.username + " - " + this.email + "\n" +
+                " - id: " + this.id;
     }
 }

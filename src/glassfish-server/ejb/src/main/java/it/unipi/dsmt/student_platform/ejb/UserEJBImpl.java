@@ -2,7 +2,7 @@ package it.unipi.dsmt.student_platform.ejb;
 
 import it.unipi.dsmt.student_platform.dto.LoggedUserDTO;
 import it.unipi.dsmt.student_platform.dto.LoginInformationDTO;
-import it.unipi.dsmt.student_platform.dto.UserDTO;
+import it.unipi.dsmt.student_platform.dto.GeneralUserDTO;
 import it.unipi.dsmt.student_platform.enums.UserRole;
 import it.unipi.dsmt.student_platform.interfaces.UserEJB;
 import jakarta.annotation.Resource;
@@ -54,25 +54,29 @@ public class UserEJBImpl implements UserEJB {
 		}
 	}
 
-	public List<UserDTO> getUsers(String entered_string, UserRole role){
-		List<UserDTO> users = new ArrayList<>();
+	public List<GeneralUserDTO> getUsers(String entered_string, UserRole role){
+		List<GeneralUserDTO> users = new ArrayList<>();
 		try (Connection connection = dataSource.getConnection()) {
-			String query = "SELECT `id`, `username`, `email`, `name`, `surname` FROM ? WHERE `username` LIKE ? ;";
-
+			String query = "SELECT BIN_TO_UUID(`id`) as id, `username` as username, `email` as email, `name` as name, `surname` as surname FROM ";
+			if (role == UserRole.student) {
+				query = query + "student ";
+			} else{
+				query = query + "professor ";
+			}
+			if(entered_string.compareTo("") != 0){
+				query = query + " WHERE `username` LIKE ? ";
+			}
+			query = query + " LIMIT 10;";
 			try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 				// Look in the correct table
-				if (role == UserRole.student) {
-					preparedStatement.setString(1, "student");
-				} else {
-					preparedStatement.setString(1, "professor");
-				}
-				preparedStatement.setString(2, "%" + entered_string + "%");
-
+				if(entered_string.compareTo("") != 0)
+					preparedStatement.setString(1, "%" + entered_string + "%");
+				
 				// Execute query
 				try (ResultSet resultSet = preparedStatement.executeQuery()) {
 					// If the query returned some results, then the login is successful!
 					while (resultSet.next()) {
-						UserDTO usr = new UserDTO();
+						GeneralUserDTO usr = new GeneralUserDTO();
 						usr.setId(resultSet.getString("id"));
 						usr.setUsername(resultSet.getString("username"));
 						usr.setEmail(resultSet.getString("email"));
@@ -90,16 +94,19 @@ public class UserEJBImpl implements UserEJB {
 
 	public boolean banUser(String id, UserRole role) {
 		try (Connection connection = dataSource.getConnection()) {
-            String query = "DELETE FROM ? WHERE `id` = ?;";
+            String query = "DELETE FROM  ";
+			if (role == UserRole.student) {
+				query = query + "student ";
+			}
+			else {
+				query = query + "professor ";
+			}
+			
+			query = query + "WHERE `id` = UUID_TO_BIN(?);";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 				// Look in the correct table
-				if (role == UserRole.student) {
-					preparedStatement.setString(1, "student");
-				} else {
-					preparedStatement.setString(1, "professor");
-				}
-                preparedStatement.setString(2, id);
+                preparedStatement.setString(1, id);
 
                 // Execute query
                 int ret = preparedStatement.executeUpdate();
