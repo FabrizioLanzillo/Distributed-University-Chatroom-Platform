@@ -28,8 +28,9 @@
           action="${pageContext.request.contextPath}/student/booking?id=<%=id%>&offset=<%=offset%>">
         <%
             int i=0;
+            assert bookingDTOS != null;
             for(BookingDTO bDTO : bookingDTOS){%>
-                <input type="submit" class="timeslotbox" name="timeslot" value=<%=i%>><%=bDTO.toString()%></input>
+                <input type="submit" class="timeslotbox" name="timeslot" value=<%=i%>><%=bDTO.toString()%>
                 <br>
                 <%
                 i++;
@@ -56,18 +57,18 @@
             <%}%>
     </form>
 
-    <div name="response">
+    <div id="response">
         <%
             // Check if the user failed the login
             String rParam = request.getParameter("r");
             if (rParam != null && rParam.equals("error")) {
         %>
-        <div name="errorResponse">Error during your booking, try again later!</div>
+        <div id="errorResponse">Error during your booking, try again later!</div>
         <%
             }
             else if (rParam != null && rParam.equals("success")) {
         %>
-        <div name="successResponse">Booking successful!</div>
+        <div id="successResponse">Booking successful!</div>
         <%
             }
         %>
