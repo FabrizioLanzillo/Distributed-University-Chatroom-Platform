@@ -19,5 +19,5 @@ public interface CourseEJB {
 	
 	boolean addStarredCourse(@NotNull String studentId, int courseId);
 	boolean removeStarredCourse(@NotNull String studentId, int courseId);
-	
+	public int deleteCourse(int id);
 }
