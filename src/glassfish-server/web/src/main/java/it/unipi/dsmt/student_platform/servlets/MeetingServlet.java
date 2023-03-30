@@ -27,6 +27,13 @@ public class MeetingServlet extends HttpServlet {
         
         LoggedUserDTO user = (LoggedUserDTO)request.getSession().getAttribute("logged_user");
         int offset = request.getParameter("offset").isEmpty()? 0 : Integer.parseInt(request.getParameter("offset"));
+    
+        String action = request.getParameter("action");
+    
+        if(action != null && action.equals("offsetChange")){
+            response.sendRedirect(request.getContextPath() + "/professor/meeting?&offset=" + offset);
+            return;
+        }
 
         // List of available slots
         List<MeetingDTO> mDTOs = meetingEJB.getSlots(user.getId(), offset);

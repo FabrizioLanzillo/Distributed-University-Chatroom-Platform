@@ -26,7 +26,6 @@ public class BookingServlet extends HttpServlet {
         int id = request.getParameter("id").isEmpty()? 0 : Integer.parseInt(request.getParameter("id"));
         int offset = request.getParameter("offset").isEmpty()? 0 : Integer.parseInt(request.getParameter("offset"));
         String action = request.getParameter("action");
-        System.out.println(action);
         
         if(action != null && action.equals("offsetChange")){
             response.sendRedirect(request.getContextPath() + "/student/booking?id=" + id + "&offset=" + offset);

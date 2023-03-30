@@ -61,6 +61,24 @@
             }
         %>
     </div>
+    <form method="post" action="${pageContext.request.contextPath}/professor/meeting?action=offsetChange&offset=<%=offset - 1%>">
+        <%
+            if(offset <=0 ){%>
+        <button disabled="disabled"><-</button>
+        <%}
+        else{%>
+        <button type="submit"><-</button>
+        <%}%>
+    </form>
+    <form method="post" action="${pageContext.request.contextPath}/professor/meeting?action=offsetChange&offset=<%=offset + 1%>">
+        <%
+            if(offset >= 9){%>
+        <button disabled="disabled">-></button>
+        <%}
+        else{%>
+        <button type="submit">-></button>
+        <%}%>
+    </form>
 </div>
 
 </body>

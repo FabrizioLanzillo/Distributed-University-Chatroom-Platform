@@ -21,14 +21,17 @@ public class MeetingEJBImpl implements MeetingEJB {
 	
 	public List<MeetingDTO> getSlots(String professorID, int offset){
 		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.MONTH, offset + 1);
+		cal.add(Calendar.MONTH, (offset + 1));
 		
-		if(offset != 0){
+		if(offset!=0)
 			cal.set(Calendar.DAY_OF_MONTH, 1);
-		}
+		
 		LocalDate start = LocalDate.of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+		
 		cal.add(Calendar.MONTH, 1);
+		cal.set(Calendar.DAY_OF_MONTH, 1);
 		LocalDate end = LocalDate.of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+
 		
 		try(Connection connection = dataSource.getConnection()) {
 			String query = "SELECT BIN_TO_UUID(bm.`id`) as id, ms.`starting_time`, bm.`date`, s.`name`, s.`surname`, " +
