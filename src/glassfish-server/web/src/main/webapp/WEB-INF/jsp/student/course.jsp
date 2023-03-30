@@ -12,6 +12,8 @@ if (courseDTO == null) {
         <title>COURSE NOT FOUND</title>
     </head>
     <body>
+        <jsp:include page="/WEB-INF/jsp/common/top-bar.jsp" />
+        
         The selected course doesn't exist :(
     </body>
 
@@ -67,6 +69,7 @@ else {
     </head>
 
     <body>
+        <jsp:include page="/WEB-INF/jsp/common/top-bar.jsp" />
 
         <h1><%=courseDTO.getName()%></h1>
 

@@ -25,6 +25,8 @@
         <title>Student Portal</title>
     </head>
     <body>
+        <jsp:include page="/WEB-INF/jsp/common/top-bar.jsp" />
+        
         <h1>
             Welcome to your student portal, <%= loggedUserDTO.getUsername() %>
         </h1>

@@ -5,6 +5,7 @@
 </head>
 
 <body>
+    <jsp:include page="/WEB-INF/jsp/common/top-bar.jsp" />
 
     <h1>Create a course</h1>
 

@@ -7,6 +7,9 @@
     <title>StudentChat</title>
 </head>
 <body>
+<jsp:include page="/WEB-INF/jsp/common/top-bar.jsp" />
+
+<%--TODO: change website name--%>
 <h1>Sign up to StudentChat</h1>
 
 <div>
