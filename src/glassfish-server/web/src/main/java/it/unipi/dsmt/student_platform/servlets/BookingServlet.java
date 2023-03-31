@@ -65,7 +65,7 @@ public class BookingServlet extends HttpServlet {
             }
         catch (NumberFormatException e) {
             throw new RuntimeException("course id is not a number");
-            }
+        }
 
         // Get the offset to load the right page
         int offset = 0;
