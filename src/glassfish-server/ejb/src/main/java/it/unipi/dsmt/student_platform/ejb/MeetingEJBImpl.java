@@ -10,7 +10,6 @@ import javax.sql.DataSource;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 @Stateless
@@ -78,10 +77,7 @@ public class MeetingEJBImpl implements MeetingEJB {
 				// Execute query
 				System.out.println(dto.getMeetingId());
 				int result = preparedStatement.executeUpdate();
-				if(result == 1){
-					return true;
-				}
-				return false;
+				return result == 1;
 			}
 		}
 		catch (SQLException e) {

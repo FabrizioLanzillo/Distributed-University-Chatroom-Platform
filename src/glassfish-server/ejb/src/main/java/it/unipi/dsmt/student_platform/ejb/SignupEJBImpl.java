@@ -1,7 +1,6 @@
 package it.unipi.dsmt.student_platform.ejb;
 
 import it.unipi.dsmt.student_platform.dto.SignupDTO;
-import it.unipi.dsmt.student_platform.enums.UserRole;
 import it.unipi.dsmt.student_platform.interfaces.SignupEJB;
 import jakarta.annotation.Resource;
 import jakarta.ejb.Stateless;
@@ -36,9 +35,7 @@ public class SignupEJBImpl implements SignupEJB {
                     // Execute query
                     int result = preparedStatement.executeUpdate();
                     // evaluate the return value
-                    if(result != 1)
-                        return false;
-                    return true;
+                    return result == 1;
                 }
             }
             catch (SQLException e) {

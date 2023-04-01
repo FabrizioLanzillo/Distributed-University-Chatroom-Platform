@@ -2,21 +2,16 @@ package it.unipi.dsmt.student_platform.ejb;
 
 import it.unipi.dsmt.student_platform.dao.BookingDAO;
 import it.unipi.dsmt.student_platform.dto.BookingDTO;
-import it.unipi.dsmt.student_platform.dto.MeetingDTO;
 import it.unipi.dsmt.student_platform.interfaces.BookingEJB;
 
-import it.unipi.dsmt.student_platform.interfaces.MeetingEJB;
 import jakarta.annotation.Resource;
 import jakarta.ejb.Stateless;
-import org.jetbrains.annotations.Nullable;
 
 import javax.sql.DataSource;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.YearMonth;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 @Stateless
@@ -44,7 +39,7 @@ public class BookingEJBImpl implements BookingEJB {
 
         if(allSlots == null){
             System.out.println("Error: No slots available");
-            return new ArrayList<BookingDTO>();
+            return new ArrayList<>();
         }
 
         ArrayList<BookingDTO> monthlySlots = new ArrayList<>();
