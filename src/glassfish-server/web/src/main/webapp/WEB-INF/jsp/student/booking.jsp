@@ -45,6 +45,20 @@
             }
         %>
     </form>
+
+    <form method="post" action="${pageContext.request.contextPath}/student/booking?action=offsetChange&id=<%=id%>&offset=<%=offset - 1%>">
+        <%
+        if(offset <=0 ){%>
+            <button disabled="disabled"><-</button>
+        <%}
+        else{%>
+            <button type="submit"><-</button>
+        <%}%>
+    </form>
+    <form method="post" action="${pageContext.request.contextPath}/student/booking?action=offsetChange&id=<%=id%>&offset=<%=offset + 1%>">
+        <button type="submit">-></button>
+    </form>
+
     <div id="response">
         <%
             // Check if the user failed the login

@@ -23,8 +23,23 @@ public class BookingServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
-        int id = request.getParameter("id").isEmpty()? 0 : Integer.parseInt(request.getParameter("id"));
-        int offset = request.getParameter("offset").isEmpty()? 0 : Integer.parseInt(request.getParameter("offset"));
+        int id;
+        try{
+            id  = Integer.parseInt(request.getParameter("id"));
+        }
+        catch(Exception e){
+            System.out.println("Error: course ID not set");
+            e.printStackTrace();
+            return;
+        }
+        int offset = request.getParameter("offset")==null ? 0 : Integer.parseInt(request.getParameter("offset"));
+        
+        String action = request.getParameter("action") == null ? null : request.getParameter("action");
+        
+        if(action != null && action.equals("offsetChange")){
+            response.sendRedirect(request.getContextPath() + "/student/booking?id=" + id + "&offset=" + offset);
+            return;
+        }
 
         // List of available slots
         List<BookingDTO> bDTOs = bookingEJB.getSlots(id, offset);
@@ -50,30 +65,23 @@ public class BookingServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         // Check if logged user is a student
-        int id;
         if (!AccessController.checkAccess(request, response, UserRole.student)) {
            return;
         }
-
-        try {
-            // Get course id from GET parameters
-            String stringId = request.getParameter("id");
-            if (stringId == null) {
-                throw new RuntimeException("course id not set");
-                }
-            id = Integer.parseInt(stringId);
-            }
-        catch (NumberFormatException e) {
-            throw new RuntimeException("course id is not a number");
+        
+        int id;
+        try{
+            id  = Integer.parseInt(request.getParameter("id"));
         }
-
-        // Get the offset to load the right page
-        int offset = 0;
-        String offsetString = request.getParameter("offset");
-
-        if(offsetString != null) {
-            offset = Integer.parseInt(offsetString);
+        catch(Exception e){
+            System.out.println("Error: course ID not set");
+            e.printStackTrace();
+            return;
         }
+        
+        
+        
+        int offset = request.getParameter("offset") == null ? 0 : Integer.parseInt(request.getParameter("offset"));
 
         List<BookingDTO> bDTOs = bookingEJB.getSlots(id, offset);
         request.setAttribute("slots", bDTOs);

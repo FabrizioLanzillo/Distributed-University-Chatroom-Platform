@@ -26,7 +26,14 @@ public class MeetingServlet extends HttpServlet {
 
         
         LoggedUserDTO user = (LoggedUserDTO)request.getSession().getAttribute("logged_user");
-        int offset = request.getParameter("offset").isEmpty()? 0 : Integer.parseInt(request.getParameter("offset"));
+        int offset = request.getParameter("offset")==null ? 0 : Integer.parseInt(request.getParameter("offset"));
+    
+        String action = request.getParameter("action") == null? "none" : request.getParameter("action");
+    
+        if(action != null && action.equals("offsetChange")){
+            response.sendRedirect(request.getContextPath() + "/professor/meeting?offset=" + offset);
+            return;
+        }
 
         // List of available slots
         List<MeetingDTO> mDTOs = meetingEJB.getSlots(user.getId(), offset);
@@ -56,6 +63,7 @@ public class MeetingServlet extends HttpServlet {
             return;
         }
         LoggedUserDTO user;
+        
         try{
             // Get course id from GET parameters
             user = (LoggedUserDTO)request.getSession().getAttribute("logged_user");
@@ -66,15 +74,10 @@ public class MeetingServlet extends HttpServlet {
         catch (NumberFormatException e) {
             throw new RuntimeException("user id is not a number");
         }
-
         // Get the offset to load the right page
-        int offset = 0;
-        String offsetString = request.getParameter("offset");
-
-        if(offsetString != null) {
-            offset = Integer.parseInt(offsetString);
-        }
-
+        int offset = request.getParameter("offset")==null ? 0 : Integer.parseInt(request.getParameter("offset"));
+        request.setAttribute("offset", String.valueOf(offset));
+        
         List<MeetingDTO> bDTOs = meetingEJB.getSlots(user.getId(), offset);
         request.setAttribute("bookedSlots", bDTOs);
 
