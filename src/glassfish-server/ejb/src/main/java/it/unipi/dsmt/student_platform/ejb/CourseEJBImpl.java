@@ -310,8 +310,8 @@ public class CourseEJBImpl implements CourseEJB {
 	public boolean createCourse(@NotNull CourseCreationDTO course) {
 		try (Connection connection = dataSource.getConnection()) {
 			// Check if username and password is correct
-			String query = "INSERT INTO `course` (`id`, `name`, `professor`, `description`) " +
-					"VALUES (UUID_TO_BIN(UUID()), ?, ?, ?);";
+			String query = "INSERT INTO `course` (`name`, `professor`, `description`) " +
+					"VALUES (?, UUID_TO_BIN(?), ?);";
 
 			try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 				// Set parameters in prepared statement
@@ -320,7 +320,7 @@ public class CourseEJBImpl implements CourseEJB {
 				preparedStatement.setString(3, course.getDescription());
 
 				// Execute query
-				return preparedStatement.execute();
+				return !preparedStatement.execute();
 			}
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
