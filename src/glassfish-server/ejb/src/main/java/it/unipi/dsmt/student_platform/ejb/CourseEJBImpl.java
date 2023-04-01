@@ -3,7 +3,6 @@ package it.unipi.dsmt.student_platform.ejb;
 import it.unipi.dsmt.student_platform.dto.CourseCreationDTO;
 import it.unipi.dsmt.student_platform.dto.CourseDTO;
 import it.unipi.dsmt.student_platform.dto.MinimalCourseDTO;
-import it.unipi.dsmt.student_platform.dto.MinimalCourseDTO;
 import it.unipi.dsmt.student_platform.dto.ProfessorDTO;
 import it.unipi.dsmt.student_platform.interfaces.CourseEJB;
 import jakarta.annotation.Resource;
@@ -50,7 +49,6 @@ public class CourseEJBImpl implements CourseEJB {
 								resultSet.getInt("c.id"),
 								resultSet.getString("c.name"),
 								new ProfessorDTO(
-										resultSet.getString("p.id"), // TODO remove professor id from ProfessorDTO
 										resultSet.getString("p.name"),
 										resultSet.getString("p.surname")
 								),
