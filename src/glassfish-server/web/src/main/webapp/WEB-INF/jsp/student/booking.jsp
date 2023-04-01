@@ -1,25 +1,33 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ page import="it.unipi.dsmt.student_platform.dto.BookingDTO" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.Optional" %>
+<%@ page import="java.util.ArrayList" %>
 
 <%
-    // List of available slots
-    List<BookingDTO> bookingDTOS;
-    try{
-        bookingDTOS = (List<BookingDTO>)request.getAttribute("slots");
-    }catch(Exception e){
-        System.out.println(e.getMessage());
-        bookingDTOS = null;
+    // Get list of available slots from request attributes
+    List<BookingDTO> bookingDTOS = Optional.ofNullable((List<BookingDTO>) request.getAttribute("slots"))
+            .orElse(new ArrayList<>());
+    
+	// Get course id from GET parameters
+	String idStr = request.getParameter("id");
+	if (idStr == null || idStr.isEmpty()) {
+	    throw new RuntimeException("No id provided");
     }
-
-    int id = request.getParameter("id")==null ? 0 : Integer.parseInt(request.getParameter("id"));
-    int offset = request.getParameter("offset")==null ? 0 : Integer.parseInt(request.getParameter("offset"));
+	int id = Integer.parseInt(idStr);
+	
+	// Get offset from GET parameters
+    String offsetStr = request.getParameter("offset");
+    int offset = offsetStr == null ? 0 : Integer.parseInt(offsetStr);
 %>
 <html>
 <head>
     <title>StudentChat</title>
 </head>
 <body>
+
+<jsp:include page="/WEB-INF/jsp/common/top-bar.jsp" />
+
 <h1>Sign up to StudentChat</h1>
 
 <div>
@@ -28,11 +36,11 @@
           action="${pageContext.request.contextPath}/student/booking?id=<%=id%>&offset=<%=offset%>">
         <%
             int i=0;
-            assert bookingDTOS != null;
-            for(BookingDTO bDTO : bookingDTOS){%>
+            for(BookingDTO bDTO : bookingDTOS){
+        %>
                 <input type="submit" class="timeslotbox" name="timeslot" value=<%=i%>><%=bDTO.toString()%>
                 <br>
-                <%
+        <%
                 i++;
             }
         %>

@@ -8,6 +8,8 @@
 
 <body>
 
+<jsp:include page="/WEB-INF/jsp/common/top-bar.jsp" />
+
 <%
     LoggedUserDTO loggedUser = (LoggedUserDTO) request.getSession().getAttribute("logged_user");
 %>

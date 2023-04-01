@@ -12,6 +12,8 @@ if (courseDTO == null) {
         <title>COURSE NOT FOUND</title>
     </head>
     <body>
+        <jsp:include page="/WEB-INF/jsp/common/top-bar.jsp" />
+        
         The selected course doesn't exist :(
     </body>
 
@@ -67,6 +69,7 @@ else {
     </head>
 
     <body>
+        <jsp:include page="/WEB-INF/jsp/common/top-bar.jsp" />
 
         <h1><%=courseDTO.getName()%></h1>
 
@@ -83,7 +86,7 @@ else {
         <a href="${pageContext.request.contextPath}/student/chatroom?id=<%= courseDTO.getId() %>">
             <button>Go to chatroom</button>
         </a>
-        <a href="${pageContext.request.contextPath}/student/booking?id=<%= courseDTO.getId() %>">
+        <a href="${pageContext.request.contextPath}/student/booking?id=<%= courseDTO.getId() %>&offset=0">
             <button>Book a meeting</button>
         </a>
         

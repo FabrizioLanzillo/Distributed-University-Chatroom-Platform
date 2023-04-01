@@ -20,6 +20,9 @@
     <title>StudentChat</title>
 </head>
 <body>
+
+<jsp:include page="/WEB-INF/jsp/common/top-bar.jsp" />
+
 <h1>Sign up to StudentChat</h1>
 
 <div>
