@@ -57,7 +57,7 @@
     String rParam = request.getParameter("r");
     if (rParam != null && rParam.equals("error")) {
 %>
-        <div name="errorResponse">Error during your sign up, our service may be unavailable, try again later!</div>
+        <div>Error during your sign up, our service may be unavailable, try again later!</div>
 <%
     }
     LoginInformationDTO logged_user = (LoginInformationDTO) request.getSession().getAttribute("logged_user");

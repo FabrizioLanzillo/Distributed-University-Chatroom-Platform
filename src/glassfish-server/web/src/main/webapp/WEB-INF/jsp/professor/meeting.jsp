@@ -13,7 +13,7 @@
 		bookedSlots = new ArrayList<>();
     }
 
-    int offset = Integer.parseInt(request.getParameter("offset"));
+    int offset = request.getParameter("offset")==null ? 0 : Integer.parseInt(request.getParameter("offset"));
 %>
 <html>
 <head>
@@ -45,18 +45,18 @@
             }
         %>
     </form>
-    <div name="response">
+    <div>
         <%
             // Check if the user failed the login
             String rParam = request.getParameter("r");
             if (rParam != null && rParam.equals("error")) {
         %>
-        <div name="errorResponse">Error during your booking removal, try again later!</div>
+        <div>Error during your booking removal, try again later!</div>
         <%
         }
         else if (rParam != null && rParam.equals("success")) {
         %>
-        <div name="successResponse">Removal successful!</div>
+        <div>Removal successful!</div>
         <%
             }
         %>
@@ -71,13 +71,7 @@
         <%}%>
     </form>
     <form method="post" action="${pageContext.request.contextPath}/professor/meeting?action=offsetChange&offset=<%=offset + 1%>">
-        <%
-            if(offset >= 9){%>
-        <button disabled="disabled">-></button>
-        <%}
-        else{%>
         <button type="submit">-></button>
-        <%}%>
     </form>
 </div>
 

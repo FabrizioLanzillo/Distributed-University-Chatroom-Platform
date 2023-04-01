@@ -28,20 +28,14 @@ public class BookingEJBImpl implements BookingEJB {
 
     // This method extract required data of a specific course of known id
     public List<BookingDTO> getSlots(int id, int offset){
-        // Get the available dates for the month in which the user wants to book
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.MONTH, offset + 1);
-
-        // If is not the current month set starting day to the first of the month otherwise leave current one
+        LocalDate start = LocalDate.now().plusMonths(offset);
+        
         if(offset != 0){
-            cal.set(Calendar.DAY_OF_MONTH, 1);
+            start = start.withDayOfMonth(1);
         }
         
-        System.out.println(cal);
-
-        LocalDate start = LocalDate.of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
-        YearMonth yearMonth = YearMonth.of(start.getYear(), start.getMonth());
-        LocalDate end = yearMonth.atEndOfMonth();
+        
+        LocalDate end = start.withDayOfMonth(start.getMonth().length(start.isLeapYear()));
 
         // Get data
         List<BookingDTO> bookedSlots = bookingDAO.getBookedSlots(start, end, id, dataSource);

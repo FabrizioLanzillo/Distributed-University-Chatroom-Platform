@@ -12,8 +12,8 @@
         bookingDTOS = null;
     }
 
-    int id = Integer.parseInt(request.getParameter("id"));
-    int offset = Integer.parseInt(request.getParameter("offset"));
+    int id = request.getParameter("id")==null ? 0 : Integer.parseInt(request.getParameter("id"));
+    int offset = request.getParameter("offset")==null ? 0 : Integer.parseInt(request.getParameter("offset"));
 %>
 <html>
 <head>
@@ -48,13 +48,7 @@
         <%}%>
     </form>
     <form method="post" action="${pageContext.request.contextPath}/student/booking?action=offsetChange&id=<%=id%>&offset=<%=offset + 1%>">
-        <%
-            if(offset >= 9){%>
-                <button disabled="disabled">-></button>
-            <%}
-            else{%>
-                <button type="submit">-></button>
-            <%}%>
+        <button type="submit">-></button>
     </form>
 
     <div id="response">
