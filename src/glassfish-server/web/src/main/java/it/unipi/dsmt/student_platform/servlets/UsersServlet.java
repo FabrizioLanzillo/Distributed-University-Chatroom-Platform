@@ -110,7 +110,15 @@ public class UsersServlet extends HttpServlet {
     }
     
     private void update (HttpServletRequest request, HttpServletResponse response, UserRole role, String searchInput) throws IOException, ServletException {
-        ArrayList<GeneralUserDTO> users = (ArrayList<GeneralUserDTO>) userEJB.searchUsers(searchInput, role);
+        String index_str =  request.getParameter("offset");
+        int index = 0;
+        System.out.println("offset taken with value: " + index_str);
+        if(index_str != null)
+            index = Integer.parseInt(index_str);
+        System.out.println("index parsed");
+        request.setAttribute("offset", index);
+        
+        ArrayList<GeneralUserDTO> users = (ArrayList<GeneralUserDTO>) userEJB.searchUsers(searchInput, role, index);
         request.setAttribute("userList", users);
         
         if(role == UserRole.student) {
@@ -125,11 +133,40 @@ public class UsersServlet extends HttpServlet {
     
     }
     
+    private void changeOffset(HttpServletRequest request, HttpServletResponse response) {
+        String switch_ = request.getParameter("switch");
+        String searchInput = request.getParameter("search_input");
+    
+        if(searchInput == null)
+            searchInput = "";
+    
+        UserRole role_to_search;
+    
+        if(switch_ == null){
+            String role_ = request.getParameter("search");
+            if(role_.equals("student"))
+                role_to_search = UserRole.student;
+            else
+                role_to_search = UserRole.professor;
+        }
+        else if (switch_.equals("false"))
+            role_to_search = UserRole.professor;
+        else
+            role_to_search = UserRole.student;
+        
+        try {
+            update(request, response, role_to_search, searchInput);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        if (AccessController.checkAccess(request, response, UserRole.admin)) {
+        if (!AccessController.checkAccess(request, response, UserRole.admin)) {
             return;
         }
+        System.out.println("Entering Update function");
         update(request, response, UserRole.student, "");
         
     }
@@ -152,9 +189,10 @@ public class UsersServlet extends HttpServlet {
             case "switch":
                 switchUserType(request, response);
                 break;
-            default:
-                System.out.println("Invalid action");
+            case "offsetChange":
+                changeOffset(request, response);
                 break;
+                
         }
     }
     

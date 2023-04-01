@@ -17,6 +17,8 @@
         role = UserRole.student;
     }
 
+	int offset = request.getParameter("offset") == null? 0 : Integer.parseInt(request.getParameter("offset"));
+
 %>
 
 <html>
@@ -68,6 +70,24 @@
                 }
             %>
         </div>
+    </form>
+    <form method="post" action="${pageContext.request.contextPath}/admin/users?action=offsetChange&offset=<%=offset - 1%>&search=<%=role.toString()%>">
+        <%
+            if(offset <=0 ){%>
+        <button disabled="disabled"><-</button>
+        <%}
+        else{%>
+        <button type="submit"><-</button>
+        <%}%>
+    </form>
+    <form method="post" action="${pageContext.request.contextPath}/admin/users?action=offsetChange&offset=<%=offset + 1%>&search=<%=role.toString()%>">
+        <%
+            if(offset >= 9){%>
+        <button disabled="disabled">-></button>
+        <%}
+        else{%>
+        <button type="submit">-></button>
+        <%}%>
     </form>
 </body>
 </html>
