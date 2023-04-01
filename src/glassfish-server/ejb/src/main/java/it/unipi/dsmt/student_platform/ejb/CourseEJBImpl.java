@@ -2,6 +2,8 @@ package it.unipi.dsmt.student_platform.ejb;
 
 import it.unipi.dsmt.student_platform.dto.CourseCreationDTO;
 import it.unipi.dsmt.student_platform.dto.CourseDTO;
+import it.unipi.dsmt.student_platform.dto.MinimalCourseDTO;
+import it.unipi.dsmt.student_platform.dto.MinimalCourseDTO;
 import it.unipi.dsmt.student_platform.dto.ProfessorDTO;
 import it.unipi.dsmt.student_platform.interfaces.CourseEJB;
 import jakarta.annotation.Resource;
@@ -22,9 +24,8 @@ public class CourseEJBImpl implements CourseEJB {
 
 	@Resource(lookup = "jdbc/StudentPlatformPool")
 	private DataSource dataSource;
-	
-	
-	
+
+
 	private boolean isCourseStarredByUser (int courseId, String userId) {
 		try (Connection connection = dataSource.getConnection()) {
 			// Check if the user has starred the course
@@ -47,8 +48,8 @@ public class CourseEJBImpl implements CourseEJB {
 			throw new RuntimeException(e);
 		}
 	}
-	
-	
+
+
 	private @Nullable CourseDTO getCourse (int courseId) {
 		try (Connection connection = dataSource.getConnection()) {
 			// Get details of requested course
@@ -70,8 +71,7 @@ public class CourseEJBImpl implements CourseEJB {
 								resultSet.getInt("c.id"),
                                 resultSet.getString("c.name"),
                                 new ProfessorDTO(
-										resultSet.getString("p.id"),
-                                        resultSet.getString("p.name"),
+										resultSet.getString("p.name"),
                                         resultSet.getString("p.surname")
                                 ),
                                 resultSet.getString("c.description")
@@ -85,8 +85,8 @@ public class CourseEJBImpl implements CourseEJB {
 			throw new RuntimeException(e);
 		}
 	}
-	
-	
+
+
 	@Override
 	public CourseDTO getCourseDetails (int courseId, String userId) {
 		CourseDTO course = getCourse(courseId);
@@ -96,37 +96,36 @@ public class CourseEJBImpl implements CourseEJB {
 		course.setStarred(isCourseStarredByUser(courseId, userId));
 		return course;
 	}
-	
-	
+
+
 	@Override
-	public List<CourseDTO> getCourse (String name) {
-		List<CourseDTO> courses = new ArrayList<>();
+	public List<MinimalCourseDTO> searchCourses (String name) {
+		List<MinimalCourseDTO> courses = new ArrayList<>();
 
 		try (Connection connection = dataSource.getConnection()) {
 			// Get details of requested course
-			String query =  "SELECT c.id, c.name, c.description, p.id, p.name, p.surname " +
+			String query =  "SELECT c.id, c.name, p.name, p.surname " +
 					"FROM course c " +
 					"INNER JOIN professor p on c.professor = p.id " +
-					"WHERE c.name LIKE ?;";
+					"WHERE c.name LIKE ? OR p.surname LIKE ?;";
 
 			try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 				// Set parameters in prepared statement
 				preparedStatement.setString(1, "%" + name + "%");
+				preparedStatement.setString(2, "%" + name + "%");
 
 				// Execute query
 				try (ResultSet resultSet = preparedStatement.executeQuery()) {
 					// If the query returned a result set,
 					// then wrap it inside a CourseDTO object and return it
 					while (resultSet.next()){
-						courses.add(new CourseDTO(
+						courses.add(new MinimalCourseDTO(
 										resultSet.getInt("c.id"),
 										resultSet.getString("c.name"),
 										new ProfessorDTO(
-												resultSet.getString("p.id"),
 												resultSet.getString("p.name"),
 												resultSet.getString("p.surname")
-										),
-										resultSet.getString("c.description")
+										)
 									)
 						);
 					}
@@ -138,15 +137,56 @@ public class CourseEJBImpl implements CourseEJB {
 		}
 		return courses;
 	}
-	
-	
+
+
 	@Override
-	public List<CourseDTO> getAllCourses () {
-		List<CourseDTO> courses = new ArrayList<>();
+	public List<MinimalCourseDTO> searchCoursesForProfessor (String name, String professorId) {
+		List<MinimalCourseDTO> courses = new ArrayList<>();
 
 		try (Connection connection = dataSource.getConnection()) {
 			// Get details of requested course
-			String query =  "SELECT c.id, c.name, c.description, p.id, p.name, p.surname " +
+			String query =  "SELECT c.id, c.name, p.name, p.surname " +
+					"FROM course c " +
+					"INNER JOIN professor p on c.professor = p.id " +
+					"WHERE c.name LIKE ? AND p.id = UUID_TO_BIN(?);";
+
+			try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+				// Set parameters in prepared statement
+				preparedStatement.setString(1, "%" + name + "%");
+				preparedStatement.setString(2, professorId);
+
+				// Execute query
+				try (ResultSet resultSet = preparedStatement.executeQuery()) {
+					// If the query returned a result set,
+					// then wrap it inside a CourseDTO object and return it
+					while (resultSet.next()){
+						courses.add(new MinimalCourseDTO(
+										resultSet.getInt("c.id"),
+										resultSet.getString("c.name"),
+										new ProfessorDTO(
+												resultSet.getString("p.name"),
+												resultSet.getString("p.surname")
+										)
+								)
+						);
+					}
+				}
+			}
+		}
+		catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		return courses;
+	}
+
+
+	@Override
+	public List<MinimalCourseDTO> getAllCourses () {
+		List<MinimalCourseDTO> courses = new ArrayList<>();
+
+		try (Connection connection = dataSource.getConnection()) {
+			// Get details of requested course
+			String query =  "SELECT c.id, c.name, p.name, p.surname " +
 							"FROM course c " +
 							"INNER JOIN professor p on c.professor = p.id " +
 							"ORDER BY c.name";
@@ -158,15 +198,13 @@ public class CourseEJBImpl implements CourseEJB {
 					// If the query returned a result set,
 					// then wrap it inside a CourseDTO object and return it
 					while (resultSet.next()){
-						courses.add(new CourseDTO(
+						courses.add(new MinimalCourseDTO(
 										resultSet.getInt("id"),
 										resultSet.getString("name"),
 										new ProfessorDTO(
-												resultSet.getString("p.id"),
 												resultSet.getString("p.name"),
 												resultSet.getString("p.surname")
-										),
-										resultSet.getString("c.description")
+										)
 								)
 						);
 					}
@@ -178,38 +216,75 @@ public class CourseEJBImpl implements CourseEJB {
 		}
 		return courses;
 	}
-	
-	
+
+
 	@Override
-	public List<CourseDTO> getStarredCourses(String username){
-		List<CourseDTO> courses = new ArrayList<>();
+	public List<MinimalCourseDTO> getAllCoursesForProfessor (String professorId) {
+		List<MinimalCourseDTO> courses = new ArrayList<>();
 
 		try (Connection connection = dataSource.getConnection()) {
 			// Get details of requested course
-			String query =  "SELECT c.id, c.name, c.description, p.id, p.name, p.surname " +
+			String query =  "SELECT c.id, c.name, p.name, p.surname " +
+					"FROM course c " +
+					"INNER JOIN professor p on c.professor = p.id " +
+					"WHERE p.id = UUID_TO_BIN(?) ORDER BY c.name";
+
+			try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+				preparedStatement.setString(1, professorId);
+				// Execute query
+				try (ResultSet resultSet = preparedStatement.executeQuery()) {
+					// If the query returned a result set,
+					// then wrap it inside a CourseDTO object and return it
+					while (resultSet.next()){
+						courses.add(new MinimalCourseDTO(
+										resultSet.getInt("id"),
+										resultSet.getString("name"),
+										new ProfessorDTO(
+												resultSet.getString("p.name"),
+												resultSet.getString("p.surname")
+										)
+								)
+						);
+					}
+				}
+			}
+		}
+		catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		return courses;
+	}
+
+
+	@Override
+	public List<MinimalCourseDTO> getStarredCourses(String id){
+		List<MinimalCourseDTO> courses = new ArrayList<>();
+
+		try (Connection connection = dataSource.getConnection()) {
+			// Get details of requested course
+			String query =  "SELECT c.id, c.name, p.name, p.surname " +
 					"FROM student_starred_courses ssc " +
 					"INNER JOIN course c on ssc.course = c.id " +
 					"INNER JOIN professor p on c.professor = p.id " +
-					"WHERE ssc.student = (SELECT id FROM student s WHERE s.username = ?);";
+					"WHERE ssc.student = UUID_TO_BIN(?);";
 
 			try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 				// Set parameters in prepared statement
-				preparedStatement.setString(1, username);
+				preparedStatement.setString(1, id);
 
 				// Execute query
 				try (ResultSet resultSet = preparedStatement.executeQuery()) {
 					// If the query returned a result set,
 					// then wrap it inside a CourseDTO object and return it
 					while (resultSet.next()){
-						courses.add(new CourseDTO(
+						courses.add(new MinimalCourseDTO(
 										resultSet.getInt("c.id"),
 										resultSet.getString("c.name"),
 										new ProfessorDTO(
-												resultSet.getString("p.id"),
 												resultSet.getString("p.name"),
 												resultSet.getString("p.surname")
-										),
-										resultSet.getString("c.description")
+										)
 								)
 						);
 					}
@@ -221,8 +296,8 @@ public class CourseEJBImpl implements CourseEJB {
 		}
 		return courses;
 	}
-	
-	
+
+
 	@Override
 	public boolean addStarredCourse (@NotNull String studentId, int courseId){
 		try (Connection connection = dataSource.getConnection()) {
@@ -241,8 +316,8 @@ public class CourseEJBImpl implements CourseEJB {
 			throw new RuntimeException(e);
 		}
 	}
-	
-	
+
+
 	@Override
 	public boolean removeStarredCourse (@NotNull String studentId, int courseId) {
 		try (Connection connection = dataSource.getConnection()) {
@@ -261,8 +336,8 @@ public class CourseEJBImpl implements CourseEJB {
 			throw new RuntimeException(e);
 		}
 	}
-	
-	
+
+
 	@Override
 	public boolean createCourse(@NotNull CourseCreationDTO course) {
 		try (Connection connection = dataSource.getConnection()) {
@@ -284,7 +359,9 @@ public class CourseEJBImpl implements CourseEJB {
 		}
 	}
 
-	public int deleteCourse(int id){
+
+	@Override
+	public boolean deleteCourse(int id){
 		try (Connection connection = dataSource.getConnection()) {
 			// Check if username and password is correct
 			String query = "DELETE " +
@@ -296,8 +373,7 @@ public class CourseEJBImpl implements CourseEJB {
 				preparedStatement.setInt(1, id);
 
 				// Execute query
-				int ret = preparedStatement.executeUpdate();
-				return ret;
+				return preparedStatement.executeUpdate() == 1;
 			}
 		}
 		catch (SQLException e) {

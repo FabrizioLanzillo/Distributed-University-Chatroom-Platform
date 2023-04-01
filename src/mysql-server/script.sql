@@ -175,6 +175,7 @@ CREATE TABLE `student_starred_courses` (
 
 INSERT INTO professor (id, username, password, email, name, surname)
 VALUES (UUID_TO_BIN(UUID()), 'm.rossi', 'pass', 'm.rossi@unipi.it', 'Mario', 'Rossi'),
+       (UUID_TO_BIN(UUID()), 'l.marrone', 'pass', 'l.marrone@unipi.it', 'Luca', 'Marrone'),
         (UUID_TO_BIN(UUID()), 'g.bianchi', 'pass', 'g.bianchi@unipi.it', 'Gianni', 'Bianchi');
 
 INSERT INTO student (id, username, password, email, name, surname, degree, language)
@@ -183,8 +184,10 @@ VALUES (UUID_TO_BIN(UUID()), 'f.lanzillo', 'pass', 'f.lanzillo@unipi.it', 'Fabri
         (UUID_TO_BIN(UUID()), 'r.sagramoni', 'pass', 'r.sagramoni@unipi.it', 'Riccardo', 'Sagramoni','CE', 'ITA');
 
 INSERT INTO course (name, professor, description)
-VALUES ('dsmt', (SELECT id FROM professor WHERE surname = 'Rossi'), 'description'),
-       ('foc', (SELECT id FROM professor WHERE surname = 'Bianchi'), 'description'),
+VALUES ('dsmt', (SELECT id FROM professor WHERE surname = 'Bianchi'), 'description'),
+       ('msss', (SELECT id FROM professor WHERE surname = 'Marrone'), 'description'),
+       ('nsh', (SELECT id FROM professor WHERE surname = 'Marrone'), 'description'),
+       ('foc', (SELECT id FROM professor WHERE surname = 'Rossi'), 'description'),
        ('fmfss', (SELECT id FROM professor WHERE surname = 'Rossi'), 'description');
 
 
