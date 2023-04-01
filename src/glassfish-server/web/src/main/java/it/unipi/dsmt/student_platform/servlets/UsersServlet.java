@@ -9,7 +9,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
-
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -163,7 +162,7 @@ public class UsersServlet extends HttpServlet {
     
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        if (!AccessController.checkAccess(request, response, UserRole.admin)) {
+        if (AccessController.checkAccess(request, response, UserRole.admin) == null) {
             return;
         }
         System.out.println("Entering Update function");
@@ -174,7 +173,7 @@ public class UsersServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         
-        if (!AccessController.checkAccess(request, response, UserRole.admin)) {
+        if (AccessController.checkAccess(request, response, UserRole.admin) == null) {
             return;
         }
         String action = request.getParameter("action");

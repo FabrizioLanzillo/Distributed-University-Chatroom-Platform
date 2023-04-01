@@ -1,12 +1,15 @@
 <%@ page import="it.unipi.dsmt.student_platform.dto.LoggedUserDTO" %>
-<%@ page import="it.unipi.dsmt.student_platform.dto.CourseDTO" %>
 <%@ page import="java.util.List" %>
 <%@ page import="it.unipi.dsmt.student_platform.dto.MinimalCourseDTO" %>
+<%@ page import="it.unipi.dsmt.student_platform.utility.AccessController" %>
 <html>
 
 <%
     // get the attribute for the user and for the courses
-    LoggedUserDTO loggedUserDTO = (LoggedUserDTO) request.getSession().getAttribute("logged_user");
+    LoggedUserDTO loggedUserDTO = AccessController.getLoggedUserWithRedirect(request, response);
+	if (loggedUserDTO == null) {
+		return;
+    }
     List<MinimalCourseDTO> courses = (List<MinimalCourseDTO>) request.getAttribute("courses");
 
     //	get the result of the delete operation, if it has been made

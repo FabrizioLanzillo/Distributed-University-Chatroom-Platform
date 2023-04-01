@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="it.unipi.dsmt.student_platform.dto.LoginInformationDTO" %>
 <%@ page import="it.unipi.dsmt.student_platform.utility.ClientRedirector" %>
+<%@ page import="it.unipi.dsmt.student_platform.utility.AccessController" %>
+<%@ page import="it.unipi.dsmt.student_platform.dto.LoggedUserDTO" %>
 
 <html>
 <head>
@@ -68,9 +70,12 @@
         <div id="errorResponse">Error during your sign up, our service may be unavailable, try again later!</div>
 <%
     }
-    LoginInformationDTO logged_user = (LoginInformationDTO) request.getSession().getAttribute("logged_user");
-    if (logged_user != null) {
-        ClientRedirector.redirectToPortalPage(request, response, logged_user.getRole());
+	
+	// Check if user is already logged in, then redirect it to its portal page
+    LoggedUserDTO loggedUser = AccessController.getLoggedUser(request);
+    if (loggedUser != null) {
+        ClientRedirector.redirectToPortalPage(request, response, loggedUser.getRole());
+		return;
     }
 %>
 </body>

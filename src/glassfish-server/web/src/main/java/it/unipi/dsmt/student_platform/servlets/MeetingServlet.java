@@ -26,7 +26,11 @@ public class MeetingServlet extends HttpServlet {
         if (loggedUser == null)
             return;
         
-        LoggedUserDTO user = (LoggedUserDTO)request.getSession().getAttribute("logged_user");
+        LoggedUserDTO user = AccessController.getLoggedUserWithRedirect(request, response);
+        if (user == null) {
+            return;
+        }
+        
         int offset = request.getParameter("offset")==null ? 0 : Integer.parseInt(request.getParameter("offset"));
     
         String action = request.getParameter("action") == null? "none" : request.getParameter("action");

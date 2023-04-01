@@ -16,7 +16,7 @@ public class ChatroomServlet extends HttpServlet {
 	public void doGet (HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException
 	{
-		if (!AccessController.checkAccess(request, response, UserRole.student)) {
+		if (AccessController.checkAccess(request, response, UserRole.student) == null) {
 			return;
 		}
 		
