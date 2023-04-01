@@ -23,7 +23,15 @@ public class BookingServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
-        int id = request.getParameter("id") == null? 0 : Integer.parseInt(request.getParameter("id"));
+        int id;
+        try{
+            id  = Integer.parseInt(request.getParameter("id"));
+        }
+        catch(Exception e){
+            System.out.println("Error: course ID not set");
+            e.printStackTrace();
+            return;
+        }
         int offset = request.getParameter("offset")==null ? 0 : Integer.parseInt(request.getParameter("offset"));
         
         String action = request.getParameter("action") == null ? null : request.getParameter("action");
@@ -61,7 +69,18 @@ public class BookingServlet extends HttpServlet {
            return;
         }
         
-        int id = request.getParameter("id") == null? 0 : Integer.parseInt(request.getParameter("id"));
+        int id;
+        try{
+            id  = Integer.parseInt(request.getParameter("id"));
+        }
+        catch(Exception e){
+            System.out.println("Error: course ID not set");
+            e.printStackTrace();
+            return;
+        }
+        
+        
+        
         int offset = request.getParameter("offset") == null ? 0 : Integer.parseInt(request.getParameter("offset"));
 
         List<BookingDTO> bDTOs = bookingEJB.getSlots(id, offset);
