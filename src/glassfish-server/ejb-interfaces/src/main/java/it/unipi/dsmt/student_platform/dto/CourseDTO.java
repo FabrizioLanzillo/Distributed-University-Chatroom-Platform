@@ -10,25 +10,25 @@ public class CourseDTO implements Serializable {
 	private String name;
 	private ProfessorDTO professor;
 	private String description;
-	private Boolean isStarred;
+	private boolean isStarred;
 	
 	public CourseDTO(int id,
 	                 @NotNull String name,
 	                 @NotNull ProfessorDTO professor,
-	                 @NotNull String description)
+	                 @NotNull String description) // TODO remove this constructor
 	{
 		this.id = id;
 		this.name = name;
 		this.professor = professor;
 		this.description = description;
-		this.isStarred = null;
+		this.isStarred = false;
 	}
 	
 	public CourseDTO(int id,
 	                 @NotNull String name,
 	                 @NotNull ProfessorDTO professor,
 	                 @NotNull String description,
-	                 Boolean isStarred)
+	                 boolean isStarred)
 	{
 		this.id = id;
 		this.name = name;
@@ -69,11 +69,11 @@ public class CourseDTO implements Serializable {
 		this.description = description;
 	}
 	
-	public Boolean isStarred() {
+	public boolean isStarred() {
 		return isStarred;
 	}
 	
-	public void setStarred(Boolean starred) {
+	public void setStarred(boolean starred) {
 		isStarred = starred;
 	}
 	

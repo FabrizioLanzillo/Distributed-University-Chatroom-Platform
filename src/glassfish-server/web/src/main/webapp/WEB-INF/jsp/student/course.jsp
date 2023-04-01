@@ -86,7 +86,7 @@ else {
         <a href="${pageContext.request.contextPath}/student/chatroom?id=<%= courseDTO.getId() %>">
             <button>Go to chatroom</button>
         </a>
-        <a href="${pageContext.request.contextPath}/student/booking?id=<%= courseDTO.getId() %>">
+        <a href="${pageContext.request.contextPath}/student/booking?id=<%= courseDTO.getId() %>&offset=0">
             <button>Book a meeting</button>
         </a>
         
