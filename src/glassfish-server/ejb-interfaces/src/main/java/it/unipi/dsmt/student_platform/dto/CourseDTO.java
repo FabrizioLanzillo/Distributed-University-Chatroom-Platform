@@ -12,17 +12,6 @@ public class CourseDTO implements Serializable {
 	private String description;
 	private boolean isStarred;
 	
-	public CourseDTO(int id,
-	                 @NotNull String name,
-	                 @NotNull ProfessorDTO professor,
-	                 @NotNull String description) // TODO remove this constructor
-	{
-		this.id = id;
-		this.name = name;
-		this.professor = professor;
-		this.description = description;
-		this.isStarred = false;
-	}
 	
 	public CourseDTO(int id,
 	                 @NotNull String name,

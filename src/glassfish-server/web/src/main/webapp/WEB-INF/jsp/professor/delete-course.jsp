@@ -1,12 +1,13 @@
 <%@ page import="it.unipi.dsmt.student_platform.dto.LoggedUserDTO" %>
 <%@ page import="it.unipi.dsmt.student_platform.dto.CourseDTO" %>
 <%@ page import="java.util.List" %>
+<%@ page import="it.unipi.dsmt.student_platform.dto.MinimalCourseDTO" %>
 <html>
 
 <%
     // get the attribute for the user and for the courses
     LoggedUserDTO loggedUserDTO = (LoggedUserDTO) request.getSession().getAttribute("logged_user");
-    List<CourseDTO> courses = (List<CourseDTO>) request.getAttribute("courses");
+    List<MinimalCourseDTO> courses = (List<MinimalCourseDTO>) request.getAttribute("courses");
 
     //	get the result of the delete operation, if it has been made
 	String courseDeleteACK = "";
@@ -19,6 +20,7 @@
         <title>Delete Course</title>
     </head>
     <body>
+        <jsp:include page="/WEB-INF/jsp/common/top-bar.jsp" />
         <h1>
             Welcome to the delete course Section, <%= loggedUserDTO.getUsername() %>
         </h1>
@@ -76,7 +78,7 @@
             </script>
 <%
                 // load of the courses
-                for (CourseDTO course : courses) {
+                for (MinimalCourseDTO course : courses) {
 %>
                     <button type="button" id="<%= course.getName() %>" class="normal_courses" onclick="showDeleteAlert('<%= course.getId() %>')">
                         <%= course.getName() %>

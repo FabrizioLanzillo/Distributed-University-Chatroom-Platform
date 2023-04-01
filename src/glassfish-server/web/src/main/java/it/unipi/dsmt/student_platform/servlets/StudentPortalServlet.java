@@ -1,6 +1,7 @@
 package it.unipi.dsmt.student_platform.servlets;
 
-import it.unipi.dsmt.student_platform.dto.CourseDTO;
+import it.unipi.dsmt.student_platform.dto.MinimalCourseDTO;
+import it.unipi.dsmt.student_platform.dto.LoggedUserDTO;
 import it.unipi.dsmt.student_platform.enums.UserRole;
 import it.unipi.dsmt.student_platform.interfaces.CourseEJB;
 import it.unipi.dsmt.student_platform.utility.AccessController;
@@ -24,18 +25,18 @@ public class StudentPortalServlet extends HttpServlet {
 
 	private void handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		List<CourseDTO> courses = new ArrayList<CourseDTO>();
+		List<MinimalCourseDTO> courses;
 
-		String student =  request.getParameter("student");
+		LoggedUserDTO loggedUserDTO = (LoggedUserDTO) request.getSession().getAttribute("logged_user");
 		String starred =  request.getParameter("starred");
 		String searchInput = request.getParameter("search_input");
 
 		if (searchInput != null) {
 			request.setAttribute("search_input", searchInput);
-			courses = courseEJB.getCourse(searchInput);
+			courses = courseEJB.searchCourses(searchInput);
 		}
-		else if ((student != null && starred != null) && (starred.equals("true"))) {
-			courses = courseEJB.getStarredCourses(student);
+		else if ((starred != null) && (starred.equals("true"))) {
+			courses = courseEJB.getStarredCourses(loggedUserDTO.getId());
 			request.setAttribute("starred", starred);
 		}
 		else {

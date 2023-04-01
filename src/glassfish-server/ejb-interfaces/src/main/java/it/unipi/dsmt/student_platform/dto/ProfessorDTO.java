@@ -4,27 +4,15 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
-public class ProfessorDTO implements Serializable { // TODO remove id
-	
-	private String id;
+public class ProfessorDTO implements Serializable {
+
 	private String name;
 	private String surname;
-	
-	public ProfessorDTO (@NotNull String id,
-	                     @NotNull String name,
-	                     @NotNull String surname)
-	{
-		this.id = id;
+
+	public ProfessorDTO (@NotNull String name, @NotNull String surname){
+
 		this.name = name;
 		this.surname = surname;
-	}
-	
-	public String getId() {
-		return id;
-	}
-	
-	public void setId(String id) {
-		this.id = id;
 	}
 	
 	public String getName() {
@@ -46,12 +34,11 @@ public class ProfessorDTO implements Serializable { // TODO remove id
 	public String getFullName() {
 		return getName() + " " + getSurname();
 	}
-	
+
 	@Override
 	public String toString() {
 		return "ProfessorDTO{" +
-				"id='" + id + '\'' +
-				", name='" + name + '\'' +
+				"name='" + name + '\'' +
 				", surname='" + surname + '\'' +
 				'}';
 	}

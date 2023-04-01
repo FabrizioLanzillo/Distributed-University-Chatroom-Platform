@@ -1,6 +1,8 @@
 package it.unipi.dsmt.student_platform.servlets;
 
 import it.unipi.dsmt.student_platform.dto.CourseDTO;
+import it.unipi.dsmt.student_platform.dto.LoggedUserDTO;
+import it.unipi.dsmt.student_platform.dto.MinimalCourseDTO;
 import it.unipi.dsmt.student_platform.enums.UserRole;
 import it.unipi.dsmt.student_platform.interfaces.CourseEJB;
 import it.unipi.dsmt.student_platform.utility.AccessController;
@@ -22,26 +24,27 @@ public class ProfessorDeleteCourseServlet extends HttpServlet {
 	@EJB
 	private CourseEJB courseEJB;
 
-	private void handleRequest(HttpServletRequest request, HttpServletResponse response, int deleteAlert) throws ServletException, IOException {
+	private void handleRequest(HttpServletRequest request, HttpServletResponse response, Boolean deleteAlert) throws ServletException, IOException {
 
-		List<CourseDTO> courses;
+		List<MinimalCourseDTO> courses;
+		LoggedUserDTO loggedUserDTO = (LoggedUserDTO) request.getSession().getAttribute("logged_user");
 
 		// check if a search has been made, and in the case load of the searched courses
 		String searchInput = request.getParameter("search_input");
 		if (searchInput != null) {
 			request.setAttribute("search_input", searchInput);
-			courses = courseEJB.getCourse(searchInput);
+			courses = courseEJB.searchCoursesForProfessor(searchInput, loggedUserDTO.getId());
 		}
 		// load of all the courses
 		else {
-			courses = courseEJB.getAllCourses();
+			courses = courseEJB.getAllCoursesForProfessor(loggedUserDTO.getId());
 		}
 		// passing the courses via get, with the set of an attribute
 		request.setAttribute("courses", courses);
 
 		// check if a delete has been made, and in the case check the response
-		if(deleteAlert != -1){
-			if(deleteAlert == 1){
+		if(deleteAlert != null){
+			if(deleteAlert == Boolean.TRUE){
 				request.setAttribute("deleteAck", "ok");
 			}
 			else{
@@ -59,7 +62,7 @@ public class ProfessorDeleteCourseServlet extends HttpServlet {
 		if (!AccessController.checkAccess(request, response, UserRole.professor)) {
 			return;
 		}
-		handleRequest(request, response, -1);
+		handleRequest(request, response, null);
 	}
 
 	@Override
@@ -69,18 +72,15 @@ public class ProfessorDeleteCourseServlet extends HttpServlet {
 			return;
 		}
 
-		String _id = request.getParameter("courseId");
-		int id = Integer.parseInt(_id);
-
-		int queryError = -1;
+		Boolean successful = null;
 
 		try{
-			queryError = courseEJB.deleteCourse(id);
+			successful =  courseEJB.deleteCourse(Integer.parseInt(request.getParameter("courseId")));
 		}
 		catch(Exception error){
 			error.printStackTrace();
 		}
 
-		handleRequest(request, response, queryError);
+		handleRequest(request, response, successful);
 	}
 }

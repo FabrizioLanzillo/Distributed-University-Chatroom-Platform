@@ -1,9 +1,6 @@
-<%@ page import="it.unipi.dsmt.student_platform.dto.StudentDTO" %>
-<%@ page import="it.unipi.dsmt.student_platform.dto.CourseDTO" %>
-<%@ page import="it.unipi.dsmt.student_platform.dto.ProfessorDTO" %>
-<%@ page import="it.unipi.dsmt.student_platform.dto.LoggedUserDTO" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="it.unipi.dsmt.student_platform.dto.*" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 
 <html>
@@ -11,7 +8,7 @@
 <%
     LoggedUserDTO loggedUserDTO = (LoggedUserDTO) request.getSession().getAttribute("logged_user");
 
-    List<CourseDTO> courses = (List<CourseDTO>) request.getAttribute("courses");
+    List<MinimalCourseDTO> courses = (List<MinimalCourseDTO>) request.getAttribute("courses");
 
     String isStarredView = "";
 
@@ -39,7 +36,6 @@
         </form>
 
         <form action="${pageContext.request.contextPath}/student/portal" method="get">
-            <input type="hidden" name="student" value="<%= loggedUserDTO.getUsername() %>">
 <%
                 if(isStarredView.equals("true")){
 %>
@@ -59,9 +55,10 @@
                 coursesDiv.innerHTML = "";
             </script>
 <%
-                for (CourseDTO course : courses) {
+                for (MinimalCourseDTO course : courses) {
 %>
-                    <button type="button" id="<%= course.getName() %>" class="normal_courses">
+                    <button type="button" id="<%= course.getName() %>" class="normal_courses"
+                            onclick="location.href = '${pageContext.request.contextPath}/student/course?id=<%= course.getId() %>'">
                             <%= course.getName() %>
                     </button>
 <%
