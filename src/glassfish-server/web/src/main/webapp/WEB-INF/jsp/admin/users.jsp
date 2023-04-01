@@ -11,6 +11,10 @@
         userList = new ArrayList<>();
     }
 
+    String banACK = "";
+    if(request.getAttribute("banACK") != null){
+        banACK = request.getAttribute("banACK").toString();
+    }
 
 	UserRole role = (UserRole) request.getAttribute("role_searched");
 	if(role == null){
@@ -81,13 +85,25 @@
         <%}%>
     </form>
     <form method="post" action="${pageContext.request.contextPath}/admin/users?action=offsetChange&offset=<%=offset + 1%>&search=<%=role.toString()%>">
-        <%
-            if(offset >= 9){%>
-        <button disabled="disabled">-></button>
-        <%}
-        else{%>
         <button type="submit">-></button>
-        <%}%>
     </form>
+    <script>
+    <%
+    // check on the result of the delete operation, if it has been made
+    if(!banACK.equals("")){
+        if(banACK.equals("ok")){
+        %>
+            alert("user correctly deleted");
+        <%
+        }
+        else{
+        %>
+            alert("An error occurred while user deletion");
+        <%
+        }
+		request.removeAttribute("banACK");
+	}
+    %>
+    </script>
 </body>
 </html>

@@ -98,9 +98,17 @@ public class UsersServlet extends HttpServlet {
         String button = request.getParameter("userButton");
         String userID = button.replace("button", "");
 
+        boolean result = false;
         if(!userID.equals("")){
-            userEJB.banUser(userID, role_to_search);
+            result = userEJB.banUser(userID, role_to_search);
         }
+        
+        if(result)
+            request.setAttribute("banACK", "ok");
+        else{
+            request.setAttribute("banACK", "error");
+        }
+        
         try {
             update(request, response, role_to_search, "");
         } catch (Exception e) {
