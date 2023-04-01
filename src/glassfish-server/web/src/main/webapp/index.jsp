@@ -37,6 +37,12 @@
     </div>
 </div>
 
+<br>
+
+<button onclick="location.href = '${pageContext.request.contextPath}/student/signup'">
+    You don't own an account? Signup now!
+</button>
+
 <%
     // Check if the user failed the login
 	String rParam = request.getParameter("r");

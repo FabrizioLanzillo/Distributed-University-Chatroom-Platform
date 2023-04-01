@@ -1,5 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="it.unipi.dsmt.student_platform.dto.LoginInformationDTO"%>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="it.unipi.dsmt.student_platform.dto.LoginInformationDTO" %>
 <%@ page import="it.unipi.dsmt.student_platform.utility.ClientRedirector" %>
 
 <html>
@@ -7,7 +7,6 @@
     <title>StudentChat</title>
 </head>
 <body>
-<jsp:include page="/WEB-INF/jsp/common/top-bar.jsp" />
 
 <%--TODO: change website name--%>
 <h1>Sign up to StudentChat</h1>
@@ -55,12 +54,18 @@
     </form>
 </div>
 
+<br>
+
+<button onclick="location.href = '${pageContext.request.contextPath}/'">
+    You already own an account? Login!
+</button>
+
 <%
     // Check if the user failed the login
     String rParam = request.getParameter("r");
     if (rParam != null && rParam.equals("error")) {
 %>
-        <div name="errorResponse">Error during your sign up, our service may be unavailable, try again later!</div>
+        <div id="errorResponse">Error during your sign up, our service may be unavailable, try again later!</div>
 <%
     }
     LoginInformationDTO logged_user = (LoginInformationDTO) request.getSession().getAttribute("logged_user");
