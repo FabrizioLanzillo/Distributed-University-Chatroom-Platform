@@ -1,6 +1,5 @@
 package it.unipi.dsmt.student_platform.servlets;
 
-import it.unipi.dsmt.student_platform.dto.CourseDTO;
 import it.unipi.dsmt.student_platform.dto.LoggedUserDTO;
 import it.unipi.dsmt.student_platform.dto.MinimalCourseDTO;
 import it.unipi.dsmt.student_platform.enums.UserRole;
@@ -15,7 +14,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "ProfessorDeleteCourseServlet", value = "/professor/delete-course")
@@ -26,8 +24,12 @@ public class ProfessorDeleteCourseServlet extends HttpServlet {
 
 	private void handleRequest(HttpServletRequest request, HttpServletResponse response, Boolean deleteAlert) throws ServletException, IOException {
 
+		LoggedUserDTO loggedUserDTO = AccessController.getLoggedUserWithRedirect(request, response);
+		if (loggedUserDTO == null) {
+			return;
+		}
+		
 		List<MinimalCourseDTO> courses;
-		LoggedUserDTO loggedUserDTO = (LoggedUserDTO) request.getSession().getAttribute("logged_user");
 
 		// check if a search has been made, and in the case load of the searched courses
 		String searchInput = request.getParameter("search_input");
@@ -59,7 +61,7 @@ public class ProfessorDeleteCourseServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		if (!AccessController.checkAccess(request, response, UserRole.professor)) {
+		if (AccessController.checkAccess(request, response, UserRole.professor) == null) {
 			return;
 		}
 		handleRequest(request, response, null);
@@ -68,7 +70,7 @@ public class ProfessorDeleteCourseServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		if (!AccessController.checkAccess(request, response, UserRole.professor)) {
+		if (AccessController.checkAccess(request, response, UserRole.professor) == null) {
 			return;
 		}
 

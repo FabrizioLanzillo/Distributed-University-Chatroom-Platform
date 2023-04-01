@@ -1,12 +1,15 @@
 <%@ page import="java.util.List" %>
-<%@ page import="java.util.ArrayList" %>
 <%@ page import="it.unipi.dsmt.student_platform.dto.*" %>
+<%@ page import="it.unipi.dsmt.student_platform.utility.AccessController" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 
 <html>
 
 <%
-    LoggedUserDTO loggedUserDTO = (LoggedUserDTO) request.getSession().getAttribute("logged_user");
+    LoggedUserDTO loggedUserDTO = AccessController.getLoggedUserWithRedirect(request, response);
+	if (loggedUserDTO == null) {
+		return;
+    }
 
     List<MinimalCourseDTO> courses = (List<MinimalCourseDTO>) request.getAttribute("courses");
 

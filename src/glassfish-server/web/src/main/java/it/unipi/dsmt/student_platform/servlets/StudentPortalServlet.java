@@ -14,7 +14,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "StudentPortalServlet", value = "/student/portal")
@@ -27,7 +26,10 @@ public class StudentPortalServlet extends HttpServlet {
 
 		List<MinimalCourseDTO> courses;
 
-		LoggedUserDTO loggedUserDTO = (LoggedUserDTO) request.getSession().getAttribute("logged_user");
+		LoggedUserDTO loggedUserDTO = AccessController.getLoggedUserWithRedirect(request, response);
+		if (loggedUserDTO == null) {
+			return;
+		}
 		String starred =  request.getParameter("starred");
 		String searchInput = request.getParameter("search_input");
 
@@ -51,7 +53,7 @@ public class StudentPortalServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		if (!AccessController.checkAccess(request, response, UserRole.student)) {
+		if (AccessController.checkAccess(request, response, UserRole.student) == null) {
 			return;
 		}
 		handleRequest(request, response);

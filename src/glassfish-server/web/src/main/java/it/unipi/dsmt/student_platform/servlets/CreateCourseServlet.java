@@ -32,7 +32,7 @@ public class CreateCourseServlet extends HttpServlet {
 			throws ServletException, IOException
 	{
 		// Check if logged user is a professor
-		if (!AccessController.checkAccess(request, response, UserRole.professor)) {
+		if (AccessController.checkAccess(request, response, UserRole.professor) == null) {
 			return;
 		}
 		redirectToJsp(request, response);
@@ -43,15 +43,15 @@ public class CreateCourseServlet extends HttpServlet {
 			throws ServletException, IOException
 	{
 		// Check if logged user is a professor
-		if (!AccessController.checkAccess(request, response, UserRole.professor)) {
+		LoggedUserDTO loggedUser = AccessController.checkAccess(request, response, UserRole.professor);
+		if (loggedUser == null) {
 			return;
 		}
 		
 		// Fetch GET parameters
 		String _name = request.getParameter("name");
 		String _description = request.getParameter("description");
-		LoggedUserDTO loggedUser = (LoggedUserDTO) request.getSession().getAttribute("logged_user");
-		if (_name == null || _description == null || loggedUser == null) {
+		if (_name == null || _description == null) {
 			request.setAttribute("successful-creation", false);
 			redirectToJsp(request, response);
 			return;

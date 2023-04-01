@@ -27,7 +27,7 @@ public class CourseServlet extends HttpServlet {
 			throws ServletException, IOException
 	{
 		// Check if logged user is a student
-		if (!AccessController.checkAccess(request, response, UserRole.student)) {
+		if (AccessController.checkAccess(request, response, UserRole.student) == null) {
 			return;
 		}
 		
@@ -44,10 +44,9 @@ public class CourseServlet extends HttpServlet {
 		}
 		
 		// Get currently logged user
-		LoggedUserDTO loggedUser = (LoggedUserDTO) request.getSession().getAttribute("logged_user");
+		LoggedUserDTO loggedUser = AccessController.getLoggedUserWithRedirect(request, response);
 		if (loggedUser == null) {
 			// User not logged
-			ClientRedirector.redirectToLogin(request, response);
 			return;
 		}
 		
@@ -60,10 +59,9 @@ public class CourseServlet extends HttpServlet {
 	
 	
 	@Override
-	protected void doPost (HttpServletRequest request, HttpServletResponse response)
-			throws IOException, ServletException {
+	protected void doPost (HttpServletRequest request, HttpServletResponse response) throws IOException {
 		// Check if logged user is a student
-        if (!AccessController.checkAccess(request, response, UserRole.student)) {
+        if (AccessController.checkAccess(request, response, UserRole.student) == null) {
             return;
         }
         
@@ -84,10 +82,9 @@ public class CourseServlet extends HttpServlet {
 		}
 		
 		// Get currently logged user
-		LoggedUserDTO loggedUser = (LoggedUserDTO) request.getSession().getAttribute("logged_user");
+		LoggedUserDTO loggedUser = AccessController.getLoggedUserWithRedirect(request, response);
 		if (loggedUser == null) {
 			// User not logged
-			ClientRedirector.redirectToLogin(request, response);
 			return;
         }
 		

@@ -12,7 +12,6 @@ import jakarta.servlet.http.*;
 
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "MeetingServlet", value = "/professor/meeting")
@@ -23,9 +22,15 @@ public class MeetingServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
+        LoggedUserDTO loggedUser = AccessController.checkAccess(request, response, UserRole.professor);
+        if (loggedUser == null)
+            return;
         
-        LoggedUserDTO user = (LoggedUserDTO)request.getSession().getAttribute("logged_user");
+        LoggedUserDTO user = AccessController.getLoggedUserWithRedirect(request, response);
+        if (user == null) {
+            return;
+        }
+        
         int offset = request.getParameter("offset")==null ? 0 : Integer.parseInt(request.getParameter("offset"));
     
         String action = request.getParameter("action") == null? "none" : request.getParameter("action");
@@ -59,26 +64,18 @@ public class MeetingServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         // Check if logged user is a professor
-        if (!AccessController.checkAccess(request, response, UserRole.professor)) {
+        LoggedUserDTO loggedUser = AccessController.checkAccess(request, response, UserRole.professor);
+        if (loggedUser == null)
             return;
-        }
-        LoggedUserDTO user;
-        
-        try{
-            // Get course id from GET parameters
-            user = (LoggedUserDTO)request.getSession().getAttribute("logged_user");
-            if (user == null) {
-                throw new RuntimeException("user id is null");
-            }
-        }
-        catch (NumberFormatException e) {
-            throw new RuntimeException("user id is not a number");
-        }
+
         // Get the offset to load the right page
-        int offset = request.getParameter("offset")==null ? 0 : Integer.parseInt(request.getParameter("offset"));
-        request.setAttribute("offset", String.valueOf(offset));
-        
-        List<MeetingDTO> bDTOs = meetingEJB.getSlots(user.getId(), offset);
+        int offset = 0;
+        String offsetString = request.getParameter("offset");
+        if(offsetString != null) {
+            offset = Integer.parseInt(offsetString);
+        }
+
+        List<MeetingDTO> bDTOs = meetingEJB.getSlots(loggedUser.getId(), offset);
         request.setAttribute("bookedSlots", bDTOs);
 
         request.getRequestDispatcher("/WEB-INF/jsp/professor/meeting.jsp")

@@ -22,7 +22,12 @@ public class BookingServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession();
+        // Check access
+        LoggedUserDTO loggedUser = AccessController.checkAccess(request, response, UserRole.professor);
+        if (loggedUser == null) {
+            return;
+        }
+        
         int id;
         try{
             id  = Integer.parseInt(request.getParameter("id"));
@@ -50,9 +55,8 @@ public class BookingServlet extends HttpServlet {
             System.out.println("Error: no timeslot selected");
             return;
         }
-
-        LoggedUserDTO loggedUser = (LoggedUserDTO) request.getSession().getAttribute("logged_user");
-        // Send the query for the requesting user TODO Check correctness after Rick's login changes
+        
+        // Send the query for the requesting user
         boolean ret = bookingEJB.bookSlot(loggedUser.getId(), id, bDTOs.get(iterator), offset);
 
         if(!ret){
@@ -65,12 +69,11 @@ public class BookingServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         // Check if logged user is a student
-        if (!AccessController.checkAccess(request, response, UserRole.student)) {
+        if (AccessController.checkAccess(request, response, UserRole.student) == null)
            return;
-        }
         
         int id;
-        try{
+        try {
             id  = Integer.parseInt(request.getParameter("id"));
         }
         catch(Exception e){
@@ -78,9 +81,8 @@ public class BookingServlet extends HttpServlet {
             e.printStackTrace();
             return;
         }
-        
-        
-        
+
+
         int offset = request.getParameter("offset") == null ? 0 : Integer.parseInt(request.getParameter("offset"));
 
         List<BookingDTO> bDTOs = bookingEJB.getSlots(id, offset);

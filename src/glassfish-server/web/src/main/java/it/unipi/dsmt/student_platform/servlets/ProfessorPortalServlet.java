@@ -16,7 +16,7 @@ public class ProfessorPortalServlet extends HttpServlet {
 	public void doGet (HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException
 	{
-		if (!AccessController.checkAccess(request, response, UserRole.professor)) {
+		if (AccessController.checkAccess(request, response, UserRole.professor) == null) {
 			return;
 		}
 		

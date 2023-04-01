@@ -1,4 +1,5 @@
 <%@ page import="it.unipi.dsmt.student_platform.dto.LoggedUserDTO" %>
+<%@ page import="it.unipi.dsmt.student_platform.utility.AccessController" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 
@@ -11,7 +12,10 @@
 <jsp:include page="/WEB-INF/jsp/common/top-bar.jsp" />
 
 <%
-    LoggedUserDTO loggedUser = (LoggedUserDTO) request.getSession().getAttribute("logged_user");
+    LoggedUserDTO loggedUser = AccessController.getLoggedUserWithRedirect(request, response);
+	if(loggedUser == null) {
+		return;
+    }
 %>
 
     <h1>Welcome to your portal, <%= loggedUser.getUsername() %>!</h1>
