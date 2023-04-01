@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
-public class ProfessorDTO implements Serializable {
+public class ProfessorDTO implements Serializable { // TODO remove id
 	
 	private String id;
 	private String name;
