@@ -1,8 +1,6 @@
 package it.unipi.dsmt.student_platform.servlets;
 
 import it.unipi.dsmt.student_platform.dto.LoggedUserDTO;
-import it.unipi.dsmt.student_platform.dto.MeetingDTO;
-import it.unipi.dsmt.student_platform.dto.MinimalCourseDTO;
 import it.unipi.dsmt.student_platform.dto.StudentBookedMeetingDTO;
 import it.unipi.dsmt.student_platform.enums.UserRole;
 import it.unipi.dsmt.student_platform.interfaces.BookingEJB;
@@ -46,7 +44,7 @@ public class StudentProfileServlet extends HttpServlet {
 			}
 		}
 
-		bookedMeeting = bookingEJB.getBookedMeetingForStudent(loggedUserDTO.getId());
+		bookedMeeting = bookingEJB.getBookedMeetingsForStudent(loggedUserDTO.getId());
 		request.setAttribute("booked-meeting", bookedMeeting);
 
 		String targetJSP = "/WEB-INF/jsp/student/profile.jsp";

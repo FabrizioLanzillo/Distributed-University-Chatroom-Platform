@@ -109,7 +109,7 @@ public class BookingEJBImpl implements BookingEJB {
     }
 
     @Override
-    public List<StudentBookedMeetingDTO> getBookedMeetingForStudent(String id){
+    public List<StudentBookedMeetingDTO> getBookedMeetingsForStudent(String id){
         List<StudentBookedMeetingDTO> bookedMeeting = new ArrayList<>();
 
         try (Connection connection = dataSource.getConnection()) {
