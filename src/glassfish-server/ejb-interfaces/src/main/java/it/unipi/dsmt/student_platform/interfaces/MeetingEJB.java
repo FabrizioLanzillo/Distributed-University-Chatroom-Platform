@@ -11,5 +11,5 @@ public interface MeetingEJB {
     // This method extract required data of a specific course of known id
     List<MeetingDTO> getSlots(String professorID, int offset);
 
-    boolean removeSlot(MeetingDTO dto);
+    boolean removeSlot(String bookingID);
 }

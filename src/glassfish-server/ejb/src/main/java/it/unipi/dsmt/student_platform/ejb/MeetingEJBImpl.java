@@ -65,17 +65,17 @@ public class MeetingEJBImpl implements MeetingEJB {
 		}
 	}
 	
-	public boolean removeSlot(MeetingDTO dto){
+	public boolean removeSlot(String bookingID){
 		try(Connection connection = dataSource.getConnection()) {
 			String query = "DELETE FROM booked_meeting " +
 					"WHERE id = UUID_TO_BIN(?);";
 			
 			try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 				
-				preparedStatement.setString(1, dto.getMeetingId());
+				preparedStatement.setString(1, bookingID);
 				
 				// Execute query
-				System.out.println(dto.getMeetingId());
+				System.out.println(bookingID);
 				int result = preparedStatement.executeUpdate();
 				return result == 1;
 			}
