@@ -2,12 +2,19 @@ package it.unipi.dsmt.student_platform.ejb;
 
 import it.unipi.dsmt.student_platform.dao.BookingDAO;
 import it.unipi.dsmt.student_platform.dto.BookingDTO;
+import it.unipi.dsmt.student_platform.dto.MinimalCourseDTO;
+import it.unipi.dsmt.student_platform.dto.ProfessorDTO;
+import it.unipi.dsmt.student_platform.dto.StudentBookedMeetingDTO;
 import it.unipi.dsmt.student_platform.interfaces.BookingEJB;
 
 import jakarta.annotation.Resource;
 import jakarta.ejb.Stateless;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
@@ -101,4 +108,43 @@ public class BookingEJBImpl implements BookingEJB {
         return bookingDAO.bookSlot(studentID, meetingID, dto, dataSource);
     }
 
+    @Override
+    public List<StudentBookedMeetingDTO> getBookedMeetingsForStudent(String id){
+        List<StudentBookedMeetingDTO> bookedMeeting = new ArrayList<>();
+
+        try (Connection connection = dataSource.getConnection()) {
+            // Get details of requested course
+            String query =  "SELECT BIN_TO_UUID(bm.id) as id, c.name, bm.date, ms.starting_time " +
+                            "FROM booked_meeting bm " +
+                            "     INNER JOIN " +
+                            "     meeting_slot ms on bm.time_slot = ms.id " +
+                            "     INNER JOIN " +
+                            "     course c on ms.course = c.id " +
+                            "WHERE bm.student = UUID_TO_BIN(?);";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                // Set parameters in prepared statement
+                preparedStatement.setString(1, id);
+
+                // Execute query
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    // If the query returned a result set,
+                    // then wrap it inside a CourseDTO object and return it
+                    while (resultSet.next()){
+                        bookedMeeting.add(new StudentBookedMeetingDTO(
+                                                resultSet.getString("id"),
+                                                resultSet.getString("c.name"),
+                                                resultSet.getDate("bm.date").toLocalDate(),
+                                                resultSet.getTime("ms.starting_time")
+                                          )
+                        );
+                    }
+                }
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return bookedMeeting;
+    }
 }

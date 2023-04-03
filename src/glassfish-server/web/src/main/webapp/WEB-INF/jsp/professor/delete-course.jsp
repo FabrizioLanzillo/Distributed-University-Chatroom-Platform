@@ -62,6 +62,12 @@
                 // it also add the relative button to the selected course, setting up the value
                 // to be submitted with the id of the course selected
                 function showDeleteAlert(courseIdToDelete) {
+                    // disable of all the buttons of the course until the operation is finished
+                    // or the cancel button is clicked
+                    var coursesButtons = document.querySelectorAll('.courses_to_delete');
+                    Array.from(coursesButtons).forEach(function (button){
+                        button.disabled = true;
+                    });
                     document.getElementById("delete-alert").style.display = "block";
                     var deleteCourseForm = document.getElementById("delete-course-form");
                     var submitButton = document.createElement("button");
@@ -74,6 +80,11 @@
 
                 // function that hide the form, if the cancel button is clicked
                 function closeDeleteAlert() {
+                    // enable of all the buttons of the course previously disabled
+                    var coursesButtons = document.querySelectorAll('.courses_to_delete');
+                    Array.from(coursesButtons).forEach(function (button){
+                        button.disabled = false;
+                    });
                     document.getElementById("delete-alert").style.display = "none";
                     var deleteCourseForm = document.getElementById("delete-course-form");
                     deleteCourseForm.innerHTML = "";
@@ -83,7 +94,7 @@
                 // load of the courses
                 for (MinimalCourseDTO course : courses) {
 %>
-                    <button type="button" id="<%= course.getName() %>" class="normal_courses" onclick="showDeleteAlert('<%= course.getId() %>')">
+                    <button type="button" id="<%= course.getName() %>" class="courses_to_delete" onclick="showDeleteAlert('<%= course.getId() %>')">
                         <%= course.getName() %>
                     </button>
 <%

@@ -51,7 +51,7 @@ public class MeetingServlet extends HttpServlet {
         }
 
         MeetingDTO meetingDTO = mDTOs.get(iterator);
-        boolean ret = meetingEJB.removeSlot(meetingDTO);
+        boolean ret = meetingEJB.removeSlot(meetingDTO.getMeetingId());
 
         if(!ret){
             response.sendRedirect(request.getContextPath() + "/professor/meeting?r=error&offset=" + offset);

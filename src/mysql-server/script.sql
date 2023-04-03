@@ -201,6 +201,14 @@ VALUES ((SELECT id FROM student WHERE surname = 'Lanzillo'), (SELECT id FROM cou
        ((SELECT id FROM student WHERE surname = 'Montini'), (SELECT id FROM course WHERE name = 'fmfss')),
        ((SELECT id FROM student WHERE surname = 'Sagramoni'), (SELECT id FROM course WHERE name = 'dsmt'));
 
+INSERT INTO meeting_slot
+VALUES (UUID_TO_BIN(UUID()), (SELECT id FROM course WHERE name = 'dsmt'), 3, '15:20:40'),
+       (UUID_TO_BIN(UUID()), (SELECT id FROM course WHERE name = 'foc'), 5, '18:20:40');
+
+INSERT INTO booked_meeting
+VALUES (UUID_TO_BIN(UUID()), (SELECT id FROM meeting_slot WHERE course = (SELECT id FROM course WHERE name = 'dsmt')), '2023-04-05', (SELECT id FROM student WHERE surname = 'Lanzillo')),
+       (UUID_TO_BIN(UUID()), (SELECT id FROM meeting_slot WHERE course = (SELECT id FROM course WHERE name = 'foc')), '2023-04-08', (SELECT id FROM student WHERE surname = 'Lanzillo'));
+
 
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
