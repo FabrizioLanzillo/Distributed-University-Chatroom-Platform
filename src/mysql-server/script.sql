@@ -190,6 +190,9 @@ VALUES ('dsmt', (SELECT id FROM professor WHERE surname = 'Bianchi'), 'descripti
        ('foc', (SELECT id FROM professor WHERE surname = 'Rossi'), 'description'),
        ('fmfss', (SELECT id FROM professor WHERE surname = 'Rossi'), 'description');
 
+INSERT INTO admin (id, username, password)
+VALUES (UUID_TO_BIN(UUID()), 'admin', 'admin');
+
 
 INSERT INTO student_starred_courses (student, course)
 VALUES ((SELECT id FROM student WHERE surname = 'Lanzillo'), (SELECT id FROM course WHERE name = 'dsmt')),
