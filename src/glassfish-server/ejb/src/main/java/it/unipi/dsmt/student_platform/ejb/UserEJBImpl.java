@@ -1,5 +1,6 @@
 package it.unipi.dsmt.student_platform.ejb;
 
+import it.unipi.dsmt.student_platform.dto.CreateProfessorDTO;
 import it.unipi.dsmt.student_platform.dto.LoggedUserDTO;
 import it.unipi.dsmt.student_platform.dto.LoginInformationDTO;
 import it.unipi.dsmt.student_platform.dto.GeneralUserDTO;
@@ -116,5 +117,26 @@ public class UserEJBImpl implements UserEJB {
             throw new RuntimeException(e);
         }
 	}
-	
+
+	@Override
+	public boolean createProfessorAccount(@NotNull CreateProfessorDTO createProfessorDTO){
+		try(Connection connection = dataSource.getConnection()) {
+			String query = "INSERT INTO professor VALUES ( UUID_TO_BIN(UUID()) ,?, ?, ?, ?, ?);";
+
+			try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+				// Set parameters in prepared statement
+				preparedStatement.setString(1, createProfessorDTO.getUsername());
+				preparedStatement.setString(2, createProfessorDTO.getPassword());
+				preparedStatement.setString(3, createProfessorDTO.getEmail());
+				preparedStatement.setString(4, createProfessorDTO.getName());
+				preparedStatement.setString(5, createProfessorDTO.getSurname());
+
+				// Execute query
+				return preparedStatement.executeUpdate() == 1;
+			}
+		}
+		catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
 }

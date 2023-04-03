@@ -1,8 +1,6 @@
 package it.unipi.dsmt.student_platform.interfaces;
 
-import it.unipi.dsmt.student_platform.dto.LoggedUserDTO;
-import it.unipi.dsmt.student_platform.dto.LoginInformationDTO;
-import it.unipi.dsmt.student_platform.dto.GeneralUserDTO;
+import it.unipi.dsmt.student_platform.dto.*;
 import it.unipi.dsmt.student_platform.enums.UserRole;
 import jakarta.ejb.Remote;
 import org.jetbrains.annotations.NotNull;
@@ -16,4 +14,6 @@ public interface UserEJB {
 	List<GeneralUserDTO> searchUsers(String entered_string, UserRole role, int index);
 
 	boolean banUser(String id, UserRole role);
+
+	boolean createProfessorAccount(CreateProfessorDTO createProfessorDTO);
 }
