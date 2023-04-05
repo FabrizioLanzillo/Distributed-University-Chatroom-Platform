@@ -58,20 +58,26 @@ public class UserEJBImpl implements UserEJB {
 	public List<GeneralUserDTO> searchUsers(String entered_string, UserRole role, int index){
 		List<GeneralUserDTO> users = new ArrayList<>();
 		try (Connection connection = dataSource.getConnection()) {
-			String query = "SELECT BIN_TO_UUID(`id`) as id, `username` as username, `email` as email, `name` as name, `surname` as surname FROM ";
-			if (role == UserRole.student) {
-				query = query + "student ";
-			} else{
-				query = query + "professor ";
-			}
-			if(entered_string.compareTo("") != 0){
-				query = query + " WHERE `username` LIKE ? ";
-			}
-			query = query + "ORDER BY username DESC LIMIT 10 OFFSET " + index * 10 + ";";
+			String tableName =
+					(role == UserRole.student)
+							? UserRole.student.name()
+							: UserRole.professor.name();
+			String whereCondition =
+					(entered_string != null  && !entered_string.equals(""))
+							? "WHERE `username` LIKE ?"
+							: "";
+			// Build query
+			String query = String.format(
+					"SELECT BIN_TO_UUID(`id`) as id, `username`, `email`, `name`, `surname` " +
+					"FROM %s %s ORDER BY username DESC LIMIT 10 OFFSET %d;",
+					tableName, whereCondition, index * 10
+			);
+			
 			try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 				// Look in the correct table
-				if(entered_string.compareTo("") != 0)
+				if(entered_string != null && !entered_string.equals("")) {
 					preparedStatement.setString(1, "%" + entered_string + "%");
+				}
 				
 				// Execute query
 				try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -95,16 +101,13 @@ public class UserEJBImpl implements UserEJB {
 
 	public boolean banUser(String id, UserRole role) {
 		try (Connection connection = dataSource.getConnection()) {
-            String query = "DELETE FROM  ";
-			if (role == UserRole.student) {
-				query = query + "student ";
-			}
-			else {
-				query = query + "professor ";
-			}
+			String tableName =
+					(role == UserRole.student)
+							? UserRole.student.name()
+							: UserRole.professor.name();
 			
-			query = query + "WHERE `id` = UUID_TO_BIN(?);";
-
+			String query = String.format("DELETE FROM %s WHERE `id` = UUID_TO_BIN(?);", tableName);
+			
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 				// Look in the correct table
                 preparedStatement.setString(1, id);

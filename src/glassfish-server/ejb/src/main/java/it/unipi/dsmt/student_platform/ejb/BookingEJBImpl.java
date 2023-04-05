@@ -2,8 +2,6 @@ package it.unipi.dsmt.student_platform.ejb;
 
 import it.unipi.dsmt.student_platform.dao.BookingDAO;
 import it.unipi.dsmt.student_platform.dto.BookingDTO;
-import it.unipi.dsmt.student_platform.dto.MinimalCourseDTO;
-import it.unipi.dsmt.student_platform.dto.ProfessorDTO;
 import it.unipi.dsmt.student_platform.dto.StudentBookedMeetingDTO;
 import it.unipi.dsmt.student_platform.interfaces.BookingEJB;
 
