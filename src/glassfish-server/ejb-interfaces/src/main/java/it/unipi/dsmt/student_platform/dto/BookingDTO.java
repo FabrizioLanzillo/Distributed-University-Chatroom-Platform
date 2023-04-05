@@ -4,24 +4,45 @@ import java.io.Serializable;
 import java.sql.Time;
 import java.time.LocalDate;
 
+/***
+ * Serializable object for Booking, it carries the information that the server needs to store and retrieve inside the database.
+ */
 public class BookingDTO implements Serializable {
 
     private String id="";
     private int dayOfWeek = -1;
     private Time start;
     private LocalDate date = null;
-
+    
+    /**
+     * Constructor used to retrieve the booking from the database.
+     * @param start Time of the meeting
+     * @param dayOfWeek Integer representing the week day of the meeting
+     * @param id Meeting ID
+     */
     public BookingDTO(Time start, int dayOfWeek, String id){
             this.start = start;
             this.dayOfWeek = dayOfWeek;
             this.id = id;
     }
-
+    
+    /**
+     * Constructor used to store the information of already booked meetings.
+     * @param start Time representing the start of the meeting
+     * @param date Date of the meeting
+     */
     public BookingDTO(Time start, LocalDate date){
         this.start = start;
         this.date = date;
     }
-
+    
+    /**
+     * Constructor used in getSlots() method. Used to create Booking Object of not booked meetings.
+     * @param start Time representing the hour in which the meeting starts.
+     * @param date Date of the meeting.
+     * @param dayOfWeek Day of the week of the meeting.
+     * @param id Meeting ID.
+     */
     public BookingDTO(Time start, LocalDate date, int dayOfWeek, String id){
         this.start = start;
         this.date = date;
@@ -45,7 +66,7 @@ public class BookingDTO implements Serializable {
     public void setDayOfWeek(int dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
     }
-
+    
     public String toString(){
         String day;
         switch(dayOfWeek){

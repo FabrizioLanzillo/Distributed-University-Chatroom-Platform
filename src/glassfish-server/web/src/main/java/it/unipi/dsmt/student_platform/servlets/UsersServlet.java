@@ -19,7 +19,13 @@ public class UsersServlet extends HttpServlet {
     @EJB
     private UserEJB userEJB;
     
+    /**
+     * Method that handles the POST request in which the user tries to find a specific user by a string.
+     * @param request
+     * @param response
+     */
     private void searchWithString(HttpServletRequest request, HttpServletResponse response) {
+        //
         String switch_ = request.getParameter("switch");
         String searchInput = request.getParameter("search_input");
     

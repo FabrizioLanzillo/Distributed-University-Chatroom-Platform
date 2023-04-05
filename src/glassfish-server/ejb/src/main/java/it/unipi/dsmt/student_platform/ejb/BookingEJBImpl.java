@@ -2,8 +2,6 @@ package it.unipi.dsmt.student_platform.ejb;
 
 import it.unipi.dsmt.student_platform.dao.BookingDAO;
 import it.unipi.dsmt.student_platform.dto.BookingDTO;
-import it.unipi.dsmt.student_platform.dto.MinimalCourseDTO;
-import it.unipi.dsmt.student_platform.dto.ProfessorDTO;
 import it.unipi.dsmt.student_platform.dto.StudentBookedMeetingDTO;
 import it.unipi.dsmt.student_platform.interfaces.BookingEJB;
 
@@ -23,7 +21,10 @@ import java.util.List;
 
 @Stateless
 public class BookingEJBImpl implements BookingEJB {
-
+    
+    /**
+     * Datasource used to access the database.
+     */
     @Resource(lookup = "jdbc/StudentPlatformPool")
     private DataSource dataSource;
     BookingDAO bookingDAO = new BookingDAO();
@@ -103,8 +104,7 @@ public class BookingEJBImpl implements BookingEJB {
                 meetingID = slot.getId();
             }
         }
-        System.out.println("MeetingID: " + meetingID);
-        System.out.println("StudentID: " + studentID);
+        
         return bookingDAO.bookSlot(studentID, meetingID, dto, dataSource);
     }
 

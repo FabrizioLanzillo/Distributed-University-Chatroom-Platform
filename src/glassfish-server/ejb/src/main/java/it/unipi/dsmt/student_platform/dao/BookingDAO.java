@@ -1,7 +1,6 @@
 package it.unipi.dsmt.student_platform.dao;
 
 import it.unipi.dsmt.student_platform.dto.BookingDTO;
-import it.unipi.dsmt.student_platform.dto.MeetingDTO;
 import jakarta.annotation.Resource;
 import jakarta.ejb.Stateless;
 
@@ -13,7 +12,10 @@ import java.util.List;
 
 @Stateless
 public class BookingDAO {
-
+    
+    /**
+     * Datasource used to access the database.
+     */
     @Resource(lookup = "jdbc/StudentPlatformPool")
     private DataSource dataSource;
 
@@ -83,7 +85,7 @@ public class BookingDAO {
                 return preparedStatement.executeUpdate() == 1;
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            return false;
         }
     }
 

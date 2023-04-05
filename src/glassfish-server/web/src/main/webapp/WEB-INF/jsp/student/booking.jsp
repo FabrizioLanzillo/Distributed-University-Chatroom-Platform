@@ -38,7 +38,7 @@
             int i=0;
             for(BookingDTO bDTO : bookingDTOS){
         %>
-                <input type="submit" class="timeslotbox" name="timeslot" value=<%=i%>><%=bDTO.toString()%>
+                <input type="submit" name="timeslot" value=<%=i%>><%=bDTO.toString()%>
                 <br>
         <%
                 i++;
@@ -48,32 +48,37 @@
 
     <form method="post" action="${pageContext.request.contextPath}/student/booking?action=offsetChange&id=<%=id%>&offset=<%=offset - 1%>">
         <%
-        if(offset <=0 ){%>
+        if(offset <=0 ){
+        %>
             <button disabled="disabled"><-</button>
         <%}
-        else{%>
+        else{
+        %>
             <button type="submit"><-</button>
-        <%}%>
+        <%}
+        %>
     </form>
     <form method="post" action="${pageContext.request.contextPath}/student/booking?action=offsetChange&id=<%=id%>&offset=<%=offset + 1%>">
         <button type="submit">-></button>
     </form>
 
     <div id="response">
-        <%
-            // Check if the user failed the login
-            String rParam = request.getParameter("r");
-            if (rParam != null && rParam.equals("error")) {
-        %>
-        <div id="errorResponse">Error during your booking, try again later!</div>
-        <%
-            }
-            else if (rParam != null && rParam.equals("success")) {
-        %>
-        <div id="successResponse">Booking successful!</div>
-        <%
-            }
-        %>
+        <script>
+            <%
+                // Check if the user failed the login
+                String rParam = request.getParameter("r");
+                if (rParam != null && rParam.equals("error")) {
+            %>
+                alert("Booking failed");
+            <%
+                }
+                else if (rParam != null && rParam.equals("success")) {
+            %>
+                alert("Booking successful");
+            <%
+                }
+            %>
+        </script>
     </div>
 </div>
 

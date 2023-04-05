@@ -2,6 +2,9 @@ package it.unipi.dsmt.student_platform.dto;
 
 import java.io.Serializable;
 
+/***
+ * Serializable object for Signup, it carries the information that the server needs to store inside the database.
+ */
 public class SignupDTO implements Serializable {
     private String username;
     private String password;
@@ -10,8 +13,18 @@ public class SignupDTO implements Serializable {
     private String surname;
     private String degree;
     private String language;
-
-
+    
+    
+    /***
+     * Main constructor for SignupDTO.
+     * @param username username of the user that requested the signup
+     * @param password password of the user that requested the signup
+     * @param email email of the user that requested the signup
+     * @param name name of the user that requested the signup
+     * @param surname name of the user that requested
+     * @param degree degree of the user that requested the signup
+     * @param language language of the user that requested the signup
+     */
     public SignupDTO(String username, String password, String email, String name, String surname, String degree, String language) {
         this.username = username;
         this.password = password;
@@ -21,23 +34,23 @@ public class SignupDTO implements Serializable {
         this.degree = degree;
         this.language = language;
     }
-
+    
     public String getUsername() {
         return username;
     }
-
+    
     public void setUsername(String username) {
         this.username = username;
     }
-
+    
     public String getPassword() {
         return password;
     }
-
+    
     public void setPassword(String password) {
         this.password = password;
     }
-
+    
     public String getEmail() {
         return email;
     }

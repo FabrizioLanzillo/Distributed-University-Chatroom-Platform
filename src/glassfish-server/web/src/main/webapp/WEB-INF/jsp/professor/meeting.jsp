@@ -49,20 +49,22 @@
         %>
     </form>
     <div>
-        <%
-            // Check if the user failed the login
+        <script>
+            <%
             String rParam = request.getParameter("r");
-            if (rParam != null && rParam.equals("error")) {
-        %>
-        <div>Error during your booking removal, try again later!</div>
-        <%
-        }
-        else if (rParam != null && rParam.equals("success")) {
-        %>
-        <div>Removal successful!</div>
-        <%
+            // check on the result of the delete operation, if it has been made
+            if(rParam != null && rParam.equals("error")){
+            %>
+                alert("Error during meeting deletion");
+            <%
             }
+            else if(rParam!= null && rParam.equals("success")){
+            %>
+                alert("Meeting deleted successfully");
+            <%
+			}
         %>
+        </script>
     </div>
     <form method="post" action="${pageContext.request.contextPath}/professor/meeting?action=offsetChange&offset=<%=offset - 1%>">
         <%
