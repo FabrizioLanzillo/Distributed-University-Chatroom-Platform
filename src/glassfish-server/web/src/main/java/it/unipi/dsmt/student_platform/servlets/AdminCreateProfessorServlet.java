@@ -56,7 +56,7 @@ public class AdminCreateProfessorServlet extends HttpServlet {
 			return;
 		}
 
-		Boolean successful = null;
+		Boolean successful = false;
 
 		CreateProfessorDTO createProfessorDTO = new CreateProfessorDTO(
 			request.getParameter("username"),

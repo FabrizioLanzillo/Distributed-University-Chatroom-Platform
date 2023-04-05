@@ -57,7 +57,13 @@ public class BookingServlet extends HttpServlet {
         }
         
         // Send the query for the requesting user
-        boolean ret = bookingEJB.bookSlot(loggedUser.getId(), id, bDTOs.get(iterator), offset);
+        boolean ret = false;
+        try{
+            ret = bookingEJB.bookSlot(loggedUser.getId(), id, bDTOs.get(iterator), offset);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
 
         if(!ret){
             response.sendRedirect(request.getContextPath() + "/student/booking?id=" + id + "&r=error&offset=" + offset);

@@ -80,8 +80,7 @@ public class BookingDAO {
                 preparedStatement.setString(3, studentID);
 
                 // Execute query
-                preparedStatement.executeUpdate();
-                return true;
+                return preparedStatement.executeUpdate() == 1;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
