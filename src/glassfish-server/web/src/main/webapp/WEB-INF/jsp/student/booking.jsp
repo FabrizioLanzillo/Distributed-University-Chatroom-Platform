@@ -38,7 +38,7 @@
             int i=0;
             for(BookingDTO bDTO : bookingDTOS){
         %>
-                <input type="submit" name="timeslot" value=<%=i%>><%=bDTO.toString()%>
+                <input type="submit" class="timeslot" name="timeslot" value=<%=i%>><%=bDTO.toString()%>
                 <br>
         <%
                 i++;

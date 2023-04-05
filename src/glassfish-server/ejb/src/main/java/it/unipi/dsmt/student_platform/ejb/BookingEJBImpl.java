@@ -110,41 +110,6 @@ public class BookingEJBImpl implements BookingEJB {
 
     @Override
     public List<StudentBookedMeetingDTO> getBookedMeetingsForStudent(String id){
-        List<StudentBookedMeetingDTO> bookedMeeting = new ArrayList<>();
-
-        try (Connection connection = dataSource.getConnection()) {
-            // Get details of requested course
-            String query =  "SELECT BIN_TO_UUID(bm.id) as id, c.name, bm.date, ms.starting_time " +
-                            "FROM booked_meeting bm " +
-                            "     INNER JOIN " +
-                            "     meeting_slot ms on bm.time_slot = ms.id " +
-                            "     INNER JOIN " +
-                            "     course c on ms.course = c.id " +
-                            "WHERE bm.student = UUID_TO_BIN(?);";
-
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                // Set parameters in prepared statement
-                preparedStatement.setString(1, id);
-
-                // Execute query
-                try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                    // If the query returned a result set,
-                    // then wrap it inside a CourseDTO object and return it
-                    while (resultSet.next()){
-                        bookedMeeting.add(new StudentBookedMeetingDTO(
-                                                resultSet.getString("id"),
-                                                resultSet.getString("c.name"),
-                                                resultSet.getDate("bm.date").toLocalDate(),
-                                                resultSet.getTime("ms.starting_time")
-                                          )
-                        );
-                    }
-                }
-            }
-        }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return bookedMeeting;
+        return bookingDAO.getBookedMeetingsForStudentDAO(id, dataSource);
     }
 }

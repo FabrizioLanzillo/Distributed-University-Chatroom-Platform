@@ -32,7 +32,7 @@ public class BookingServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // Check access and get the logged user information
-        LoggedUserDTO loggedUser = AccessController.checkAccess(request, response, UserRole.professor);
+        LoggedUserDTO loggedUser = AccessController.checkAccess(request, response, UserRole.student);
         if (loggedUser == null) {
             return;
         }

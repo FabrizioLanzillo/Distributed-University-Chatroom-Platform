@@ -25,7 +25,7 @@ public class UsersServlet extends HttpServlet {
      * @param response
      */
     private void searchWithString(HttpServletRequest request, HttpServletResponse response) {
-        //
+        // TODO COMMENT
         String switch_ = request.getParameter("switch");
         String searchInput = request.getParameter("search_input");
     
