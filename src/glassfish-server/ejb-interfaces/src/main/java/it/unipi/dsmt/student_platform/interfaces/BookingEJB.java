@@ -11,7 +11,7 @@ import java.util.List;
 public interface BookingEJB {
 
     // This method extract required data of a specific course of known id
-    @Nullable List<BookingDTO> getSlots(int id, int offset);
+    List<BookingDTO> getSlots(int id, int offset);
 
     boolean bookSlot(String studentID, int courseID, BookingDTO dto, int offset);
     List<StudentBookedMeetingDTO> getBookedMeetingsForStudent(String id);

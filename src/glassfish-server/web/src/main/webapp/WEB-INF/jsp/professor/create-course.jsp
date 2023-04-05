@@ -13,18 +13,20 @@
     Boolean successful = (Boolean) request.getAttribute("successful-creation");
 	if (successful == Boolean.TRUE) {
 %>
-    <div>
-        Course created with success!
-    </div>
+    <script>
+        alert("Course successfully created")
+    </script>
 <%
     }
 	else if (successful == Boolean.FALSE) {
 %>
-    <div>
-        Course creation failed...
-    </div>
+    <script>
+        alert("Course creation failed because a duplicate course was found")
+    </script>
 <%
     }
+	// Reset attribute
+	request.setAttribute("successful-creation", null);
 %>
 
     <div class="form">
