@@ -275,10 +275,11 @@ public class CourseEJBImpl implements CourseEJB {
 				preparedStatement.setInt(2, courseId);
 
 				// Execute query
-				return 1 == preparedStatement.executeUpdate();
+				return preparedStatement.executeUpdate() == 1;
 			}
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			e.printStackTrace();
+			return false;
 		}
 	}
 
@@ -319,13 +320,10 @@ public class CourseEJBImpl implements CourseEJB {
 				// Execute query
 				return preparedStatement.executeUpdate() == 1;
 				
-			} catch (SQLIntegrityConstraintViolationException e) {
-				// duplicate course name
-				return false;
 			}
-			
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			e.printStackTrace();
+			return false;
 		}
 	}
 
