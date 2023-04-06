@@ -20,6 +20,8 @@ import java.io.IOException;
 @WebServlet(name = "CreateCourseServlet", value = "/professor/create-course")
 public class CreateCourseServlet extends HttpServlet {
 	
+	public static final String attributeSuccessfulCreation = "successful-creation";
+	
 	@EJB
 	CourseEJB courseEJB;
 	
@@ -76,13 +78,13 @@ public class CreateCourseServlet extends HttpServlet {
 		String _name = request.getParameter("name");
 		String _description = request.getParameter("description");
 		if (_name == null || _description == null) {
-			request.setAttribute("successful-creation", false);
+			request.setAttribute(attributeSuccessfulCreation, false);
 			redirectToJsp(request, response);
 			return;
 		}
 		String _professorId = loggedUser.getId();
 		if (_professorId == null) {
-			request.setAttribute("successful-creation", false);
+			request.setAttribute(attributeSuccessfulCreation, false);
 			redirectToJsp(request, response);
 			return;
 		}
@@ -97,7 +99,7 @@ public class CreateCourseServlet extends HttpServlet {
 		);
 		
 		// Return to jsp page and notify operation result
-		request.setAttribute("successful-creation", successful);
+		request.setAttribute(attributeSuccessfulCreation, successful);
 		redirectToJsp(request, response);
 	}
 	
