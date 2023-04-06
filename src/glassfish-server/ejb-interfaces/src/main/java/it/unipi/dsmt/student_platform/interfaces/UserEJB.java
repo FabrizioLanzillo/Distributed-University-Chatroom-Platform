@@ -7,6 +7,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+/**
+ * Interface for EJBs responsible for handling all the business logic related to the user management.
+ */
 @Remote
 public interface UserEJB {
 	LoggedUserDTO login (@NotNull LoginInformationDTO loginInformationDTO);

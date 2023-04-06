@@ -4,6 +4,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
+/**
+ * DTO used for transferring the necessary data to create a new course
+ * inside the database.
+ */
 public class CourseCreationDTO implements Serializable {
 	private String name;
 	private String professorId;

@@ -1,3 +1,7 @@
+<%--
+    Portal for professors
+--%>
+
 <%@ page import="it.unipi.dsmt.student_platform.dto.LoggedUserDTO" %>
 <%@ page import="it.unipi.dsmt.student_platform.utility.AccessController" %>
 <%@ page contentType="text/html;charset=UTF-8" %>

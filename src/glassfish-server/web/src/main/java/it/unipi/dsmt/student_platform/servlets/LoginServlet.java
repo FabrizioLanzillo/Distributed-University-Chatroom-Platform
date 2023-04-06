@@ -13,12 +13,21 @@ import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * Servlet handling POST requests for login.
+ */
 @WebServlet(name = "LoginServlet", value = "/login")
 public class LoginServlet extends HttpServlet {
 	
 	@EJB
 	private UserEJB userEJB;
 	
+	/**
+	 * Handle a POST request by executing the login procedure.
+	 * @param request HttpServletRequest instance
+	 * @param response HttpServletResponse instance
+	 * @throws IOException if redirection fails
+	 */
 	@Override
 	protected void doPost (HttpServletRequest request, HttpServletResponse response) throws IOException	{
 		// Extract parameters for login
@@ -46,10 +55,11 @@ public class LoginServlet extends HttpServlet {
 		}
 		
 		// b) Successful login
-		// Add user information as sessione variable
+		// Add user information as session variable
 		AccessController.setLoggedUser(request, loggedUser);
 		
-		// Redirect to correct webpage
+		// Redirect to user's portal
 		ClientRedirector.redirectToPortalPage(request, response, role);
 	}
+	
 }

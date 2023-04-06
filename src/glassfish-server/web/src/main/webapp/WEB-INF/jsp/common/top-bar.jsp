@@ -1,3 +1,7 @@
+<%--
+    JSP file containing the topbar of the website.
+    It should be included in all the website pages after user's login.
+--%>
 <%@ page import="it.unipi.dsmt.student_platform.dto.LoggedUserDTO" %>
 <%@ page import="it.unipi.dsmt.student_platform.utility.AccessController" %>
 <%@ page contentType="text/html;charset=UTF-8" %>

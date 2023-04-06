@@ -1,5 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ page import="it.unipi.dsmt.student_platform.dto.LoginInformationDTO" %>
 <%@ page import="it.unipi.dsmt.student_platform.utility.ClientRedirector" %>
 <%@ page import="it.unipi.dsmt.student_platform.utility.AccessController" %>
 <%@ page import="it.unipi.dsmt.student_platform.dto.LoggedUserDTO" %>

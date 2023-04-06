@@ -40,6 +40,6 @@ public class SignupEJBImpl implements SignupEJB {
             }
             catch (SQLException e) {
                 throw new RuntimeException(e);
-                }
+            }
     }
 }

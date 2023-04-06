@@ -5,7 +5,6 @@ import it.unipi.dsmt.student_platform.dto.LoggedUserDTO;
 import it.unipi.dsmt.student_platform.enums.UserRole;
 import it.unipi.dsmt.student_platform.interfaces.CourseEJB;
 import it.unipi.dsmt.student_platform.utility.AccessController;
-import it.unipi.dsmt.student_platform.utility.ClientRedirector;
 import jakarta.ejb.EJB;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -16,12 +15,23 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * Servlet handling GET and POST request for the webpage
+ * which shows the details of a course.
+ */
 @WebServlet(name = "CourseServlet", value = "/student/course")
 public class CourseServlet extends HttpServlet {
 	
 	@EJB
 	CourseEJB courseEJB;
 	
+	/**
+	 * Fetch course's data from database and dispatch request to JSP page.
+	 * @param request HttpServletRequest object
+	 * @param response HttpServletResponse object
+	 * @throws ServletException if page forwarding fails
+	 * @throws IOException if redirection or page forwarding fails
+	 */
 	@Override
 	protected void doGet (HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException
@@ -31,7 +41,7 @@ public class CourseServlet extends HttpServlet {
 			return;
 		}
 		
-		// Get course id from GET parameters
+		// Get course id from GET parameters and convert it to integer
 		int id;
 		try {
 			String stringId = request.getParameter("id");
@@ -50,7 +60,7 @@ public class CourseServlet extends HttpServlet {
 			return;
 		}
 		
-		// Get course's data
+		// Get course's data and dispatch request to JSP page
 		CourseDTO course = courseEJB.getCourseDetails(id, loggedUser.getId());
 		request.setAttribute("course", course);
 		request.getRequestDispatcher("/WEB-INF/jsp/student/course.jsp")
@@ -58,6 +68,12 @@ public class CourseServlet extends HttpServlet {
 	}
 	
 	
+	/**
+	 * Handles a POST request, i.e. the user asked to star/unstar the course
+	 * @param request HttpServletRequest instance
+	 * @param response HttpServletResponse instance
+	 * @throws IOException if redirection fails
+	 */
 	@Override
 	protected void doPost (HttpServletRequest request, HttpServletResponse response) throws IOException {
 		// Check if logged user is a student
@@ -65,11 +81,11 @@ public class CourseServlet extends HttpServlet {
             return;
         }
         
-		// Get action from POST parameters
+		// Get action type from POST parameters
         String action = Optional.ofNullable(request.getParameter("action"))
 		        .orElse("");
 		
-		// Get course id from POST parameters
+		// Get course id from POST parameters and parse it to integer
 		int courseId;
 		try {
 			String stringId = request.getParameter("courseId");
@@ -108,4 +124,3 @@ public class CourseServlet extends HttpServlet {
 	}
 	
 }
-

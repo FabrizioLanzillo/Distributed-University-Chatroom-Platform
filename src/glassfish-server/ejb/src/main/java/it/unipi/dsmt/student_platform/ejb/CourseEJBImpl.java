@@ -8,6 +8,7 @@ import it.unipi.dsmt.student_platform.interfaces.CourseEJB;
 import jakarta.annotation.Resource;
 import jakarta.ejb.Stateless;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -17,14 +18,25 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * EJB object which handles all the business logic related to the courses
+ */
 @Stateless
 public class CourseEJBImpl implements CourseEJB {
-
+	
+	// Data source to MySQL database
 	@Resource(lookup = "jdbc/StudentPlatformPool")
 	private DataSource dataSource;
-
+	
+	/**
+	 * Given a course id, get all the relevant details of the corresponding course
+	 * and if the current user has starred it or not.
+	 * @param courseId id of the course
+	 * @param userId id of the current user
+	 * @return a CourseDTO object with the required data on success, null otherwise
+	 */
 	@Override
-	public CourseDTO getCourseDetails (int courseId, String userId) {
+	public @Nullable CourseDTO getCourseDetails (int courseId, String userId) {
 
 		try (Connection connection = dataSource.getConnection()) {
 			// Get details of requested course
@@ -264,8 +276,14 @@ public class CourseEJBImpl implements CourseEJB {
 		}
 		return courses;
 	}
-
-
+	
+	
+	/**
+	 * Add a "star" relationship between a student and a course (i.e. "star the course").
+	 * @param studentId id of the student
+	 * @param courseId id of the course
+	 * @return true on success, false otherwise
+	 */
 	@Override
 	public boolean addStarredCourse (@NotNull String studentId, int courseId){
 		try (Connection connection = dataSource.getConnection()) {
@@ -284,8 +302,14 @@ public class CourseEJBImpl implements CourseEJB {
 			throw new RuntimeException(e);
 		}
 	}
-
-
+	
+	
+	/**
+	 * Remove a "star" relationship between a student and a course (i.e. "unstar the course").
+	 * @param studentId id of the student
+	 * @param courseId id of the course
+	 * @return true on success, false otherwise
+	 */
 	@Override
 	public boolean removeStarredCourse (@NotNull String studentId, int courseId) {
 		try (Connection connection = dataSource.getConnection()) {
@@ -304,8 +328,13 @@ public class CourseEJBImpl implements CourseEJB {
 			throw new RuntimeException(e);
 		}
 	}
-
-
+	
+	
+	/**
+	 * Create a new course.
+	 * @param course object containing the required data to create a course
+	 * @return true on success, false otherwise
+	 */
 	@Override
 	public boolean createCourse(@NotNull CourseCreationDTO course) {
 		try (Connection connection = dataSource.getConnection()) {
@@ -326,8 +355,8 @@ public class CourseEJBImpl implements CourseEJB {
 			throw new RuntimeException(e);
 		}
 	}
-
-
+	
+	
 	@Override
 	public boolean deleteCourse(int id){
 		try (Connection connection = dataSource.getConnection()) {

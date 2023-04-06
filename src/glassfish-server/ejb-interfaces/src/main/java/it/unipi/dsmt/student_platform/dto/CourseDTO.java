@@ -4,6 +4,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
+/**
+ * DTO used for showing the course details inside its own page.
+ */
 public class CourseDTO implements Serializable {
 	
 	private int id;
