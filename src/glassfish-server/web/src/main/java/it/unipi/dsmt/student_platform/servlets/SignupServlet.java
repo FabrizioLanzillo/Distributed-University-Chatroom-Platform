@@ -14,7 +14,7 @@ public class SignupServlet extends HttpServlet {
 	@EJB
 	private SignupEJB signupEJB;
 	
-	/***
+	/**
 	 * Redefinition of doPost method for signup page. Accessed when the user clicks on the signup button after
 	 * inserting the data in the form.
 	 *

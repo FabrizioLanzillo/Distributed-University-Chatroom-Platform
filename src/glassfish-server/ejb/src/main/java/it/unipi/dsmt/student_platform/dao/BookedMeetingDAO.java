@@ -12,11 +12,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Stateless
-public class bookedMeetingDAO {
-
-    public List<BookingDTO> getBookedSlots(LocalDate start, LocalDate end, int id, DataSource dataSource) {
+public class BookedMeetingDAO {
+    
+    /**
+     * Extract all the slots that have been booked by a student
+     * @param start Starting interval date
+     * @param end Ending interval date
+     * @param courseID Course ID
+     * @param dataSource dataSource object from which extract requested data
+     * @return List of BookingDTO objects representing booked slots
+     */
+    public List<BookingDTO> getBookedSlotsDAO(LocalDate start, LocalDate end, int courseID, DataSource dataSource) {
+        // Try to connect to the datasource
         try (Connection connection = dataSource.getConnection()) {
-
+            // Prepare the query
             String query = "SELECT date, ms.starting_time as starting_time\n " +
                     "FROM booked_meeting bs INNER JOIN meeting_slot ms on bs.time_slot = ms.id \n" +
                     "WHERE date BETWEEN ? AND ? \n " +
@@ -26,11 +35,12 @@ public class bookedMeetingDAO {
                 // Set parameters in prepared statement
                 preparedStatement.setDate(1, Date.valueOf(start));
                 preparedStatement.setDate(2, Date.valueOf(end));
-                preparedStatement.setInt(3, id);
-
+                preparedStatement.setInt(3, courseID);
+            
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     List<BookingDTO> list = new ArrayList<>();
                     while (resultSet.next()) {
+                        // Create the lis tof BookingDTO initialized with obtained values from the query
                         BookingDTO bookingDTO = new BookingDTO(resultSet.getTime("starting_time"), resultSet.getDate("date").toLocalDate());
                         list.add(bookingDTO);
                     }
@@ -41,8 +51,14 @@ public class bookedMeetingDAO {
             throw new RuntimeException(e);
         }
     }
-
-    public List<BookingDTO> getAllPossibleSlots(int id, DataSource dataSource) {
+    
+    /**
+     * Method that perform a query to DB in order to extract all the meeting records from the DB
+     * @param CourseID: ID of the course for which we want to see the available meeting slots
+     * @param dataSource: dataSource object from which extract requested data
+     * @return List of BookingDTO objects representing the meeting slots for that course
+     */
+    public List<BookingDTO> getAllPossibleSlotsDAO(int CourseID, DataSource dataSource) {
         try (Connection connection = dataSource.getConnection()) {
             String query = "SELECT starting_time, weekday, BIN_TO_UUID(id) as id " +
                     "FROM meeting_slot " +
@@ -50,7 +66,7 @@ public class bookedMeetingDAO {
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 // Set parameters in prepared statement
-                preparedStatement.setInt(1, id);
+                preparedStatement.setInt(1, CourseID);
 
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     List<BookingDTO> list = new ArrayList<>();
@@ -65,8 +81,16 @@ public class bookedMeetingDAO {
             throw new RuntimeException(e);
         }
     }
-
-    public boolean bookSlot(String studentID, String meetingID, BookingDTO dto, DataSource dataSource) {
+    
+    /**
+     * Method that perform a query to DB in order to save the request of booking made by the student
+     * @param studentID: ID of the student that is requesting to book a slot
+     * @param meetingID: ID of the slot to be booked
+     * @param dto: BookingDTO object containing Date and Time infos to be stored
+     * @param dataSource: dataSource object from which extract requested data
+     * @return boolean value representing whether the query were successful or not
+     */
+    public boolean bookSlotDAO(String studentID, String meetingID, BookingDTO dto, DataSource dataSource) {
         try (Connection connection = dataSource.getConnection()) {
             String query = "INSERT INTO booked_meeting (id, time_slot, date, student) VALUES (UUID_TO_BIN(UUID()),UUID_TO_BIN(?),?,UUID_TO_BIN(?));";
 
@@ -123,6 +147,13 @@ public class bookedMeetingDAO {
         return bookedMeeting;
     }
     
+    /**
+     * Method that handle the request made by the professor to update the DB in order to remove the meeting that has
+     * already been booked by a student
+     * @param bookingID: ID of the booked meeting
+     * @param dataSource: dataSource object from which extract requested data
+     * @return boolean value representing whether the operation were successful or not
+     */
     public boolean removeSlotDAO(String bookingID, DataSource dataSource){
         try(Connection connection = dataSource.getConnection()) {
             String query = "DELETE FROM booked_meeting " +
@@ -142,6 +173,14 @@ public class bookedMeetingDAO {
         }
     }
     
+    /**
+     * Method that retrieve all the booked slots to be shown in the professor meeting page
+     * @param professorID: ID of the professor that wants to see its booked meeting
+     * @param start: Starting interval of time for which professor want to see its meetings
+     * @param end: Ending interval of time for which professor want to see its meetings
+     * @param dataSource: dataSource object from which extract requested data
+     * @return List of MeetingDTO objects containing booked meetings
+     */
     public List<MeetingDTO> getProfessorBookedSlotsDAO(String professorID, LocalDate start, LocalDate end, DataSource dataSource) {
         try (Connection connection = dataSource.getConnection()) {
             String query = "SELECT BIN_TO_UUID(bm.`id`) as id, ms.`starting_time`, bm.`date`, s.`name`, s.`surname`, " +

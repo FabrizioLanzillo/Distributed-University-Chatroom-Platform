@@ -18,31 +18,35 @@ import java.util.List;
 public class MeetingServlet extends HttpServlet {
 
     @EJB
-    private BookedMeetingEJB meetingEJB;
-
+    private BookedMeetingEJB bookedMeetingEJB;
+    
+    /**
+     * Redefinition of doPOST. Invoked when the user (professor in this case) tries to delete a booked meeting
+     * @param request
+     * @param response
+     * @throws IOException
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // Check access and obtain user infos
         LoggedUserDTO loggedUser = AccessController.checkAccess(request, response, UserRole.professor);
         if (loggedUser == null)
             return;
         
-        LoggedUserDTO user = AccessController.getLoggedUserWithRedirect(request, response);
-        if (user == null) {
-            return;
-        }
-        
+        // Parameters extraction
         int offset = request.getParameter("offset")==null ? 0 : Integer.parseInt(request.getParameter("offset"));
-    
         String action = request.getParameter("action") == null? "none" : request.getParameter("action");
     
+        // If the user tries to switch month handle and redirect
         if(action != null && action.equals("offsetChange")){
             response.sendRedirect(request.getContextPath() + "/professor/meeting?offset=" + offset);
             return;
         }
 
-        // List of available slots
-        List<MeetingDTO> mDTOs = meetingEJB.getSlots(user.getId(), offset);
-
+        // Extract the list of booked slots
+        List<MeetingDTO> mDTOs = bookedMeetingEJB.getSlots(loggedUser.getId(), offset);
+        
+        // Get the iterator to understand which of the list haas been clicked
         int iterator = request.getParameter("timeslot").isEmpty() ? -1 : Integer.parseInt(request.getParameter("timeslot"));
         if(iterator == -1){
             response.sendRedirect(request.getContextPath() + "/professor/meeting?r=error&offset=" + offset);
@@ -50,8 +54,9 @@ public class MeetingServlet extends HttpServlet {
             return;
         }
 
+        // Delete selected booked slot
         MeetingDTO meetingDTO = mDTOs.get(iterator);
-        boolean ret = meetingEJB.removeSlot(meetingDTO.getMeetingId());
+        boolean ret = bookedMeetingEJB.removeSlot(meetingDTO.getMeetingId());
 
         if(!ret){
             response.sendRedirect(request.getContextPath() + "/professor/meeting?r=error&offset=" + offset);
@@ -60,7 +65,14 @@ public class MeetingServlet extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/professor/meeting?r=success&offset=" + offset);
 
     }
-
+    
+    /**
+     * Redefinition of doGET method
+     * @param request
+     * @param response
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         // Check if logged user is a professor
@@ -68,14 +80,11 @@ public class MeetingServlet extends HttpServlet {
         if (loggedUser == null)
             return;
 
-        // Get the offset to load the right page
-        int offset = 0;
-        String offsetString = request.getParameter("offset");
-        if(offsetString != null) {
-            offset = Integer.parseInt(offsetString);
-        }
+        // Extract the offset
+        int offset = request.getParameter("offset") == null ? 0 : Integer.parseInt(request.getParameter("offset"));
 
-        List<MeetingDTO> bDTOs = meetingEJB.getSlots(loggedUser.getId(), offset);
+        // Extract the slots for that specific offset
+        List<MeetingDTO> bDTOs = bookedMeetingEJB.getSlots(loggedUser.getId(), offset);
         request.setAttribute("bookedSlots", bDTOs);
 
         request.getRequestDispatcher("/WEB-INF/jsp/professor/meeting.jsp")

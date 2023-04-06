@@ -36,6 +36,7 @@
           action="${pageContext.request.contextPath}/student/booking?id=<%=id%>&offset=<%=offset%>">
         <%
             int i=0;
+			//Create a button for each available slot
             for(BookingDTO bDTO : bookingDTOS){
         %>
                 <input type="submit" class="timeslot" name="timeslot" value=<%=i%>><%=bDTO.toString()%>
@@ -48,6 +49,7 @@
 
     <form method="post" action="${pageContext.request.contextPath}/student/booking?action=offsetChange&id=<%=id%>&offset=<%=offset - 1%>">
         <%
+        // Create buttons to change month, backward is enabled only if we are looking for at least a month in the future
         if(offset <=0 ){
         %>
             <button disabled="disabled"><-</button>
@@ -65,7 +67,7 @@
     <div id="response">
         <script>
             <%
-                // Check if the user failed the login
+                // Check if we have been redirected here after a booking request, in that case "r" parameter is set
                 String rParam = request.getParameter("r");
                 if (rParam != null && rParam.equals("error")) {
             %>

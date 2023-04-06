@@ -1,6 +1,6 @@
 package it.unipi.dsmt.student_platform.ejb;
 
-import it.unipi.dsmt.student_platform.dao.bookedMeetingDAO;
+import it.unipi.dsmt.student_platform.dao.BookedMeetingDAO;
 import it.unipi.dsmt.student_platform.dto.BookingDTO;
 import it.unipi.dsmt.student_platform.dto.MeetingDTO;
 import it.unipi.dsmt.student_platform.dto.StudentBookedMeetingDTO;
@@ -24,47 +24,53 @@ public class BookedMeetingEJBImpl implements BookedMeetingEJB {
      */
     @Resource(lookup = "jdbc/StudentPlatformPool")
     private DataSource dataSource;
-    bookedMeetingDAO bookedMeetingDAO = new bookedMeetingDAO();
-
-
-    public List<BookingDTO> getSlots(int id, int offset){
+    BookedMeetingDAO bookedMeetingDAO = new BookedMeetingDAO();
+    
+    
+    /**
+     * Method that extracts all the bookable slots for the specified course
+     * @param CourseID: ID of the course for which data is requested
+     * @param offset: offset from current month, 0 means current month, no negative values allowed
+     * @return List of BookingDTO objects representing the bookable slots
+     */
+    public List<BookingDTO> getSlots(int CourseID, int offset){
+        // Get current date
         LocalDate start = LocalDate.now().plusMonths(offset);
         
+        // If we are looking for future months we have to see the whole month
         if(offset != 0){
             start = start.withDayOfMonth(1);
         }
-        
-        
+        //Get last day of the requested month
         LocalDate end = start.withDayOfMonth(start.getMonth().length(start.isLeapYear()));
 
-        // Get data
-        List<BookingDTO> bookedSlots = bookedMeetingDAO.getBookedSlots(start, end, id, dataSource);
-
-        List<BookingDTO> allSlots = bookedMeetingDAO.getAllPossibleSlots(id, dataSource);
-
+        // Get already booked slots
+        List<BookingDTO> bookedSlots = bookedMeetingDAO.getBookedSlotsDAO(start, end, CourseID, dataSource);
+        // Get all slots
+        List<BookingDTO> allSlots = bookedMeetingDAO.getAllPossibleSlotsDAO(CourseID, dataSource);
+        
+        //Check if the course have slots to be booked, otherwise return empty list
         if(allSlots == null){
             System.out.println("Error: No slots available");
             return new ArrayList<>();
         }
 
+        // List of the available slot to be returned
         ArrayList<BookingDTO> monthlySlots = new ArrayList<>();
 
+        // Sunday or Saturday are not allowed
         for(BookingDTO slot : allSlots){
             if(slot.getDayOfWeek() == 6 || slot.getDayOfWeek() == 7){
                 System.out.println("Error: Saturday and Sunday are not allowed");
                 continue;
             }
 
-            // Get the first day of the next month
-            LocalDate stop = start.with(TemporalAdjusters.firstDayOfNextMonth());
-
-            // Get starting day (today or first day of specified month)
+            // Get first occurrence, for the specified month, of the slot week day; i.e. first monday of July etc.
             LocalDate day = start.with(
                     TemporalAdjusters.nextOrSame(
                             DayOfWeek.of( slot.getDayOfWeek() )));
-            //Until next month add all dates to ArrayList
-            while( day.isBefore( stop ) ) {
-                // Create a list of all possible slots
+            // For each week day in this month create a new entry inside the return list
+            while( day.isBefore( end ) ) {
                 monthlySlots.add(new BookingDTO(slot.getStart(), day, slot.getDayOfWeek(), slot.getId()));
                 // Set up the next loop.
                 day = day.plusWeeks( 1 );
@@ -81,18 +87,27 @@ public class BookedMeetingEJBImpl implements BookedMeetingEJB {
             // If days and times coincide then the slots isn't available
             monthlySlots.removeIf(as -> (bs.getDate().equals(as.getDate())) && (bs.getStart().equals(as.getStart())));
         }
-
         return monthlySlots;
     }
     
+    /**
+     * Method that handle the book requests from the user for a specified slot and day
+     * @param studentID ID of the student that wants to book the slot
+     * @param courseID ID of the course for which the student want to book the meeting
+     * @param dto BookingDTO object containing the slot information
+     * @param offset Offset of the month in which the user wants to book the slot (0 is current month)
+     * @return boolean indicating whether the slot has been successfully booked or not
+     */
     public boolean bookSlot(String studentID, int courseID, BookingDTO dto, int offset){
 
+        // Get all available slots showed to the user
         List<BookingDTO> allSlots = getSlots(courseID, offset);
         if(allSlots == null){
             System.out.println("Error: No slots available");
             return false;
         }
 
+        // Check if the selected meeting ID exists
         String meetingID = null;
         for (BookingDTO slot : allSlots) {
             if(slot.getDate().equals(dto.getDate()) && slot.getStart().equals(dto.getStart())){
@@ -100,26 +115,41 @@ public class BookedMeetingEJBImpl implements BookedMeetingEJB {
             }
         }
         
-        return bookedMeetingDAO.bookSlot(studentID, meetingID, dto, dataSource);
+        // Set the slot as booked inside the DB and return the result of the query
+        return bookedMeetingDAO.bookSlotDAO(studentID, meetingID, dto, dataSource);
     }
     
     public List<StudentBookedMeetingDTO> getBookedMeetingsForStudent(String id){
         return bookedMeetingDAO.getBookedMeetingsForStudentDAO(id, dataSource);
     }
     
+    /**
+     * Method that manage professor requests to un-book the specified meeting with the student
+     * @param bookingID: ID of the meeting to be unbooked
+     * @return boolean value representing the state of the operation: True -> successful, False -> otherwise
+     */
     public boolean removeSlot(String bookingID){
         return bookedMeetingDAO.removeSlotDAO(bookingID, dataSource);
     }
     
+    /**
+     * Method that extracts booked slots for the professor
+     * @param professorID: ID of the professor that want to see booked meetings
+     * @param offset: Offset of the month in which the professor wants to see the booked slots (0 is current month)
+     * @return List of MeetingDTO objects representing booked slots
+     */
     public List<MeetingDTO> getSlots(String professorID, int offset){
+        // Extract starting date
         LocalDate start = LocalDate.now().plusMonths(offset);
-        
         if(offset != 0){
             start = start.withDayOfMonth(1);
         }
         
+        // Set ending interval date
         LocalDate end = start.withDayOfMonth(start.getMonth().length(start.isLeapYear()));
         
+        // Perform the query and return results
         return bookedMeetingDAO.getProfessorBookedSlotsDAO(professorID, start, end, dataSource);
     }
 }
+
