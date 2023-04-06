@@ -3,7 +3,7 @@ package it.unipi.dsmt.student_platform.servlets;
 import it.unipi.dsmt.student_platform.dto.BookingDTO;
 import it.unipi.dsmt.student_platform.dto.LoggedUserDTO;
 import it.unipi.dsmt.student_platform.enums.UserRole;
-import it.unipi.dsmt.student_platform.interfaces.BookingEJB;
+import it.unipi.dsmt.student_platform.interfaces.BookedMeetingEJB;
 import it.unipi.dsmt.student_platform.utility.AccessController;
 import jakarta.ejb.EJB;
 import jakarta.servlet.ServletException;
@@ -18,7 +18,7 @@ import java.util.List;
 public class BookingServlet extends HttpServlet {
 
     @EJB
-    private BookingEJB bookingEJB;
+    private BookedMeetingEJB BookedMeetingEJB;
     
     /**
      * Redefinition of doPost method for booking page. This method is called when the user tries to book a slot showed
@@ -66,7 +66,7 @@ public class BookingServlet extends HttpServlet {
         /* If the action is not specified, get the booking from the database with the current offset since the user is
         * trying to book a slot
          */
-        List<BookingDTO> bDTOs = bookingEJB.getSlots(id, offset);
+        List<BookingDTO> bDTOs = BookedMeetingEJB.getSlots(id, offset);
 
         // Understand which slot has been selected by the user
         int iterator = request.getParameter("timeslot").isEmpty() ? -1 : Integer.parseInt(request.getParameter("timeslot"));
@@ -78,7 +78,7 @@ public class BookingServlet extends HttpServlet {
         }
         
         // Everything is set now, we can perform the DB update to store the newly booked slot
-        boolean ret = bookingEJB.bookSlot(loggedUser.getId(), id, bDTOs.get(iterator), offset);
+        boolean ret = BookedMeetingEJB.bookSlot(loggedUser.getId(), id, bDTOs.get(iterator), offset);
         // Check query response
         if(!ret){
             response.sendRedirect(request.getContextPath() + "/student/booking?id=" + id + "&r=error&offset=" + offset);
@@ -115,7 +115,7 @@ public class BookingServlet extends HttpServlet {
         int offset = request.getParameter("offset") == null ? 0 : Integer.parseInt(request.getParameter("offset"));
         
         // Get available slots of the selected month and return them to the client
-        List<BookingDTO> bDTOs = bookingEJB.getSlots(id, offset);
+        List<BookingDTO> bDTOs = BookedMeetingEJB.getSlots(id, offset);
         
         request.setAttribute("slots", bDTOs);
         request.getRequestDispatcher("/WEB-INF/jsp/student/booking.jsp")

@@ -1,18 +1,15 @@
 package it.unipi.dsmt.student_platform.ejb;
 
-import it.unipi.dsmt.student_platform.dao.BookingDAO;
+import it.unipi.dsmt.student_platform.dao.bookedMeetingDAO;
 import it.unipi.dsmt.student_platform.dto.BookingDTO;
+import it.unipi.dsmt.student_platform.dto.MeetingDTO;
 import it.unipi.dsmt.student_platform.dto.StudentBookedMeetingDTO;
-import it.unipi.dsmt.student_platform.interfaces.BookingEJB;
+import it.unipi.dsmt.student_platform.interfaces.BookedMeetingEJB;
 
 import jakarta.annotation.Resource;
 import jakarta.ejb.Stateless;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
@@ -20,16 +17,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Stateless
-public class BookingEJBImpl implements BookingEJB {
+public class BookedMeetingEJBImpl implements BookedMeetingEJB {
     
     /**
      * Datasource used to access the database.
      */
     @Resource(lookup = "jdbc/StudentPlatformPool")
     private DataSource dataSource;
-    BookingDAO bookingDAO = new BookingDAO();
+    bookedMeetingDAO bookedMeetingDAO = new bookedMeetingDAO();
 
-    // This method extract required data of a specific course of known id
+
     public List<BookingDTO> getSlots(int id, int offset){
         LocalDate start = LocalDate.now().plusMonths(offset);
         
@@ -41,9 +38,9 @@ public class BookingEJBImpl implements BookingEJB {
         LocalDate end = start.withDayOfMonth(start.getMonth().length(start.isLeapYear()));
 
         // Get data
-        List<BookingDTO> bookedSlots = bookingDAO.getBookedSlots(start, end, id, dataSource);
+        List<BookingDTO> bookedSlots = bookedMeetingDAO.getBookedSlots(start, end, id, dataSource);
 
-        List<BookingDTO> allSlots = bookingDAO.getAllPossibleSlots(id, dataSource);
+        List<BookingDTO> allSlots = bookedMeetingDAO.getAllPossibleSlots(id, dataSource);
 
         if(allSlots == null){
             System.out.println("Error: No slots available");
@@ -87,9 +84,7 @@ public class BookingEJBImpl implements BookingEJB {
 
         return monthlySlots;
     }
-
-
-    @Override
+    
     public boolean bookSlot(String studentID, int courseID, BookingDTO dto, int offset){
 
         List<BookingDTO> allSlots = getSlots(courseID, offset);
@@ -105,11 +100,26 @@ public class BookingEJBImpl implements BookingEJB {
             }
         }
         
-        return bookingDAO.bookSlot(studentID, meetingID, dto, dataSource);
+        return bookedMeetingDAO.bookSlot(studentID, meetingID, dto, dataSource);
     }
-
-    @Override
+    
     public List<StudentBookedMeetingDTO> getBookedMeetingsForStudent(String id){
-        return bookingDAO.getBookedMeetingsForStudentDAO(id, dataSource);
+        return bookedMeetingDAO.getBookedMeetingsForStudentDAO(id, dataSource);
+    }
+    
+    public boolean removeSlot(String bookingID){
+        return bookedMeetingDAO.removeSlotDAO(bookingID, dataSource);
+    }
+    
+    public List<MeetingDTO> getSlots(String professorID, int offset){
+        LocalDate start = LocalDate.now().plusMonths(offset);
+        
+        if(offset != 0){
+            start = start.withDayOfMonth(1);
+        }
+        
+        LocalDate end = start.withDayOfMonth(start.getMonth().length(start.isLeapYear()));
+        
+        return bookedMeetingDAO.getProfessorBookedSlotsDAO(professorID, start, end, dataSource);
     }
 }

@@ -125,10 +125,10 @@ public class UsersServlet extends HttpServlet {
     private void update (HttpServletRequest request, HttpServletResponse response, UserRole role, String searchInput) throws IOException, ServletException {
         String index_str =  request.getParameter("offset");
         int index = 0;
-        System.out.println("offset taken with value: " + index_str);
+        
         if(index_str != null)
             index = Integer.parseInt(index_str);
-        System.out.println("index parsed");
+
         request.setAttribute("offset", index);
         
         ArrayList<GeneralUserDTO> users = (ArrayList<GeneralUserDTO>) userEJB.searchUsers(searchInput, role, index);
@@ -179,7 +179,6 @@ public class UsersServlet extends HttpServlet {
         if (AccessController.checkAccess(request, response, UserRole.admin) == null) {
             return;
         }
-        System.out.println("Entering Update function");
         update(request, response, UserRole.student, "");
         
     }

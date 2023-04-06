@@ -3,7 +3,7 @@ package it.unipi.dsmt.student_platform.servlets;
 import it.unipi.dsmt.student_platform.dto.LoggedUserDTO;
 import it.unipi.dsmt.student_platform.dto.MeetingDTO;
 import it.unipi.dsmt.student_platform.enums.UserRole;
-import it.unipi.dsmt.student_platform.interfaces.MeetingEJB;
+import it.unipi.dsmt.student_platform.interfaces.BookedMeetingEJB;
 import it.unipi.dsmt.student_platform.utility.AccessController;
 import jakarta.ejb.EJB;
 import jakarta.servlet.ServletException;
@@ -18,7 +18,7 @@ import java.util.List;
 public class MeetingServlet extends HttpServlet {
 
     @EJB
-    private MeetingEJB meetingEJB;
+    private BookedMeetingEJB meetingEJB;
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {

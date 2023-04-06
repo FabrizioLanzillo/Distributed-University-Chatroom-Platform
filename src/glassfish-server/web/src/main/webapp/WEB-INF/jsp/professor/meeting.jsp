@@ -9,7 +9,6 @@
     try{
         bookedSlots = (ArrayList<MeetingDTO>)request.getAttribute("bookedSlots");
     }catch(Exception e){
-        System.out.println(e.getMessage());
 		bookedSlots = new ArrayList<>();
     }
 
