@@ -1,14 +1,17 @@
+<%--
+    Webapp login page
+--%>
 <%@ page import="it.unipi.dsmt.student_platform.utility.ClientRedirector" %>
 <%@ page import="it.unipi.dsmt.student_platform.dto.LoggedUserDTO" %>
 <%@ page import="it.unipi.dsmt.student_platform.utility.AccessController" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <title>PlaceholderName</title>
+    <title>StudentPortal</title>
     <!-- TODO css + icon -->
 </head>
 <body>
-<h1>Welcome to PlaceholderName!</h1>
+<h1>Welcome to StudentPortal!</h1>
 
 <div>
     <h2>Login</h2>

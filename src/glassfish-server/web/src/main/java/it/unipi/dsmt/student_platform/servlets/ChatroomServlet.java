@@ -10,6 +10,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+/**
+ * Servlet which redirects the user to the chatroom JSP page.
+ */
 @WebServlet(name = "ChatroomServlet", value = "/student/chatroom")
 public class ChatroomServlet extends HttpServlet {
 	
@@ -21,6 +24,7 @@ public class ChatroomServlet extends HttpServlet {
 		}
 		
 		// TODO ? get information about chatroom
+		// TODO check if course exists
 		
 		// Redirect to portal jsp page
 		request.getRequestDispatcher("/WEB-INF/jsp/student/chatroom.jsp")

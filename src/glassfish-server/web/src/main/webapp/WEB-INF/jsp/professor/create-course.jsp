@@ -1,3 +1,7 @@
+<%--
+    Website page for creating a new course.
+--%>
+
 <html>
 
 <head>

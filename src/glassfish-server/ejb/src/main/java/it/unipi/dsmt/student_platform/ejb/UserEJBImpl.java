@@ -16,20 +16,31 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * EJBs responsible for handling all the business logic related to the user management.
+ */
 @Stateless
 public class UserEJBImpl implements UserEJB {
 	
+	// Data source to MySQL database
 	@Resource(lookup = "jdbc/StudentPlatformPool")
 	private DataSource dataSource;
 	
+	/**
+	 * Execute login procedure.
+	 * @param loginInformation object containing the user's login data.
+	 * @return a LoggedUserDTO object if login is successful, null otherwise
+	 */
 	@Override
 	public @Nullable LoggedUserDTO login (@NotNull LoginInformationDTO loginInformation) {
 		
 		try (Connection connection = dataSource.getConnection()) {
 			// Check if username and password is correct
-			String query = "SELECT BIN_TO_UUID(id) AS id FROM "
-					+ loginInformation.getRole().name()
-					+ " WHERE `username` = ? AND `password` = ?";
+			String query = String.format(
+					"SELECT BIN_TO_UUID(id) AS id " +
+						"FROM %s WHERE `username` = ? AND `password` = ?",
+					loginInformation.getRole().name()
+			);
 			
 			try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 				// Set parameters in prepared statement

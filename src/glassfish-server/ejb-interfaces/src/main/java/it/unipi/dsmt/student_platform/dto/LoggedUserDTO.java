@@ -5,6 +5,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
+/**
+ * DTO that stores the necessary information to identify a logged user
+ * in the application.
+ */
 public class LoggedUserDTO implements Serializable {
 	private String id;
 	private String username;
