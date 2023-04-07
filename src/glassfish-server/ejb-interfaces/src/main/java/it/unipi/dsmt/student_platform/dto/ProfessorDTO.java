@@ -4,6 +4,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
+/**
+ * DTO which represents a professor
+ */
 public class ProfessorDTO implements Serializable {
 
 	private String name;

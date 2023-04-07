@@ -5,6 +5,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
+/**
+ * DTO used for sending the user's login information to a remote EJB object.
+ */
 public class LoginInformationDTO implements Serializable {
 	private String username;
 	private String password;

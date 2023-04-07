@@ -14,12 +14,24 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+/**
+ * Servlet handling GET and POST requests for the webpage for creating a new course.
+ */
 @WebServlet(name = "CreateCourseServlet", value = "/professor/create-course")
 public class CreateCourseServlet extends HttpServlet {
+	
+	public static final String attributeSuccessfulCreation = "successful-creation";
 	
 	@EJB
 	CourseEJB courseEJB;
 	
+	/**
+	 * Forward request to JSP page
+	 * @param request HttpServletRequest object
+	 * @param response HttpServletResponse object
+	 * @throws ServletException if forwarding fails
+	 * @throws IOException if forwarding fails
+	 */
 	private void redirectToJsp (HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException
 	{
@@ -27,6 +39,13 @@ public class CreateCourseServlet extends HttpServlet {
 				.forward(request, response);
 	}
 	
+	/**
+	 * Check user privileges and forward request to JSP page.
+	 * @param request HttpServletRequest object
+	 * @param response HttpServletResponse object
+	 * @throws ServletException if forwarding fails
+	 * @throws IOException if forwarding fails
+	 */
 	@Override
 	public void doGet (HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException
@@ -38,6 +57,13 @@ public class CreateCourseServlet extends HttpServlet {
 		redirectToJsp(request, response);
 	}
 	
+	/**
+	 * Handle a POST request, i.e. create a new course.
+	 * @param request HttpServletRequest object
+	 * @param response HttpServletResponse object
+	 * @throws ServletException if forwarding fails
+	 * @throws IOException if forwarding or redirection fails
+	 */
 	@Override
 	public void doPost (HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException
@@ -48,17 +74,17 @@ public class CreateCourseServlet extends HttpServlet {
 			return;
 		}
 		
-		// Fetch GET parameters
+		// Fetch POST parameters
 		String _name = request.getParameter("name");
 		String _description = request.getParameter("description");
 		if (_name == null || _description == null) {
-			request.setAttribute("successful-creation", false);
+			request.setAttribute(attributeSuccessfulCreation, false);
 			redirectToJsp(request, response);
 			return;
 		}
 		String _professorId = loggedUser.getId();
 		if (_professorId == null) {
-			request.setAttribute("successful-creation", false);
+			request.setAttribute(attributeSuccessfulCreation, false);
 			redirectToJsp(request, response);
 			return;
 		}
@@ -73,7 +99,7 @@ public class CreateCourseServlet extends HttpServlet {
 		);
 		
 		// Return to jsp page and notify operation result
-		request.setAttribute("successful-creation", successful);
+		request.setAttribute(attributeSuccessfulCreation, successful);
 		redirectToJsp(request, response);
 	}
 	

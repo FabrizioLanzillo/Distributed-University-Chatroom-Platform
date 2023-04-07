@@ -10,17 +10,21 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+/**
+ * Servlet handling GET and POST requests for the professor's portal webpage.
+ */
 @WebServlet(name = "ProfessorPortalServlet", value = "/professor/portal")
 public class ProfessorPortalServlet extends HttpServlet {
 	
 	public void doGet (HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException
 	{
+		// Check if logged user is a professor
 		if (AccessController.checkAccess(request, response, UserRole.professor) == null) {
 			return;
 		}
 		
-		// Redirect to portal jsp page
+		// Forward request to JSP page
 		request.getRequestDispatcher("/WEB-INF/jsp/professor/portal.jsp")
 				.forward(request, response);
 	}

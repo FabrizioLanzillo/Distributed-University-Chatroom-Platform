@@ -8,6 +8,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+/**
+ * Interface for the EJBs which handle all the business logic related to the courses
+ */
 @Remote
 public interface CourseEJB {
 	
@@ -17,9 +20,11 @@ public interface CourseEJB {
 	List<MinimalCourseDTO> searchCourses (String name);
 	List<MinimalCourseDTO> searchCoursesForProfessor (String name, String professorId);
 	List<MinimalCourseDTO> getAllCourses ();
-	public List<MinimalCourseDTO> getAllCoursesForProfessor (String professorId);
+	List<MinimalCourseDTO> getAllCoursesForProfessor (String professorId);
 	List<MinimalCourseDTO> getStarredCourses(String id);
+	
 	boolean addStarredCourse(@NotNull String studentId, int courseId);
 	boolean removeStarredCourse(@NotNull String studentId, int courseId);
+	
 	boolean deleteCourse(int id);
 }
