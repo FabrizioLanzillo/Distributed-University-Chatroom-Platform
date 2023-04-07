@@ -1,11 +1,39 @@
 -module(chatroom_websocket).
--behavior(cowboy_handler).
 
--export([init/2]).
+-export([init/2, websocket_handle/2, websocket_info/2, terminate/3]).
+-include("chat.hrl").
 
-init(Req0, State) ->
-    Req = cowboy_req:reply(200,
-        #{<<"content-type">> => <<"text/plain">>},
-        <<"Hello Erlang!">>,
-        Req0),
-    {ok, Req, State}.
+
+
+% Cowboy will call init/2 whenever a request is received,
+% in order to establish a websocket connection.
+init(Req, Opts) ->
+    % Switch to cowboy_websocket module
+    {cowboy_websocket, Req, Opts}.
+
+
+
+% Cowboy will call websocket_handle/2 whenever a text, binary, ping or pong frame arrives from the client.
+websocket_handle(Frame = {text, _Message}, State) ->
+    {[Frame], State};
+
+websocket_handle(_Frame, State) ->
+    {ok, State}.
+
+
+
+% Cowboy will call websocket_info/2 whenever an Erlang message arrives 
+% (=> from another Erlang process).
+websocket_info({send_message_chatroom, _ServerPid, Msg}, State) ->
+    {[{text, Msg}], State};
+
+websocket_info(_Info, State) ->
+    {ok, State}.
+
+
+
+% Cowboy will call terminate/3 with the reason for the termination of the connection. 
+terminate(_Reason, _Req, _State) ->
+    % Logout user from chatroom
+    gen_server:cast(?CHATROOM_SERVER, {logout, self()}),
+    ok.

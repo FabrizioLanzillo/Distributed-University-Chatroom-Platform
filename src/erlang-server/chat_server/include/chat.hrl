@@ -1,0 +1,1 @@
+-define(CHATROOM_SERVER, chatroom_server).
