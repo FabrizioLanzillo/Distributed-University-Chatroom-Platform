@@ -5,7 +5,8 @@
   {mod, {chat_server_app, []}},
   {applications,
    [kernel,
-    stdlib
+    stdlib,
+    cowboy
    ]},
   {env,[]},
   {modules, []},

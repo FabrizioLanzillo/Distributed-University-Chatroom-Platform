@@ -34,9 +34,9 @@ init([]) ->
     ChatroomServerChild = #{id => chatroom_server,
                             start => {chatroom_server, start_link, []},
                             restart => permanent},
-    CourseManagerChild = #{id => course_manager, 
-                           start => {course_manager, start_link, []},
-                           restart => permanent},
-    ChildSpecs = [ChatroomServerChild, CourseManagerChild],
+    % CourseManagerChild = #{id => course_manager, 
+    %                        start => {course_manager, start_link, []},
+    %                        restart => permanent},
+    ChildSpecs = [ChatroomServerChild],
     % Return value
     {ok, {SupFlags, ChildSpecs}}.
