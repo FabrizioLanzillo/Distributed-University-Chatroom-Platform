@@ -4,7 +4,6 @@
 -include("chat.hrl").
 
 
-
 % Cowboy will call init/2 whenever a request is received,
 % in order to establish a websocket connection.
 init(Req, Opts) ->
@@ -14,9 +13,32 @@ init(Req, Opts) ->
 
 % TODO
 % Cowboy will call websocket_handle/2 whenever a text, binary, ping or pong frame arrives from the client.
-websocket_handle(Frame = {text, _Message}, State) ->
+websocket_handle(Frame = {text, _Message}, _State) ->
     io:format("Received ~p~n", [Frame]),
-    {[Frame], State};
+    
+    Result = jsone:try_decode(_Message),
+
+    case element(1, Result) of
+        ok ->
+            Map = element(2, Result),
+            Opcode = maps:find("opcode", Map),
+
+            case Opcode of
+                <<"LOGIN">> ->
+                    io:format("login request received~n"),
+                    Course = maps:find("course", Map),
+                    gen_server:cast(?CHATROOM_SERVER, {login, {self(), Course}});
+                <<"PING">> ->
+                    io:format("ping request received~n"),
+                    gen_server:cast(?CHATROOM_SERVER, {ping, {self()}});
+                <<"LOGOUT">> ->
+                    io:format("logout request received~n"),
+                    gen_server:cast(?CHATROOM_SERVER, {logout, {self()}})
+            end;
+        error ->
+            io:format(element(2, Result))
+    end,
+    {[Frame], _State};
 
 websocket_handle(_Frame, State) ->
     {ok, State}.
