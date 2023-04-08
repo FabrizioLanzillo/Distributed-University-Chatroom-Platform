@@ -27,7 +27,8 @@ websocket_handle(Frame = {text, _Message}, _State) ->
                 <<"LOGIN">> ->
                     io:format("login request received~n"),
                     Course = maps:find("course", Map),
-                    gen_server:cast(?CHATROOM_SERVER, {login, {self(), Course}});
+                    Username = maps:find("username", Map),
+                    gen_server:cast(?CHATROOM_SERVER, {login, {self(), Course, Username}});
                 <<"PING">> ->
                     io:format("ping request received~n"),
                     gen_server:cast(?CHATROOM_SERVER, {ping, {self()}});
