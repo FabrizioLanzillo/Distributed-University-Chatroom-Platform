@@ -43,6 +43,10 @@ handle_call(Req, From, State) ->
 	{reply, hello, State}.
 
 
+% Handle cast for login
+handle_cast({login, {Pid, Course}}, State) ->
+  gen_server:call(?COURSE_MANAGER, {join_course, Course, Pid}),
+  {noreply, State};
 
 % Handle cast for logout
 handle_cast({logout, Pid}, State) ->
