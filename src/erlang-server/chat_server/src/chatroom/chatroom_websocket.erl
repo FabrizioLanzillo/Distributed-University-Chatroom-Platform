@@ -55,8 +55,8 @@ handle_websocket_frame(Map, State) ->
 handle_login(Map, State) ->
     io:format("login request received~n"),
     {ok, Course} = maps:find(<<"course">>, Map),
-    {ok, Username} = binary_to_list(maps:find(<<"username">>, Map)),
-    gen_server:cast(?CHATROOM_SERVER, {login, {self(), Course, Username}}),
+    {ok, Username} = maps:find(<<"username">>, Map),
+    gen_server:cast(?CHATROOM_SERVER, {login, {self(), Course, binary_to_list(Username)}}),
     {ok, State}.
 
 
@@ -69,11 +69,11 @@ handle_update_online_users(Map, State) ->
     Message = jsone:encode(
         #{
             <<"opcode">> => <<"UPDATE_ONLINE_USERS">>,
-            <<"list">> => <<Users>>
+            <<"list">> => Users
         }
     ),
-    Send = jsone:try_encode(Message),
-    {[{text, Send}], State}.
+    io:format("Message ~p~n", [Message]),
+    {[{text, Message}], State}.
 
 
 
@@ -88,24 +88,27 @@ handle_logout(State) ->
 % Handle a new message sent in the chatroom
 handle_chat_message(Map, State) ->
     io:format("message received~n"),
-    {ok, Username} = binary_to_list(maps:find(<<"username">>, Map)),
-    {ok, Text} = binary_to_list(maps:find(<<"text">>, Map)),
-    gen_server:cast(?CHATROOM_SERVER, {message, {self(), Username, Text}}),
+    {ok, Username} = maps:find(<<"username">>, Map),
+    {ok, Text} = maps:find(<<"text">>, Map),
+    {ok, Course} = maps:find(<<"course">>, Map),
+    gen_server:cast(
+        ?CHATROOM_SERVER, 
+        {send_message, {self(), binary_to_list(Username), Course, binary_to_list(Text)}}
+    ),
     {ok, State}.
 
 
-
-% TODO
 % Cowboy will call websocket_info/2 whenever an Erlang message arrives 
 % (=> from another Erlang process).
-websocket_info({send_message_chatroom, _ServerPid, Msg}, State) ->
+websocket_info({send_message, Msg}, State) ->
+    io:format("chatroom_websocket:websocket_info(send_message) => Send message ~p~n", [Msg]),
     {[{text, Msg}], State};
 
-websocket_info(_Info, State) ->
+websocket_info(Info, State) ->
+    io:format("chatroom_websocket:websocket_info(?) => Received info ~p~n", [Info]),
     {ok, State}.
 
 
-% TODO
 % Cowboy will call terminate/3 with the reason for the termination of the connection. 
 terminate(_Reason, _Req, _State) ->
     % Logout user from chatroom

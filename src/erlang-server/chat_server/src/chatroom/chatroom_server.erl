@@ -37,6 +37,11 @@ init(_) ->
 
 
 
+% Handle request for updating online users
+handle_call({update_online_users, {Pid, CourseId}}, _From, State) when is_pid(Pid) ->
+	io:format("chatroom_server: get list of online users for course ~p~n", [CourseId]),
+	Users = gen_server:call(?COURSE_MANAGER, {get_online_users, CourseId}), % TODO write ad hoc function
+	{reply, Users, State};
 
 % Handle any call
 handle_call(Req, From, State) ->
@@ -47,8 +52,8 @@ handle_call(Req, From, State) ->
 
 
 % Handle cast for login
-handle_cast({login, {Pid, Course, _Username}}, State) ->
-	io:format("chatroom_server: User ~p is executing login~n", [Pid]),
+handle_cast({login, {Pid, Course, Username}}, State) ->
+	io:format("chatroom_server: User ~p (~p) is executing login~n", [Pid, Username]),
   gen_server:call(?COURSE_MANAGER, {join_course, Course, Pid}),
   {noreply, State};
 
@@ -73,13 +78,13 @@ handle_cast({send_message, {PidSender, SenderName, CourseId, Text}}, State) ->
 	case gen_server:call(?COURSE_MANAGER, {get_online_users, CourseId}) of
 
 		List when is_list(List), List /= [] ->
-			io:format("chatroom_server: send message to ~p~n", List),
+			io:format("chatroom_server: send message to ~p~n", [List]),
 			% Prepare the message as a JSON document
 			Message = jsone:encode(
 				#{
 					<<"opcode">> => <<"MESSAGE">>,
-					<<"sender">> => <<SenderName>>,
-					<<"text">> => <<Text>>
+					<<"sender">> => list_to_binary(SenderName),
+					<<"text">> => list_to_binary(Text)
 				}
 			),
 			% Send the message inside the chatroom
@@ -93,12 +98,6 @@ handle_cast({send_message, {PidSender, SenderName, CourseId, Text}}, State) ->
 	end,
 
 	{noreply, State};
-
-
-handle_cast({update_online_users, {Pid, CourseId}}, State) when is_pid(Pid) ->
-	io:format("chatroom_server: get list of online users for course ~p~n", [CourseId]),
-	Users = gen_server:call(?COURSE_MANAGER, {get_online_users, CourseId}), % TODO write ad hoc function
-	{reply, Users, State};
 
 
 % Handle badly-formatted cast requests
@@ -123,8 +122,9 @@ send_message_in_chatroom([], _PidSender, _Message) ->
 	% No more users to send the message => stop recursion
 	ok;
 
-send_message_in_chatroom([PidReceiver | T], PidSender, Message) when PidReceiver /= PidSender ->
+send_message_in_chatroom([{PidReceiver, _} | T], PidSender, Message) when PidReceiver /= PidSender ->
 	% Send the message to all users except from the sender
+	io:format("chatroom_server:send_message_in_chatroom => Sending message ~p to ~p~n", [Message, PidSender]),
 	PidReceiver ! {send_message, Message},
 	send_message_in_chatroom(T, PidSender, Message);
 

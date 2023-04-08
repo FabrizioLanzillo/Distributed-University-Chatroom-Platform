@@ -18,6 +18,7 @@ handle_call({join_course, Sport, Pid}, _From, Sports) ->
 
 handle_call({get_online_users, Sport}, _From, Sports) ->
   Response = ets:match_object(Sports, {'_', Sport}),
+  io:format("course_manager:handle_call(get_online_users) => Response ~p~n", [Response]),
   {reply, Response, Sports};
 
 handle_call({logout, Pid}, _From, Sports) ->
