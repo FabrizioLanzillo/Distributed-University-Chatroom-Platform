@@ -37,16 +37,20 @@ init(_) ->
 
 
 
+
 % Handle any call
 handle_call(Req, From, State) ->
     io:format("chatroom_server: invoked call from ~p with request message ~p~n", [From, Req]),
 	{reply, hello, State}.
 
 
+
+
 % Handle cast for login
 handle_cast({login, {Pid, Course}}, State) ->
   gen_server:call(?COURSE_MANAGER, {join_course, Course, Pid}),
   {noreply, State};
+
 
 % Handle cast for logout
 handle_cast({logout, Pid}, State) ->
@@ -55,6 +59,7 @@ handle_cast({logout, Pid}, State) ->
 	% be unsubscribe from the course chatroom
 	gen_server:cast(?COURSE_MANAGER, {logout, Pid}),
 	{noreply, State};
+
 
 % Handle cast for a "send message" request
 handle_cast({send_message, {PidSender, SenderName, CourseId, Text}}, State) ->
@@ -88,10 +93,18 @@ handle_cast({send_message, {PidSender, SenderName, CourseId, Text}}, State) ->
 
 	{noreply, State};
 
+
+handle_cast({update_online_users, {Pid, CourseId}}, State) when is_pid(Pid) ->
+	io:format("chatroom_server: get list of online users for course ~p~n", [CourseId]),
+	Users = gen_server:call(?COURSE_MANAGER, {get_online_users, CourseId}), % TODO write ad hoc function
+	{reply, Users, State};
+
+
 % Handle badly-formatted cast requests
 handle_cast(Request, State) ->
     io:format("chatroom_server: invoked cast with the following request message: ~p~n", [Request]),
 	{noreply, State}.
+
 
 
 

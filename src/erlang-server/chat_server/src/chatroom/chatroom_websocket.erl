@@ -40,7 +40,7 @@ handle_websocket_frame(Map, State) ->
         <<"LOGIN">> ->
             handle_login(Map, State);
         <<"UPDATE_ONLINE_USERS">> ->
-            handle_update_online_users(State);
+            handle_update_online_users(Map, State);
         <<"LOGOUT">> ->
             handle_logout(State);
         <<"MESSAGE">> ->
@@ -61,9 +61,10 @@ handle_login(Map, State) ->
 
 
 % Handle a request for updating online users
-handle_update_online_users(State) ->
+handle_update_online_users(Map, State) ->
     io:format("update_online_users request received~n"),
-    Users = gen_server:call(?CHATROOM_SERVER, {update_online_users, {self()}}),
+    {ok, Course} = maps:find("course", Map),
+    Users = gen_server:call(?CHATROOM_SERVER, {update_online_users, {self(), Course}}),
     Message = jsone:encode(
         #{
             <<"opcode">> => <<"UPDATE_ONLINE_USERS">>,
