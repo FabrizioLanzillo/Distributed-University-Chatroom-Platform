@@ -17,44 +17,80 @@ websocket_handle(Frame = {text, _Message}, State) ->
     
     Result = jsone:try_decode(_Message),
 
-    case element(1, Result) of
+    Response = case element(1, Result) of
         ok ->
             Map = element(2, Result),
-            Opcode = maps:find("opcode", Map),
-
-            case Opcode of
-                <<"LOGIN">> ->
-                    io:format("login request received~n"),
-                    Course = maps:find("course", Map),
-                    Username = maps:find("username", Map),
-                    gen_server:cast(?CHATROOM_SERVER, {login, {self(), Course, Username}});
-                <<"UPDATE_ONLINE_USERS">> ->
-                    io:format("update_online_users request received~n"),
-                    Users = gen_server:call(?CHATROOM_SERVER, {update_online_users, {self()}}),
-                    Message = jsone:encode(
-                        #{
-                            <<"opcode">> => <<"UPDATE_ONLINE_USERS">>,
-                            <<"list">> => <<Users>>
-                        }
-                    ),
-                    Send = jsone:try_encode(Message),
-                    {[{text, Send}], State};
-                <<"LOGOUT">> ->
-                    io:format("logout request received~n"),
-                    gen_server:cast(?CHATROOM_SERVER, {logout, {self()}});
-                <<"MESSAGE">> ->
-                    io:format("message received~n"),
-                    Username = maps:find("username", Map),
-                    Text = maps:find("text", Map),
-                    gen_server:cast(?CHATROOM_SERVER, {message, {self(), Username, Text}})
-            end;
+            handle_websocket_frame(Map, State);
         error ->
-            io:format(element(2, Result))
+            io:format(element(2, Result)),
+            {ok, State}
     end,
-    {ok, State};
+    Response;
 
 websocket_handle(_Frame, State) ->
     {ok, State}.
+
+
+
+% Handle a frame after JSON decoding
+handle_websocket_frame(Map, State) ->
+    {ok, Opcode} = maps:find("opcode", Map),
+
+    Response = case Opcode of
+        <<"LOGIN">> ->
+            handle_login(Map, State);
+        <<"UPDATE_ONLINE_USERS">> ->
+            handle_update_online_users(State);
+        <<"LOGOUT">> ->
+            handle_logout(State);
+        <<"MESSAGE">> ->
+            handle_chat_message(Map, State)
+    end,
+    Response.
+
+
+
+% Handle a login request
+handle_login(Map, State) ->
+    io:format("login request received~n"),
+    {ok, Course} = maps:find("course", Map),
+    {ok, Username} = maps:find("username", Map),
+    gen_server:cast(?CHATROOM_SERVER, {login, {self(), Course, Username}}),
+    {ok, State}.
+
+
+
+% Handle a request for updating online users
+handle_update_online_users(State) ->
+    io:format("update_online_users request received~n"),
+    Users = gen_server:call(?CHATROOM_SERVER, {update_online_users, {self()}}),
+    Message = jsone:encode(
+        #{
+            <<"opcode">> => <<"UPDATE_ONLINE_USERS">>,
+            <<"list">> => <<Users>>
+        }
+    ),
+    Send = jsone:try_encode(Message),
+    {[{text, Send}], State}.
+
+
+
+% Handle a request for logout
+handle_logout(State) ->
+    io:format("logout request received~n"),
+    gen_server:cast(?CHATROOM_SERVER, {logout, {self()}}),
+    {ok, State}.
+
+
+
+% Handle a new message sent in the chatroom
+handle_chat_message(Map, State) ->
+    io:format("message received~n"),
+    {ok, Username} = maps:find("username", Map),
+    {ok, Text} = maps:find("text", Map),
+    gen_server:cast(?CHATROOM_SERVER, {message, {self(), Username, Text}}),
+    {ok, State}.
+
 
 
 % TODO
