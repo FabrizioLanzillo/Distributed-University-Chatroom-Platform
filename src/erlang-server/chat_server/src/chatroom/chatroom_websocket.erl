@@ -34,7 +34,8 @@ websocket_handle(_Frame, State) ->
 
 % Handle a frame after JSON decoding
 handle_websocket_frame(Map, State) ->
-    {ok, Opcode} = maps:find("opcode", Map),
+    io:format("Map is ~p~n", [Map]),
+    {ok, Opcode} = maps:find(<<"opcode">>, Map),
 
     Response = case Opcode of
         <<"LOGIN">> ->
@@ -53,8 +54,8 @@ handle_websocket_frame(Map, State) ->
 % Handle a login request
 handle_login(Map, State) ->
     io:format("login request received~n"),
-    {ok, Course} = maps:find("course", Map),
-    {ok, Username} = maps:find("username", Map),
+    {ok, Course} = maps:find(<<"course">>, Map),
+    {ok, Username} = binary_to_list(maps:find(<<"username">>, Map)),
     gen_server:cast(?CHATROOM_SERVER, {login, {self(), Course, Username}}),
     {ok, State}.
 
@@ -63,7 +64,7 @@ handle_login(Map, State) ->
 % Handle a request for updating online users
 handle_update_online_users(Map, State) ->
     io:format("update_online_users request received~n"),
-    {ok, Course} = maps:find("course", Map),
+    {ok, Course} = maps:find(<<"course">>, Map),
     Users = gen_server:call(?CHATROOM_SERVER, {update_online_users, {self(), Course}}),
     Message = jsone:encode(
         #{
@@ -87,8 +88,8 @@ handle_logout(State) ->
 % Handle a new message sent in the chatroom
 handle_chat_message(Map, State) ->
     io:format("message received~n"),
-    {ok, Username} = maps:find("username", Map),
-    {ok, Text} = maps:find("text", Map),
+    {ok, Username} = binary_to_list(maps:find(<<"username">>, Map)),
+    {ok, Text} = binary_to_list(maps:find(<<"text">>, Map)),
     gen_server:cast(?CHATROOM_SERVER, {message, {self(), Username, Text}}),
     {ok, State}.
 

@@ -47,7 +47,8 @@ handle_call(Req, From, State) ->
 
 
 % Handle cast for login
-handle_cast({login, {Pid, Course}}, State) ->
+handle_cast({login, {Pid, Course, _Username}}, State) ->
+	io:format("chatroom_server: User ~p is executing login~n", [Pid]),
   gen_server:call(?COURSE_MANAGER, {join_course, Course, Pid}),
   {noreply, State};
 
