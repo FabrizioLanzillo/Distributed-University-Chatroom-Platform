@@ -2,7 +2,7 @@
 %% Module that instantiate a chatroom server using Cowboy library.
 %%%-------------------------------------------------------------------
 -module(chatroom_server).
--behaviour(gen_server).
+-behavior(gen_server).
 -include("chat.hrl").
 
 -export([start_link/0, init/1, handle_cast/2, handle_call/3, terminate/2]).
@@ -43,6 +43,10 @@ handle_call(Req, From, State) ->
 	{reply, hello, State}.
 
 
+% Handle cast for login
+handle_cast({login, {Pid, Course}}, State) ->
+  gen_server:call(?COURSE_MANAGER, {join_course, Course, Pid}),
+  {noreply, State};
 
 % Handle cast for logout
 handle_cast({logout, Pid}, State) ->
