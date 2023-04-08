@@ -11,9 +11,8 @@ init(Req, Opts) ->
     {cowboy_websocket, Req, Opts}.
 
 
-% TODO
 % Cowboy will call websocket_handle/2 whenever a text, binary, ping or pong frame arrives from the client.
-websocket_handle(Frame = {text, _Message}, _State) ->
+websocket_handle(Frame = {text, _Message}, State) ->
     io:format("Received ~p~n", [Frame]),
     
     Result = jsone:try_decode(_Message),
@@ -29,17 +28,30 @@ websocket_handle(Frame = {text, _Message}, _State) ->
                     Course = maps:find("course", Map),
                     Username = maps:find("username", Map),
                     gen_server:cast(?CHATROOM_SERVER, {login, {self(), Course, Username}});
-                <<"PING">> ->
-                    io:format("ping request received~n"),
-                    gen_server:cast(?CHATROOM_SERVER, {ping, {self()}});
+                <<"UPDATE_ONLINE_USERS">> ->
+                    io:format("update_online_users request received~n"),
+                    Users = gen_server:call(?CHATROOM_SERVER, {update_online_users, {self()}}),
+                    Message = jsone:encode(
+                        #{
+                            <<"opcode">> => <<"UPDATE_ONLINE_USERS">>,
+                            <<"list">> => <<Users>>
+                        }
+                    ),
+                    Send = jsone:try_encode(Message),
+                    {[{text, Send}], State};
                 <<"LOGOUT">> ->
                     io:format("logout request received~n"),
-                    gen_server:cast(?CHATROOM_SERVER, {logout, {self()}})
+                    gen_server:cast(?CHATROOM_SERVER, {logout, {self()}});
+                <<"MESSAGE">> ->
+                    io:format("message received~n"),
+                    Username = maps:find("username", Map),
+                    Text = maps:find("text", Map),
+                    gen_server:cast(?CHATROOM_SERVER, {message, {self(), Username, Text}})
             end;
         error ->
             io:format(element(2, Result))
     end,
-    {[Frame], _State};
+    {ok, State};
 
 websocket_handle(_Frame, State) ->
     {ok, State}.
