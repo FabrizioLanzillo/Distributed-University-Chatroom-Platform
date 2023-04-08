@@ -2,7 +2,7 @@
 %% Module that instantiate a chatroom server using Cowboy library.
 %%%-------------------------------------------------------------------
 -module(chatroom_server).
--behaviour(gen_server).
+-behavior(gen_server).
 -include("chat.hrl").
 
 -export([start_link/0, init/1, handle_cast/2, handle_call/3, terminate/2]).
