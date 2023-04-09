@@ -27,7 +27,7 @@ add_student(Course, OnlineStudentPid) ->
 	A = fun() ->
 		io:format("[MNESIA] Check if the pid of the student: ~s is already in a chatroom ~n", [OnlineStudentPid]), %TODO controllare che tipo è il pid
 		NewStudent = #online_students{course_name='$1', student_pid = '$2'},
-		Guard = {'==', '$2', Online_student_pid},
+		Guard = {'==', '$2', OnlineStudentPid},
 		NewStudentCheck = mnesia:select(online_students, [{NewStudent, [Guard], [['$1', '$2']]}]),
 
 		io:format("[MNESIA] Check result: ~p~n", [NewStudentCheck]),
