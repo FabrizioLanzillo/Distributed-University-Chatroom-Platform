@@ -8,9 +8,9 @@
 
 mnesia_start() ->
 	% Create mnesia schema if doesn't exists
-	result = mnesia:create_schema([node(), 'TODO']), %TODO
+	Result = mnesia:create_schema([node(), 'TODO']), %TODO
 	mnesia:start(),
-	case result of
+	case Result of
 		ok->
 			io:format("[MNESIA] Mnesia DB started ~n"),
 			% Create table
@@ -18,7 +18,7 @@ mnesia_start() ->
 			
 		_ ->
 			%Print error
-			io:format("~p~n", [result])
+			io:format("~p~n", [Result])
 	end,
 	mnesia:info().
 
@@ -41,7 +41,7 @@ add_student(Course, OnlineStudentPid) ->
 	end,
 
 	Return = mnesia:transaction(A),
-		io:format(" [MNESIA] Chatroom student join response: ~p~n",[Return]),
+	io:format(" [MNESIA] Chatroom student join response: ~p~n",[Return]),
 	Return.
 
 get_online_students_for_chatroom(Course) ->
