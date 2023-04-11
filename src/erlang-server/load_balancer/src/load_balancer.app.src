@@ -1,0 +1,15 @@
+{application, load_balancer,
+ [{description, "An OTP application"},
+  {vsn, "0.1.0"},
+  {registered, []},
+  {mod, {load_balancer_app, []}},
+  {applications,
+   [kernel,
+    stdlib
+   ]},
+  {env,[{nodes, []}]},
+  {modules, []},
+
+  {licenses, ["Apache-2.0"]},
+  {links, []}
+ ]}.
