@@ -45,7 +45,7 @@ start_nodes([]) ->
     ok;
 
 start_nodes([H | T]) ->
-    spawn(H, remote_node, start, []),
+    spawn(H, application, start, [chat_server]),
     start_nodes(T).
 
 
