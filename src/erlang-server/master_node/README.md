@@ -1,4 +1,4 @@
-load_balancer
+master_node
 =====
 
 An OTP application

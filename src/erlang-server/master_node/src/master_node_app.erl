@@ -1,4 +1,4 @@
--module(load_balancer_app).
+-module(master_node_app).
 -behaviour(application).
 
 -export([start/2, stop/1]).
@@ -24,7 +24,7 @@ start(_StartType, _StartArgs) ->
 
 
 stop(Nodes) ->
-	io:format("load_balancer:stop(~p)~n", [Nodes]),
+	io:format("master_node:stop(~p)~n", [Nodes]),
 	% Stop mnesia (in another thread)
 	spawn(mnesia, stop, []),
 	% Stop remote nodes
