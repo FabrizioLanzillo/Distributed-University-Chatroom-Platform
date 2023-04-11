@@ -8,7 +8,7 @@
 % in order to establish a websocket connection.
 init(Req, Opts) ->
     % Switch to cowboy_websocket module
-    {cowboy_websocket, Req, Opts}.
+    {cowboy_websocket, Req, Opts}. % TODO: init state
 
 
 % Cowboy will call websocket_handle/2 whenever a text, binary, ping or pong frame arrives from the client.
@@ -42,7 +42,7 @@ handle_websocket_frame(Map, State) ->
         <<"LOGIN">> ->
             handle_login(Map, State);
         <<"UPDATE_ONLINE_USERS">> ->
-            handle_update_online_users(Map, State);
+            handle_update_online_users(State);
         <<"LOGOUT">> ->
             handle_logout(State);
         <<"MESSAGE">> ->
@@ -53,19 +53,18 @@ handle_websocket_frame(Map, State) ->
 
 
 % Handle a login request
-handle_login(Map, State) ->
+handle_login(Map, _State) ->
     io:format("login request received~n"),
     {ok, Course} = maps:find(<<"course">>, Map),
     {ok, Username} = maps:find(<<"username">>, Map),
     gen_server:cast(?CHATROOM_SERVER, {login, {self(), Course, binary_to_list(Username)}}),
-    {ok, Course}.
+    {ok, {Course, Username}}. % init state with course id and username
 
 
 
 % Handle a request for updating online users
-handle_update_online_users(Map, State) ->
+handle_update_online_users(State = {Course, _}) ->
     io:format("update_online_users request received~n"),
-    {ok, Course} = maps:find(<<"course">>, Map),
     Users = gen_server:call(?CHATROOM_SERVER, {update_online_users, {self(), Course}}),
     Message = jsone:encode(
         #{
@@ -79,19 +78,17 @@ handle_update_online_users(Map, State) ->
 
 
 % Handle a request for logout
-handle_logout(State) ->
+handle_logout(State = {Course, _}) ->
     io:format("logout request received~n"),
-    gen_server:cast(?CHATROOM_SERVER, {logout, {self()}}),
+    gen_server:cast(?CHATROOM_SERVER, {logout, {Course, self()}}),
     {ok, State}.
 
 
 
 % Handle a new message sent in the chatroom
-handle_chat_message(Map, State) ->
+handle_chat_message(Map, State = {Course, Username}) ->
     io:format("message received~n"),
-    {ok, Username} = maps:find(<<"username">>, Map),
     {ok, Text} = maps:find(<<"text">>, Map),
-    {ok, Course} = maps:find(<<"course">>, Map),
     gen_server:cast(
         ?CHATROOM_SERVER, 
         {send_message, {self(), binary_to_list(Username), Course, binary_to_list(Text)}}
@@ -111,8 +108,8 @@ websocket_info(Info, State) ->
 
 
 % Cowboy will call terminate/3 with the reason for the termination of the connection. 
-terminate(_Reason, _Req, _State) ->
+terminate(_Reason, _Req, _State = {Course, _}) ->
     % Logout user from chatroom
     io:format("chatroom_websocket:terminate~n"),
-    gen_server:cast(?CHATROOM_SERVER, {logout, self()}),
+    gen_server:cast(?CHATROOM_SERVER, {logout, Course, self()}),
     ok.

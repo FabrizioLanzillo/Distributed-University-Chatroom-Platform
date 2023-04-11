@@ -31,9 +31,9 @@ handle_call({logout, Pid}, _From, Sports) ->
 handle_call(_Message, _From, State) ->
   {reply, error, State}.
 
-handle_cast({logout, Pid}, _State) ->
+handle_cast({logout, Course, Pid}, _State) ->
   io:format("course_manager:handle_cast(logout)"),
-  mnesiaDB_handler:logout(Pid),
+  mnesiaDB_handler:logout(Course, Pid),
   {noreply, _State};
 
 handle_cast(_Message, State) ->

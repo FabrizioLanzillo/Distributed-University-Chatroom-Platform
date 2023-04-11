@@ -59,11 +59,11 @@ handle_cast({login, {Pid, Course, Username}}, State) ->
 
 
 % Handle cast for logout
-handle_cast({logout, Pid}, State) ->
+handle_cast({logout, Course, Pid}, State) ->
 	io:format("chatroom_server: User ~p is executing logout~n", [Pid]),
 	% Forward the logout request to the course manager, so that the user can
 	% be unsubscribe from the course chatroom
-	gen_server:cast(?COURSE_MANAGER, {logout, Pid}),
+	gen_server:cast(?COURSE_MANAGER, {logout, Course, Pid}),
 	{noreply, State};
 
 
@@ -122,7 +122,7 @@ send_message_in_chatroom([], _PidSender, _Message) ->
 	% No more users to send the message => stop recursion
 	ok;
 
-send_message_in_chatroom([{PidReceiver, _} | T], PidSender, Message) when PidReceiver /= PidSender ->
+send_message_in_chatroom([PidReceiver | T], PidSender, Message) when PidReceiver /= PidSender ->
 	% Send the message to all users except from the sender
 	io:format("chatroom_server:send_message_in_chatroom => Sending message ~p to ~p~n", [Message, PidSender]),
 	PidReceiver ! {send_message, Message},
