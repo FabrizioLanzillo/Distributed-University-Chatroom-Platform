@@ -13,6 +13,7 @@ init(Req, Opts) ->
 
 % Cowboy will call websocket_handle/2 whenever a text, binary, ping or pong frame arrives from the client.
 websocket_handle(Frame = {text, _Message}, State) ->
+    io:format("websocket_handle(~p, ~p)~n", [Frame, State]),
     io:format("Received ~p~n", [Frame]),
     
     Result = jsone:try_decode(_Message),
@@ -57,7 +58,7 @@ handle_login(Map, State) ->
     {ok, Course} = maps:find(<<"course">>, Map),
     {ok, Username} = maps:find(<<"username">>, Map),
     gen_server:cast(?CHATROOM_SERVER, {login, {self(), Course, binary_to_list(Username)}}),
-    {ok, State}.
+    {ok, Course}.
 
 
 
@@ -112,5 +113,6 @@ websocket_info(Info, State) ->
 % Cowboy will call terminate/3 with the reason for the termination of the connection. 
 terminate(_Reason, _Req, _State) ->
     % Logout user from chatroom
+    io:format("chatroom_websocket:terminate~n"),
     gen_server:cast(?CHATROOM_SERVER, {logout, self()}),
     ok.

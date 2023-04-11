@@ -40,7 +40,7 @@ init(_) ->
 % Handle request for updating online users
 handle_call({update_online_users, {Pid, CourseId}}, _From, State) when is_pid(Pid) ->
 	io:format("chatroom_server: get list of online users for course ~p~n", [CourseId]),
-	Users = gen_server:call(?COURSE_MANAGER, {get_online_users, CourseId}), % TODO write ad hoc function
+	Users = gen_server:call(?COURSE_MANAGER, {get_online_users, CourseId}),
 	{reply, Users, State};
 
 % Handle any call
