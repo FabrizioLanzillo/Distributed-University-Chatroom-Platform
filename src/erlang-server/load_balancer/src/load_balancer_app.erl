@@ -53,7 +53,7 @@ start_nodes([H | T]) ->
 
 -record(online_students, {course_name, student_pid}).
 
-config_mnesia(Nodes) ->
+config_mnesia(Nodes) when is_list(Nodes) ->
     % Create mnesia schema if doesn't exists
 	Result1 = mnesia:create_schema(Nodes),
     io:format("mnesia:create_schema(~p) => ~p~n", [Nodes, Result1]),
