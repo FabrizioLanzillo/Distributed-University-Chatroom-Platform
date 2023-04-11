@@ -11,16 +11,22 @@
 start(_StartType, _StartArgs) ->
     % Connect to cluster nodes
     {ok, Nodes} = application:get_env(nodes),
+    io:format("Nodes ~p~n", [Nodes]),
     connect_nodes(Nodes),
     % Configure mnesia
-    config_mnesia([self(), Nodes]),
+    io:format("config mnesia~n"),
+    config_mnesia([node()] ++ Nodes),
     % Start nodes
-    start_nodes(Nodes).
+    io:format("start_nodes~n"),
+    start_nodes(Nodes),
+    % Return
+    {ok, self()}.
 
 
 
 stop(_State) ->
     mnesia:stop(),
+    % Kill remote nodes?
     ok.
 
 
@@ -29,6 +35,7 @@ connect_nodes([]) ->
     ok;
 
 connect_nodes([H | T]) when is_atom(H), is_list(T) ->
+    io:format("Connect node ~p~n", [H]),
     true = net_kernel:connect_node(H),
     connect_nodes(T).
 
@@ -38,7 +45,7 @@ start_nodes([]) ->
     ok;
 
 start_nodes([H | T]) ->
-    spawn(H, fun()-> application:start(chat_server) end),
+    spawn(H, remote_node, start, []),
     start_nodes(T).
 
 
@@ -60,6 +67,6 @@ config_mnesia(Nodes) ->
             {attributes, record_info(fields, online_students)},
             {type, bag}, {ram_copies, Nodes}
         ]),
-	io:format("mnesia:create_table => ~p~n", Result2),
+	io:format("mnesia:create_table => ~p~n", [Result2]),
 	mnesia:info(),
     ok.

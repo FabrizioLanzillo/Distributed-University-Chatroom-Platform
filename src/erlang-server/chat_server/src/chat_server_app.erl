@@ -9,7 +9,10 @@
 -export([start/2, stop/1]).
 
 start(_StartType, _StartArgs) ->
+    % Start mnesia?
+    % Start supervisor
     chat_server_sup:start_link().
 
 stop(_State) ->
+    % Stop mnesia?
     ok.

@@ -7,7 +7,7 @@
    [kernel,
     stdlib
    ]},
-  {env,[{nodes, []}]},
+  {env,[{nodes, ['rick@127.0.0.1']}]},
   {modules, []},
 
   {licenses, ["Apache-2.0"]},
