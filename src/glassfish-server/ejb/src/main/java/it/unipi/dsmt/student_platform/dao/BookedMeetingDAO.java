@@ -164,8 +164,7 @@ public class BookedMeetingDAO {
                 preparedStatement.setString(1, bookingID);
                 
                 // Execute query
-                int result = preparedStatement.executeUpdate();
-                return result == 1;
+                return preparedStatement.executeUpdate() == 1;
             }
         }
         catch (SQLException e) {
