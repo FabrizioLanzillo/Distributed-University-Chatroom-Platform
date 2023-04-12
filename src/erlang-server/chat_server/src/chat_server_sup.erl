@@ -1,8 +1,3 @@
-%%%-------------------------------------------------------------------
-%% @doc chat_server top level supervisor.
-%% @end
-%%%-------------------------------------------------------------------
-
 -module(chat_server_sup).
 -behaviour(supervisor).
 
@@ -28,7 +23,7 @@ start_link() ->
 init([]) ->
     % Supervisor parameters
     SupFlags = #{strategy => one_for_one,
-                 intensity => 100,
+                 intensity => 1,
                  period => 1},
     % Specs for child processes
     ChatroomServerChild = #{id => chatroom_server,
