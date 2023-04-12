@@ -49,14 +49,15 @@ function print_message(sender_name, message, sendOrReceive) {
 
 
 function keep_connection_alive(){
-    const timeout = 5000;
-    if(websocket.readyState === websocket.OPEN)
-    var json_string = {
-        "opcode": UPDATE_ONLINE_USERS,
-    };
-  
-    websocket.send(JSON.stringify(json_string));
-    id_timer = setTimeout(keep_connection_alive, timeout);
+    const timeout = 30000;
+    if (websocket.readyState === websocket.OPEN){
+        var json_string = {
+            "opcode": UPDATE_ONLINE_USERS,
+        };
+        
+        websocket.send(JSON.stringify(json_string));
+        id_timer = setTimeout(keep_connection_alive, timeout);
+    }
 }
 
 function stop_keep_alive(){
@@ -74,7 +75,7 @@ function ws_onOpen() {
     // Convertiamo l'oggetto JSON in una stringa JSON
     var json_string = JSON.stringify(data);
     websocket.send(json_string);
-    //keep_connection_alive();
+    keep_connection_alive();
 }
 
 
@@ -87,7 +88,7 @@ function ws_onClose(){
     // Convertiamo l'oggetto JSON in una stringa JSON
     var json_string = JSON.stringify(data_logout);
     websocket.send(JSON.stringify(json_string));
-    //stop_keep_alive();
+    stop_keep_alive();
 }
 
 function ws_onMessage(event) {
@@ -135,4 +136,3 @@ function send_message(event){
 function disconnect(){
     websocket.close();
 }
-

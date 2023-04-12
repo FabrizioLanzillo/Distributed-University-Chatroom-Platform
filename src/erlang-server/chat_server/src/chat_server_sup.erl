@@ -3,12 +3,10 @@
 
 -export([start_link/0, init/1]).
 
--define(SERVER, ?MODULE).
-
 
 % Start supervisor
 start_link() ->
-    supervisor:start_link({local, ?SERVER}, ?MODULE, []).
+    supervisor:start_link({local, ?MODULE}, ?MODULE, []).
 
 
 %% sup_flags() = #{strategy => strategy(),         % optional

@@ -7,15 +7,15 @@
 start(_StartType, _StartArgs) ->
 	% Connect to cluster nodes
 	{ok, Nodes} = application:get_env(nodes),
-	io:format("Nodes ~p~n", [Nodes]),
+	io:format("[master_node_app] start => Nodes ~p~n", [Nodes]),
 	connect_nodes(Nodes),
 	
 	% Configure mnesia
-	io:format("config mnesia~n"),
+	io:format("[master_node_app] start => config mnesia~n"),
 	start_mnesia(Nodes),
 	
 	% Start nodes
-	io:format("start_nodes~n"),
+	io:format("[master_node_app] start =>  start_nodes~n"),
 	start_nodes(Nodes),
 	
 	% Return current Pid and state
@@ -24,7 +24,7 @@ start(_StartType, _StartArgs) ->
 
 
 stop(Nodes) ->
-	io:format("master_node:stop(~p)~n", [Nodes]),
+	io:format("[master_node_app] stop => master_node:stop(~p)~n", [Nodes]),
 	% Stop mnesia (in another thread)
 	spawn(mnesia, stop, []),
 	% Stop remote nodes
@@ -37,7 +37,7 @@ connect_nodes([]) ->
 	ok;
 
 connect_nodes([H | T]) when is_atom(H), is_list(T) ->
-	io:format("Connect node ~p~n", [H]),
+	io:format("[master_node_app] connect_nodes => Connect node ~p~n", [H]),
 	true = net_kernel:connect_node(H),
 	connect_nodes(T).
 
@@ -47,6 +47,7 @@ start_nodes([]) ->
 	ok;
 
 start_nodes([Node | T]) ->
+	io:format("[master_node_app] start_nodes => ~p~n", [Node]),
 	spawn(Node, application, start, [chat_server]),
 	start_nodes(T).
 
@@ -56,6 +57,7 @@ stop_nodes([]) ->
 	ok;
 
 stop_nodes([Node | T]) ->
+	io:format("[master_node_app] stop_nodes => ~p~n", [Node]),
 	spawn(Node, application, stop, [chat_server]),
 	stop_nodes(T).
 
@@ -68,11 +70,11 @@ stop_nodes([Node | T]) ->
 start_mnesia(Nodes) when is_list(Nodes) ->
 	% Create mnesia schema if doesn't exists
 	Result1 = mnesia:create_schema(Nodes),
-	io:format("mnesia:create_schema(~p) => ~p~n", [Nodes, Result1]),
+	io:format("[master_node_app] start_mnesia => create_schema(~p) => ~p~n", [Nodes, Result1]),
 	
 	% Start mnesia application
 	mnesia:start(),
-	io:format("mnesia:start()~n"),
+	io:format("[master_node_app] start_mnesia => start()~n"),
 	
 	% Create table
 	Result2 = mnesia:create_table(
@@ -82,7 +84,7 @@ start_mnesia(Nodes) when is_list(Nodes) ->
 			{type, bag},
 			{ram_copies, Nodes}
 		]),
-	io:format("mnesia:create_table => ~p~n", [Result2]),
+	io:format("[master_node_app] start_mnesia => create_table result: ~p~n", [Result2]),
 	
 	% Print info about mnesia DB
 	mnesia:info(),
