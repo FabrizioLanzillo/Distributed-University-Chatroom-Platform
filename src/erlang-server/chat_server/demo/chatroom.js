@@ -9,6 +9,7 @@ const UPDATE_ONLINE_USERS = "UPDATE_ONLINE_USERS"
 
 var username = "";
 var course = null;
+var id_timer = null;
 
 const server_url = "ws://localhost:8080/";
 
