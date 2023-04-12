@@ -11,7 +11,7 @@ var username = "";
 var course = null;
 var id_timer = null;
 
-const server_url = "ws://localhost:8080/";
+const server_url = "ws://10.2.1.4:8300/";
 
 function print_message(sender_name, message, sendOrReceive) {
 
