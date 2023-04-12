@@ -1,4 +1,4 @@
-package it.unipi.dsmt.student_platform.servlets.professor;
+package it.unipi.dsmt.student_platform.servlets;
 
 import it.unipi.dsmt.student_platform.dto.LoggedUserDTO;
 import it.unipi.dsmt.student_platform.dto.MinimalCourseDTO;

@@ -1,4 +1,4 @@
-package it.unipi.dsmt.student_platform.servlets.student;
+package it.unipi.dsmt.student_platform.servlets;
 
 import it.unipi.dsmt.student_platform.dto.BookingDTO;
 import it.unipi.dsmt.student_platform.dto.LoggedUserDTO;
