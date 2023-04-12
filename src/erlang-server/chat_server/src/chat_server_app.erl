@@ -5,8 +5,9 @@
 
 start(_StartType, _StartArgs) ->
     % Start supervisor
-    mnesia_manager:mnesia_start(), % TODO remove
+    mnesia:start(),
     chat_server_sup:start_link().
 
 stop(_State) ->
+    mnesia:stop(),
     ok.

@@ -72,7 +72,7 @@ send_message_in_chatroom([], _PidSender, _Message) when is_pid(_PidSender) ->
 send_message_in_chatroom([PidReceiver | T], PidSender, Message) 
 		when is_pid(PidReceiver), is_pid(PidSender), PidReceiver /= PidSender ->
 	% Send the message to all users except from the sender
-	io:format("[chatroom_server] send_message_in_chatroom => sending message to ~p~n", [PidSender]),
+	io:format("[chatroom_server] send_message_in_chatroom => sending message to ~p~n", [PidReceiver]),
 	PidReceiver ! {send_message, Message},
 	send_message_in_chatroom(T, PidSender, Message);
 

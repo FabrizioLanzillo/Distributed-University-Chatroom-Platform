@@ -8,7 +8,6 @@
     stdlib,
     cowboy,
     jsone
-    % mnesia
    ]},
   {env,[]},
   {modules, []}

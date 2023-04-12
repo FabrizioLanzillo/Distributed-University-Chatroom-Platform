@@ -8,7 +8,7 @@
 
 start_link() ->
 	io:format("cowboy_listener:start_link"),
-    gen_server:start_link({local, cowboy_listener}, cowboy_listener, [], []).
+    gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
 
 
 init(_) ->

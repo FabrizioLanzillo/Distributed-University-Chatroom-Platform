@@ -18,6 +18,9 @@ start(_StartType, _StartArgs) ->
 	io:format("[master_node_app] start =>  start_nodes~n"),
 	start_nodes(Nodes),
 	
+	% Print info about mnesia DB
+	mnesia:info(),
+	
 	% Return current Pid and state
 	{ok, self(), Nodes}.
 
@@ -48,8 +51,9 @@ start_nodes([]) ->
 
 start_nodes([Node | T]) ->
 	io:format("[master_node_app] start_nodes => ~p~n", [Node]),
-	spawn(Node, application, start, [chat_server]),
+	spawn(Node, application, start, [chat_server]), % application:start(chat_server)
 	start_nodes(T).
+
 
 
 %% Stop remote nodes
@@ -69,7 +73,7 @@ stop_nodes([Node | T]) ->
 
 start_mnesia(Nodes) when is_list(Nodes) ->
 	% Create mnesia schema if doesn't exists
-	Result1 = mnesia:create_schema(Nodes),
+	Result1 = mnesia:create_schema([node()] ++ Nodes),
 	io:format("[master_node_app] start_mnesia => create_schema(~p) => ~p~n", [Nodes, Result1]),
 	
 	% Start mnesia application
@@ -85,7 +89,4 @@ start_mnesia(Nodes) when is_list(Nodes) ->
 			{ram_copies, Nodes}
 		]),
 	io:format("[master_node_app] start_mnesia => create_table result: ~p~n", [Result2]),
-	
-	% Print info about mnesia DB
-	mnesia:info(),
 	ok.

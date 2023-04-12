@@ -1,26 +1,9 @@
 -module(mnesia_manager).
 
 -include("chat.hrl").
--export([mnesia_start/0, join_course/2, get_online_students/1, logout/2]).
+-export([join_course/2, get_online_students/1, logout/2]).
 
 -record(online_students, {course_name, student_pid}).
-
-
-mnesia_start() ->
-	% Create mnesia schema if doesn't exists
-	Result = mnesia:create_schema([node()]), %TODO
-	mnesia:start(),
-	case Result of
-		ok->
-			io:format("[mnesia_manager] mnesia_start => mnesia DB started ~n"),
-			% Create table
-			mnesia:create_table(online_students,[{attributes, record_info(fields, online_students)}, {type, bag}, {ram_copies, [node()]}]); %%TODO
-			
-		_ ->
-			%Print error
-			io:format("~p~n", [Result])
-	end,
-	mnesia:info().
 
 
 
