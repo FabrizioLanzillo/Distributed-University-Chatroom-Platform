@@ -9,6 +9,11 @@
     cowboy,
     jsone
    ]},
-  {env,[]},
+  {env,
+    [
+      {websocket_endpoint, "/"},
+      {websocket_port, 8080}
+    ]
+  },
   {modules, []}
  ]}.

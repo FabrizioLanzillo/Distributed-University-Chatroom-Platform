@@ -12,16 +12,19 @@ start_link() ->
 
 
 init(_) ->
-	io:format("cowboy_listener:init()~n"),
+	% Read endpoint and port from configuration file
+	{ok, Url} = application:get_env(websocket_endpoint),
+	{ok, Port} = application:get_env(websocket_port),
+	io:format("[cowboy_listener] init => Start listener on endpoint ~p and port ~p~n", [Url, Port]),
 	% Compile the route for the websocket handler
 	Dispatch = cowboy_router:compile([
 		{'_', [
-			{"/", chatroom_websocket, []}
+			{Url, chatroom_websocket, []}
 		]}
 	]),
 	% Start listening for connections over a clear TCP channel 
 	{ok, Pid} = cowboy:start_clear(chatroom_listener,
-		[{port, 8080}],
+		[{port, Port}],
 		#{env => #{dispatch => Dispatch}}
 	),
 	io:format("Cowboy is listening at process with pid ~p~n", [Pid]),

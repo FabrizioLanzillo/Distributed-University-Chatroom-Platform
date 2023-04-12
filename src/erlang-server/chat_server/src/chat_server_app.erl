@@ -4,8 +4,8 @@
 -export([start/2, stop/1]).
 
 start(_StartType, _StartArgs) ->
+    mnesia:start(), % TODO: wait_for_tables?
     % Start supervisor
-    mnesia:start(),
     chat_server_sup:start_link().
 
 stop(_State) ->
