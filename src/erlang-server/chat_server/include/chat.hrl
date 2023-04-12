@@ -1,2 +1,2 @@
 -define(CHATROOM_SERVER, chatroom_server).
--define(COURSE_MANAGER, course_manager).
+-define(MNESIA_MANAGER, mnesia_manager).

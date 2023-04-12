@@ -26,12 +26,9 @@ init([]) ->
                  intensity => 1,
                  period => 1},
     % Specs for child processes
-    ChatroomServerChild = #{id => chatroom_server,
-                            start => {chatroom_server, start_link, []},
-                            restart => permanent},
-    CourseManagerChild = #{id => course_manager, 
-                           start => {course_manager, start_link, []},
-                           restart => permanent},
-    ChildSpecs = [ChatroomServerChild, CourseManagerChild],
+    CowboyListener = #{id => cowboy_listener, % child process name
+                        start => {cowboy_listener, start_link, []}, % function that will be executed
+                        restart => permanent}, % always restart when crashes
+    ChildSpecs = [CowboyListener],
     % Return value
     {ok, {SupFlags, ChildSpecs}}.

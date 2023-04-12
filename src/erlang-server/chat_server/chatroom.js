@@ -53,7 +53,6 @@ function keep_connection_alive(){
     if(websocket.readyState === websocket.OPEN)
     var json_string = {
         "opcode": UPDATE_ONLINE_USERS,
-        "course": 1
     };
   
     websocket.send(JSON.stringify(json_string));
@@ -125,8 +124,6 @@ function send_message(event){
 
     var json_string = {
         "opcode": MESSAGE,
-        "username": username,
-        "course": 1,
         "text": message_text
     };
   

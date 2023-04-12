@@ -1,7 +1,7 @@
-- module(mnesiaDB_handler).
+- module(mnesia_manager).
 
 -include("chat.hrl").
--export([mnesia_start/0, add_student/2, get_online_students_for_chatroom/1, logout/2]).
+-export([mnesia_start/0, join_course/2, get_online_students/1, logout/2]).
 
 -record(online_students, {course_name, student_pid}).
 
@@ -24,7 +24,7 @@ mnesia_start() ->
 
 
 
-add_student(Course, OnlineStudentPid) ->
+join_course(OnlineStudentPid, Course) ->
 
 	A = fun() ->
 		io:format("[MNESIA] Check if the pid of the student: ~p is already in a chatroom ~n", [OnlineStudentPid]), %TODO controllare che tipo è il pid
@@ -50,7 +50,7 @@ add_student(Course, OnlineStudentPid) ->
 
 
   
-get_online_students_for_chatroom(Course) ->
+get_online_students(Course) ->
 	
 	G = fun() ->
 		io:format("[MNESIA] Get all the online students for the course: ~p~n", [Course]),
@@ -63,7 +63,7 @@ get_online_students_for_chatroom(Course) ->
 	io:format("[MNESIA] get_online_students_for_chatroom => ~p~n", [Result]),
 	Result.
 
-logout(Course, OnlineStudentPid) -> % TODO ADD COURSE ID
+logout(OnlineStudentPid, Course) -> 
 	
 	D = fun() ->
 
