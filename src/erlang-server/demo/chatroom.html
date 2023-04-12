@@ -1,0 +1,18 @@
+<html>
+<head>
+  <title>Lab 10: WebSockets - Chat</title>
+
+</head> 
+<script type="text/javascript" src="chatroom.js"></script>
+  <body onload="connect('f.montini')" onunload="disconnect()">
+
+    <div class='chatbox' id="chatbox">
+
+      <div class="submit_button">
+          <input class="message_text" id="message_text" type="text" placeholder="Enter your message">
+          <input class="send_button" type="submit" value=" " onclick = "return send_message(event);">
+      </div>
+    </div>
+
+  </body>
+</html>

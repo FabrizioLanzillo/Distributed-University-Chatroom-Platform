@@ -1,0 +1,2 @@
+-define(CHATROOM_SERVER, chatroom_server).
+-define(MNESIA_MANAGER, mnesia_manager).
