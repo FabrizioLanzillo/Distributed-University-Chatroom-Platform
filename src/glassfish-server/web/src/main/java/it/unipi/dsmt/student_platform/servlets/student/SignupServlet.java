@@ -1,4 +1,4 @@
-package it.unipi.dsmt.student_platform.servlets;
+package it.unipi.dsmt.student_platform.servlets.student;
 
 import it.unipi.dsmt.student_platform.dto.SignupDTO;
 import it.unipi.dsmt.student_platform.interfaces.SignupEJB;
@@ -7,9 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
-
 import java.io.IOException;
-import java.sql.SQLException;
 
 
 @WebServlet(name = "SignUpServlet", value="/student/signup")

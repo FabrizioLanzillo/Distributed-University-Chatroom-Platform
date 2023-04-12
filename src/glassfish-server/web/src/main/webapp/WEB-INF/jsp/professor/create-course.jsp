@@ -1,4 +1,4 @@
-<%@ page import="it.unipi.dsmt.student_platform.servlets.CreateCourseServlet" %><%--
+<%@ page import="it.unipi.dsmt.student_platform.servlets.professor.CreateCourseServlet" %><%--
     Website page for creating a new course.
 --%>
 
