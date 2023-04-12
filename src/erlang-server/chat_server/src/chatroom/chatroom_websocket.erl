@@ -12,18 +12,18 @@ init(Req, _State) ->
 
 
 % Cowboy will call websocket_handle/2 whenever a text, binary, ping or pong frame arrives from the client.
-websocket_handle(Frame = {text, _Message}, State) ->
+websocket_handle(Frame = {text, Message}, State) ->
     io:format("[chatroom_websocket] websocket_handle => Frame: ~p, State: ~p~n", [Frame, State]),
     io:format("[chatroom_websocket] websocket_handle => Received ~p~n", [Frame]),
     
-    Result = jsone:try_decode(_Message),
+    DecodedMessage = jsone:try_decode(Message),
 
-    Response = case element(1, Result) of
+    Response = case element(1, DecodedMessage) of
         ok ->
-            Map = element(2, Result),
-            handle_websocket_frame(Map, State);
+            Json = element(2, DecodedMessage),
+            handle_websocket_frame(Json, State);
         error ->
-            io:format(element(2, Result)),
+            io:format("[chatroom_websocket] websocket_handle => jsone:try_decode: error: ~p~n",[element(2, DecodedMessage)]),
             {ok, State}
     end,
     Response;
@@ -65,7 +65,7 @@ handle_login(Map, _State) ->
 % Handle a request for updating online users
 handle_update_online_users(State = {Course, _}) ->
     io:format("[chatroom_websocket] handle_update_online_users => update_online_users request received~n"),
-    Users = chatroom_server:update_online_users(Course),
+    Users = chatroom_server:get_online_students(Course),
     Message = jsone:encode(
         #{
             <<"opcode">> => <<"UPDATE_ONLINE_USERS">>,
@@ -79,7 +79,7 @@ handle_update_online_users(State = {Course, _}) ->
 
 % Handle a request for logout
 handle_logout(State = {Course, _}) ->
-    io:format("[chatroom_websocket] handle_logout => logout request received~n"),
+    io:format("[chatroom_websocket] handle_logout => logout request received from Pid: ~p in the course: ~p ~n", [self(), Course]),
     chatroom_server:logout(self(), Course),
     {ok, State}.
 
@@ -87,7 +87,7 @@ handle_logout(State = {Course, _}) ->
 
 % Handle a new message sent in the chatroom
 handle_chat_message(Map, State = {Course, Username}) ->
-    io:format("[chatroom_websocket] handle_chat_message => message received~n"),
+    io:format("[chatroom_websocket] handle_chat_message => message received from Pid: ~p in the course: ~p ~n", [self(), Course]),
     {ok, Text} = maps:find(<<"text">>, Map),
     chatroom_server:send_message(self(),
                                 binary_to_list(Username), 
@@ -99,17 +99,17 @@ handle_chat_message(Map, State = {Course, Username}) ->
 % Cowboy will call websocket_info/2 whenever an Erlang message arrives 
 % (=> from another Erlang process).
 websocket_info({send_message, Msg}, State) ->
-    io:format("[chatroom_websocket] handle_chat_message => Send message ~p~n", [Msg]),
+    io:format("[chatroom_websocket] websocket_info({send_message, Msg}, State) => Send message ~p~n", [Msg]),
     {[{text, Msg}], State};
 
 websocket_info(Info, State) ->
-    io:format("chatroom_websocket:websocket_info(?) => Received info ~p~n", [Info]),
+    io:format("chatroom_websocket:websocket_info(Info, State) => Received info ~p~n", [Info]),
     {ok, State}.
 
 
 % Cowboy will call terminate/3 with the reason for the termination of the connection. 
 terminate(_Reason, _Req, _State = {Course, _}) ->
     % Logout user from chatroom
-    io:format("[chatroom_websocket] terminate => Pid: ~p, Course: ~p ~n", [self(), Course]),
+    io:format("[chatroom_websocket] terminate => logout request received from Pid: ~p in the course: ~p ~n", [self(), Course]),
     chatroom_server:logout(self(), Course),
     ok.

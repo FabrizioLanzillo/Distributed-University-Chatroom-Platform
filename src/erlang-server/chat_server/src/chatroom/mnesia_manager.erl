@@ -35,7 +35,7 @@ join_course(OnlineStudentPid, Course) ->
 		io:format("[mnesia_manager] join_course => Check result: ~p~n", [NewStudentCheck]),
 		case NewStudentCheck == [] of 
 			true ->
-				io:format("[mnesia_manager] join_course => Student not in any chatrooms, student can be join this chat ~n"),
+				io:format("[mnesia_manager] join_course => Student not in any chatroom, student can be join this chat ~n"),
 				mnesia:write(#online_students{course_name=Course, student_pid = OnlineStudentPid});
 
 			false ->
@@ -45,7 +45,7 @@ join_course(OnlineStudentPid, Course) ->
 	end,
 
 	{atomic, Result} = mnesia:transaction(A),
-	io:format("[mnesia_manager] join_course => Chatroom student join response: ~p~n",[Result]),
+	io:format("[mnesia_manager] join_course => Chatroom join request returned response: ~p~n",[Result]),
 	Result.
 
 
@@ -60,7 +60,7 @@ get_online_students(Course) ->
 	end,
 	
 	{atomic, Result} = mnesia:transaction(G),
-	io:format("[mnesia_manager] get_online_students => get_online_students_for_chatroom => ~p~n", [Result]),
+	io:format("[mnesia_manager] get_online_students => Online students: ~p~n", [Result]),
 	Result.
 
 logout(OnlineStudentPid, Course) -> 
@@ -68,7 +68,7 @@ logout(OnlineStudentPid, Course) ->
 	D = fun() ->
 
 		mnesia:delete_object(#online_students{course_name = Course, student_pid = OnlineStudentPid}),
-		io:format("[mnesia_manager] logout => Student logout from the chatroom ~n")
+		io:format("[mnesia_manager] logout => Student logout from the chatroom ~p~n", [Course])
 	end,
 
 	{atomic, Result} = mnesia:transaction(D),
