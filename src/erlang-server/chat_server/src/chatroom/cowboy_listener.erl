@@ -1,13 +1,11 @@
 -module(cowboy_listener).
 -behaviour(gen_server).
 
-
 -export([start_link/0, init/1, handle_call/3, handle_cast/2]).
 
 
-
 start_link() ->
-	io:format("cowboy_listener:start_link"),
+	io:format("[cowboy_listener] start_link~n"),
     gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
 
 
@@ -27,7 +25,7 @@ init(_) ->
 		[{port, Port}],
 		#{env => #{dispatch => Dispatch}}
 	),
-	io:format("Cowboy is listening at process with pid ~p~n", [Pid]),
+	io:format("[cowboy_listener] init => cowboy is listening from process ~p~n", [Pid]),
 	{ok, []}.
 
 
