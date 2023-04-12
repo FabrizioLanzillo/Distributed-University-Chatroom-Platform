@@ -13,7 +13,7 @@ start(_StartType, _StartArgs) ->
 	% Configure mnesia
 	io:format("config mnesia~n"),
 	start_mnesia(Nodes),
-
+	
 	% Start nodes
 	io:format("start_nodes~n"),
 	start_nodes(Nodes),
