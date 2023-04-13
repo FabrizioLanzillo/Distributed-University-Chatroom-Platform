@@ -32,6 +32,7 @@
     <title>Admin search Portal</title>
 </head>
 <body>
+    <jsp:include page="/WEB-INF/jsp/common/top-bar.jsp" />
     <h1>
         Search for users:
     </h1>
