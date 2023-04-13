@@ -69,7 +69,7 @@ stop_nodes([Node | T]) ->
 
 %%% MNESIA
 
--record(online_students, {course, student_pid}).
+-record(online_students, {course_id, student_pid, student_name}).
 
 start_mnesia(Nodes) when is_list(Nodes) ->
 	% Create mnesia schema if doesn't exists
