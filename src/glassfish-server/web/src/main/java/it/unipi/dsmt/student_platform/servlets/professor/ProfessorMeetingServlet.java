@@ -10,9 +10,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
-
 import java.io.IOException;
 import java.util.List;
+
 
 @WebServlet(name = "ProfessorMeetingServlet", value = "/professor/meeting")
 public class ProfessorMeetingServlet extends HttpServlet {
@@ -22,9 +22,6 @@ public class ProfessorMeetingServlet extends HttpServlet {
     
     /**
      * Redefinition of doPOST. Invoked when the user (professor in this case) tries to delete a booked meeting
-     * @param request
-     * @param response
-     * @throws IOException
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -68,10 +65,6 @@ public class ProfessorMeetingServlet extends HttpServlet {
     
     /**
      * Redefinition of doGET method
-     * @param request
-     * @param response
-     * @throws IOException
-     * @throws ServletException
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
