@@ -56,8 +56,6 @@ public class AdminCreateProfessorServlet extends HttpServlet {
 			return;
 		}
 
-		Boolean successful = false;
-
 		CreateProfessorDTO createProfessorDTO = new CreateProfessorDTO(
 			request.getParameter("username"),
 			request.getParameter("password"),
@@ -66,13 +64,7 @@ public class AdminCreateProfessorServlet extends HttpServlet {
 			request.getParameter("surname")
 		);
 
-		try{
-			successful =  userEJB.createProfessorAccount(createProfessorDTO);
-		}
-		catch(Exception error){
-			error.printStackTrace();
-		}
-
+		Boolean successful =  userEJB.createProfessorAccount(createProfessorDTO);
 		handleRequest(request, response, successful);
 	}
 }
