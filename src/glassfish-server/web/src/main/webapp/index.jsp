@@ -11,20 +11,21 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/login.css">
 </head>
 <body>
-<h1>Welcome to StudentPlatform!</h1>
-
-<div>
-    <h2>Login</h2>
-    <div class="form">
+<div class="login-container">
+    <h1>Welcome to StudentPlatform!</h1>
+    
+    <div>
+        <h2>Login</h2>
+        
         <form method="post" action="${pageContext.request.contextPath}/login">
             <label>
                 Username:
-                <input type="text" name="username" placeholder="username" required />
+                <input type="text" name="username" placeholder="Username" required />
             </label>
             <br>
             <label>
                 Password:
-                <input type="password" name="password" placeholder="password" required />
+                <input type="password" name="password" placeholder="Password" required />
             </label>
             <br>
             <label>
@@ -36,16 +37,15 @@
                 </select>
             </label>
             <br>
-            <button type="submit">LOGIN</button>
+            <button type="submit" class="submit-button">LOGIN</button>
         </form>
     </div>
+    
+    <button onclick="location.href = '${pageContext.request.contextPath}/student/signup'" class="signup-button">
+        You don't own an account? Signup now!
+    </button>
 </div>
 
-<br>
-
-<button onclick="location.href = '${pageContext.request.contextPath}/student/signup'">
-    You don't own an account? Signup now!
-</button>
 
 <%
     // Check if the user failed the login
