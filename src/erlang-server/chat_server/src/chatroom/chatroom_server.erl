@@ -39,7 +39,7 @@ send_message(PidSender, SenderName, Course, Text)
 		[PidSender, SenderName, Course, Text]
 	),
 	% Get list of currently online users and forward the message to all of them
-	case ?MNESIA_MANAGER:get_online_students(Course) of
+	case ?MNESIA_MANAGER:get_online_pid(Course) of
 
 		List when is_list(List), List /= [] ->
 			% Prepare the message as a JSON document
