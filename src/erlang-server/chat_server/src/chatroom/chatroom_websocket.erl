@@ -41,10 +41,8 @@ handle_websocket_frame(Map, State) ->
     Response = case Opcode of
         <<"LOGIN">> ->
             handle_login(Map, State);
-        <<"UPDATE_ONLINE_USERS">> ->
-            handle_update_online_users(State);
-        <<"LOGOUT">> ->
-            handle_logout(State);
+        <<"GET_ONLINE_USERS">> ->
+            handle_get_online_users(State);
         <<"MESSAGE">> ->
             handle_chat_message(Map, State)
     end,
@@ -54,34 +52,29 @@ handle_websocket_frame(Map, State) ->
 
 % Handle a login request
 handle_login(Map, _State) ->
-    io:format("[chatroom_websocket] handle_login => login request received~n"),
     {ok, Course} = maps:find(<<"course">>, Map),
     {ok, Username} = maps:find(<<"username">>, Map),
-    chatroom_server:login(self(), Course),
+    io:format(
+        "[chatroom_websocket] handle_login => login request received for course ~p by user ~p~n",
+        [Course, Username]
+    ),
+    chatroom_server:login(self(), Username, Course),
     {ok, {Course, Username}}. % init state with course id and username
 
 
 
 % Handle a request for updating online users
-handle_update_online_users(State = {Course, _}) ->
-    io:format("[chatroom_websocket] handle_update_online_users => update_online_users request received~n"),
+handle_get_online_users(State = {Course, _}) ->
+    io:format("[chatroom_websocket] handle_get_online_users => get_online_users request received~n"),
     Users = chatroom_server:get_online_students(Course),
     Message = jsone:encode(
         #{
-            <<"opcode">> => <<"UPDATE_ONLINE_USERS">>,
+            <<"opcode">> => <<"GET_ONLINE_USERS">>,
             <<"list">> => Users
         }
     ),
-    io:format("[chatroom_websocket] handle_update_online_users => Message ~p~n", [Message]),
+    io:format("[chatroom_websocket] handle_get_online_users => Message ~p~n", [Message]),
     {[{text, Message}], State}.
-
-
-
-% Handle a request for logout
-handle_logout(State = {Course, _}) ->
-    io:format("[chatroom_websocket] handle_logout => logout request received from Pid: ~p in the course: ~p ~n", [self(), Course]),
-    chatroom_server:logout(self(), Course),
-    {ok, State}.
 
 
 
@@ -108,8 +101,8 @@ websocket_info(Info, State) ->
 
 
 % Cowboy will call terminate/3 with the reason for the termination of the connection. 
-terminate(_Reason, _Req, _State = {Course, _}) ->
+terminate(_Reason, _Req, _State = {Course, Username}) ->
     % Logout user from chatroom
     io:format("[chatroom_websocket] terminate => logout request received from Pid: ~p in the course: ~p ~n", [self(), Course]),
-    chatroom_server:logout(self(), Course),
+    chatroom_server:logout(self(), Username, Course),
     ok.

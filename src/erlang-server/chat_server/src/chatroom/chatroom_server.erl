@@ -4,7 +4,7 @@
 -module(chatroom_server).
 -include("chat.hrl").
 
--export([get_online_students/1, login/2, logout/2, send_message/4, send_message_in_chatroom/3]).
+-export([get_online_students/1, login/3, logout/3, send_message/4, send_message_in_chatroom/3]).
 
 
 
@@ -16,30 +16,30 @@ get_online_students(Course) when is_integer(Course) ->
 
 
 % Execute login for user
-login(Pid, Course) when is_pid(Pid), is_integer(Course) ->
+login(Pid, Username, Course) when is_pid(Pid), is_integer(Course) ->
 	io:format("[chatroom_server] login => pid ~p, course ~p~n", [Pid, Course]),
-	?MNESIA_MANAGER:join_course(Pid, Course).
+	?MNESIA_MANAGER:join_course(Pid, Username, Course).
 
 
 
 % Execute logout for user
-logout(Pid, Course) when is_pid(Pid), is_integer(Course)->
+logout(Pid, Username, Course) when is_pid(Pid), is_integer(Course)->
 	io:format("[chatroom_server] logout => pid ~p, course ~p~n", [Pid, Course]),
 	% Remove the websocket PID from DB list of users inside the chatroom
-	?MNESIA_MANAGER:logout(Pid, Course),
+	?MNESIA_MANAGER:logout(Pid, Username, Course),
 	ok.
 
 
 
 % Send a message in the chatroom
 send_message(PidSender, SenderName, Course, Text) 
-		when is_pid(PidSender), is_list(SenderName), is_integer(Course), is_list(Text) ->
+		when is_pid(PidSender), is_integer(Course), is_list(Text) ->
 	io:format(
 		"[chatroom_server] send_message => pid ~p, username ~p, course ~p, text ~p~n", 
 		[PidSender, SenderName, Course, Text]
 	),
 	% Get list of currently online users and forward the message to all of them
-	case ?MNESIA_MANAGER:get_online_students(Course) of
+	case ?MNESIA_MANAGER:get_online_pid(Course) of
 
 		List when is_list(List), List /= [] ->
 			% Prepare the message as a JSON document
