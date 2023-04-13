@@ -1,4 +1,4 @@
-package it.unipi.dsmt.student_platform.servlets;
+package it.unipi.dsmt.student_platform.servlets.professor;
 
 import it.unipi.dsmt.student_platform.enums.UserRole;
 import it.unipi.dsmt.student_platform.utility.AccessController;

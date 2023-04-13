@@ -1,4 +1,4 @@
-package it.unipi.dsmt.student_platform.servlets;
+package it.unipi.dsmt.student_platform.servlets.professor;
 
 import it.unipi.dsmt.student_platform.dto.CourseCreationDTO;
 import it.unipi.dsmt.student_platform.dto.LoggedUserDTO;
@@ -17,8 +17,8 @@ import java.io.IOException;
 /**
  * Servlet handling GET and POST requests for the webpage for creating a new course.
  */
-@WebServlet(name = "CreateCourseServlet", value = "/professor/create-course")
-public class CreateCourseServlet extends HttpServlet {
+@WebServlet(name = "ProfessorCreateCourseServlet", value = "/professor/create-course")
+public class ProfessorCreateCourseServlet extends HttpServlet {
 	
 	public static final String attributeSuccessfulCreation = "successful-creation";
 	

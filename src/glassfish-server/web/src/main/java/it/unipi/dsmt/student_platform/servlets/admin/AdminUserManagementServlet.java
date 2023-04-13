@@ -1,4 +1,4 @@
-package it.unipi.dsmt.student_platform.servlets;
+package it.unipi.dsmt.student_platform.servlets.admin;
 
 import it.unipi.dsmt.student_platform.dto.GeneralUserDTO;
 import it.unipi.dsmt.student_platform.enums.UserRole;
@@ -13,17 +13,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 
-@WebServlet(name = "UsersServlet", value="/admin/users")
-public class UsersServlet extends HttpServlet {
+@WebServlet(name = "AdminUserManagementServlet", value="/admin/users")
+public class AdminUserManagementServlet extends HttpServlet {
 
     @EJB
     private UserEJB userEJB;
     
     /**
-     * Method accessed after a POST request in which the user tries to find a specific user by a string clicking "search"
-     * button.
-     * @param request
-     * @param response
+     * Method accessed after a POST request in which the user tries to find a
+     * specific user by a string clicking "search" button.
+     * @param request HttpServletRequest instance
+     * @param response HttpServletResponse response
      */
     private void searchWithStringByOffset(HttpServletRequest request, HttpServletResponse response) {
         // Extract the research input and the user type to search

@@ -19,4 +19,6 @@ public interface UserEJB {
 	boolean banUser(String id, UserRole role);
 
 	boolean createProfessorAccount(CreateProfessorDTO createProfessorDTO);
+	
+	boolean signup(SignupDTO signupDTO);
 }
