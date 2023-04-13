@@ -7,11 +7,10 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <title>StudentPortal</title>
-    <!-- TODO css + icon -->
+    <title>StudentPlatform</title>
 </head>
 <body>
-<h1>Welcome to StudentPortal!</h1>
+<h1>Welcome to StudentPlatform!</h1>
 
 <div>
     <h2>Login</h2>

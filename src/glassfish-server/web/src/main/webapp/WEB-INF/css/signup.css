@@ -1,0 +1,9 @@
+:root {
+    --body-bg: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    --chatroom-bg: #fff;
+    --border: 2px solid #ddd;
+    --received-message-bgcolor: #ececec;
+    --sent-message-bgcolor: #579ffb;
+    --base-color: #97c6f2;
+}
+
