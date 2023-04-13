@@ -150,7 +150,7 @@ public class UserEJBImpl implements UserEJB {
 			}
 		}
 		catch (SQLException e) {
-			throw new RuntimeException(e);
+			return false;
 		}
 	}
 }

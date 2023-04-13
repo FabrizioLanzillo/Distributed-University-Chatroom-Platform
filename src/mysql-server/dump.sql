@@ -37,6 +37,7 @@ CREATE TABLE `admin` (
 
 LOCK TABLES `admin` WRITE;
 /*!40000 ALTER TABLE `admin` DISABLE KEYS */;
+INSERT INTO `admin` VALUES (_binary '|J•ŒÓ´\í¾\î\äp¸\ÉW§','admin','admin');
 /*!40000 ALTER TABLE `admin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -66,6 +67,7 @@ CREATE TABLE `booked_meeting` (
 
 LOCK TABLES `booked_meeting` WRITE;
 /*!40000 ALTER TABLE `booked_meeting` DISABLE KEYS */;
+INSERT INTO `booked_meeting` VALUES (_binary '|\êüiÓ´\í¾\î\äp¸\ÉW§',_binary '|½Ò¨Ó´\í¾\î\äp¸\ÉW§','2023-04-05',_binary '{\áþÓ´\í¾\î\äp¸\ÉW§'),(_binary '|\ëŒÓ´\í¾\î\äp¸\ÉW§',_binary '|½\Ø\îÓ´\í¾\î\äp¸\ÉW§','2023-04-08',_binary '{\áþÓ´\í¾\î\äp¸\ÉW§');
 /*!40000 ALTER TABLE `booked_meeting` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -82,9 +84,10 @@ CREATE TABLE `course` (
   `professor` binary(16) NOT NULL,
   `description` text NOT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`),
   KEY `course__professor.id_fk` (`professor`),
   CONSTRAINT `course__professor.id_fk` FOREIGN KEY (`professor`) REFERENCES `professor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -93,7 +96,7 @@ CREATE TABLE `course` (
 
 LOCK TABLES `course` WRITE;
 /*!40000 ALTER TABLE `course` DISABLE KEYS */;
-INSERT INTO `course` VALUES (2,'dsmt',_binary '\õYiŠÌ¹\í’û\äp¸\ÉW§','description'),(3,'foc',_binary '\õY|\rÌ¹\í’û\äp¸\ÉW§','description'),(4,'fmfss',_binary '\õYiŠÌ¹\í’û\äp¸\ÉW§','description');
+INSERT INTO `course` VALUES (2,'dsmt',_binary '{¨FsÓ´\í¾\î\äp¸\ÉW§','description'),(3,'msss',_binary '{¨E+Ó´\í¾\î\äp¸\ÉW§','description'),(4,'nsh',_binary '{¨E+Ó´\í¾\î\äp¸\ÉW§','description'),(5,'foc',_binary '{¨B\"Ó´\í¾\î\äp¸\ÉW§','description'),(6,'fmfss',_binary '{¨B\"Ó´\í¾\î\äp¸\ÉW§','description');
 /*!40000 ALTER TABLE `course` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -121,6 +124,7 @@ CREATE TABLE `meeting_slot` (
 
 LOCK TABLES `meeting_slot` WRITE;
 /*!40000 ALTER TABLE `meeting_slot` DISABLE KEYS */;
+INSERT INTO `meeting_slot` VALUES (_binary '|½Ò¨Ó´\í¾\î\äp¸\ÉW§',2,3,'15:20:40'),(_binary '|½\Ø\îÓ´\í¾\î\äp¸\ÉW§',5,5,'18:20:40');
 /*!40000 ALTER TABLE `meeting_slot` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -149,7 +153,7 @@ CREATE TABLE `professor` (
 
 LOCK TABLES `professor` WRITE;
 /*!40000 ALTER TABLE `professor` DISABLE KEYS */;
-INSERT INTO `professor` VALUES (_binary '\õYiŠÌ¹\í’û\äp¸\ÉW§','m.rossi','pass','m.rossi@unipi.it','Mario','Rossi'),(_binary '\õY|\rÌ¹\í’û\äp¸\ÉW§','g.bianchi','pass','g.bianchi@unipi.it','Gianni','Bianchi');
+INSERT INTO `professor` VALUES (_binary '{¨B\"Ó´\í¾\î\äp¸\ÉW§','m.rossi','pass','m.rossi@unipi.it','Mario','Rossi'),(_binary '{¨E+Ó´\í¾\î\äp¸\ÉW§','l.marrone','pass','l.marrone@unipi.it','Luca','Marrone'),(_binary '{¨FsÓ´\í¾\î\äp¸\ÉW§','g.bianchi','pass','g.bianchi@unipi.it','Gianni','Bianchi');
 /*!40000 ALTER TABLE `professor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -180,7 +184,7 @@ CREATE TABLE `student` (
 
 LOCK TABLES `student` WRITE;
 /*!40000 ALTER TABLE `student` DISABLE KEYS */;
-INSERT INTO `student` VALUES (_binary '\õˆ\ÚÌ¹\í’û\äp¸\ÉW§','f.lanzillo','pass','f.lanzillo@unipi.it','Fabrizio','Lanzillo','CE','ITA'),(_binary '\õˆwÌ¹\í’û\äp¸\ÉW§','f.montini','pass','f.montini@unipi.it','Federico','Montini','CE','ITA'),(_binary '\õˆ\ÉÌ¹\í’û\äp¸\ÉW§','r.sagramoni','pass','r.sagramoni@unipi.it','Riccardo','Sagramoni','CE','ITA');
+INSERT INTO `student` VALUES (_binary '{\áþÓ´\í¾\î\äp¸\ÉW§','f.lanzillo','pass','f.lanzillo@unipi.it','Fabrizio','Lanzillo','CE','ITA'),(_binary '{\á!úÓ´\í¾\î\äp¸\ÉW§','f.montini','pass','f.montini@unipi.it','Federico','Montini','CE','ITA'),(_binary '{\á#‰Ó´\í¾\î\äp¸\ÉW§','r.sagramoni','pass','r.sagramoni@unipi.it','Riccardo','Sagramoni','CE','ITA');
 /*!40000 ALTER TABLE `student` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -207,7 +211,7 @@ CREATE TABLE `student_starred_courses` (
 
 LOCK TABLES `student_starred_courses` WRITE;
 /*!40000 ALTER TABLE `student_starred_courses` DISABLE KEYS */;
-INSERT INTO `student_starred_courses` VALUES (_binary '\õˆ\ÚÌ¹\í’û\äp¸\ÉW§',2),(_binary '\õˆwÌ¹\í’û\äp¸\ÉW§',2),(_binary '\õˆ\ÉÌ¹\í’û\äp¸\ÉW§',2),(_binary '\õˆ\ÚÌ¹\í’û\äp¸\ÉW§',3),(_binary '\õˆwÌ¹\í’û\äp¸\ÉW§',4);
+INSERT INTO `student_starred_courses` VALUES (_binary '{\áþÓ´\í¾\î\äp¸\ÉW§',2),(_binary '{\á!úÓ´\í¾\î\äp¸\ÉW§',2),(_binary '{\á#‰Ó´\í¾\î\äp¸\ÉW§',2),(_binary '{\áþÓ´\í¾\î\äp¸\ÉW§',5),(_binary '{\á!úÓ´\í¾\î\äp¸\ÉW§',6);
 /*!40000 ALTER TABLE `student_starred_courses` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -220,4 +224,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-03-29 12:09:44
+-- Dump completed on 2023-04-05 15:22:35

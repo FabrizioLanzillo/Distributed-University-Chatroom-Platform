@@ -1,26 +1,28 @@
-<%@ page import="it.unipi.dsmt.student_platform.dto.CourseDTO" %>
-<%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="it.unipi.dsmt.student_platform.dto.GeneralUserDTO" %>
 <%@ page import="it.unipi.dsmt.student_platform.enums.UserRole" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 
 <%
+    // Get the users list
     ArrayList<GeneralUserDTO> userList = (ArrayList<GeneralUserDTO>) request.getAttribute("userList");
     if(userList == null){
         userList = new ArrayList<>();
     }
 
+	// Check if we've been redirected here after a ban request
     String banACK = "";
     if(request.getAttribute("banACK") != null){
         banACK = request.getAttribute("banACK").toString();
     }
 
+	// Check if we've been redirected here after a search request
 	UserRole role = (UserRole) request.getAttribute("role_searched");
 	if(role == null){
         role = UserRole.student;
     }
 
+	//Extract the offset otherwise initialize to 0 (Current month)
 	int offset = request.getParameter("offset") == null? 0 : Integer.parseInt(request.getParameter("offset"));
 
 %>
@@ -43,6 +45,7 @@
 
     <form name="action" action="${pageContext.request.contextPath}/admin/users?action=switch" method="post">
         <%
+            // Display role switch button coherently
             if(role == UserRole.student){
 
 				%>
@@ -63,12 +66,13 @@
                 coursesDiv.innerHTML = "";
             </script>
             <%
+                // Create a button for each user
                 int i=0;
                 for (GeneralUserDTO user : userList) {
             %>
-            <button type="submit" name="userButton" value="<%=user.getId()%>">
-                <%= user.toString() %>
-            </button>
+                    <button type="submit" name="userButton" value="<%=user.getId()%>">
+                        <%= user.toString() %>
+                    </button>
             <%
                     i++;
                 }
@@ -77,6 +81,7 @@
     </form>
     <form method="post" action="${pageContext.request.contextPath}/admin/users?action=offsetChange&offset=<%=offset - 1%>&search=<%=role.toString()%>">
         <%
+            // Create buttons to change the offset, backward one is available only if offset >0
             if(offset <=0 ){%>
         <button disabled="disabled"><-</button>
         <%}

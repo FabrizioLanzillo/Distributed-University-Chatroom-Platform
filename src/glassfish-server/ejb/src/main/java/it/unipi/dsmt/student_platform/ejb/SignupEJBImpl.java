@@ -11,15 +11,27 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ * Implementation of SignupEJB class, which manage the logic behind the signup operation ensuring a safe database operation.
+ */
 @Stateless
 public class SignupEJBImpl implements SignupEJB {
-
+    
+    /**
+     * Datasource used to access the database.
+     */
     @Resource(lookup = "jdbc/StudentPlatformPool")
     private DataSource dataSource;
-
+    
+    /**
+     * definition of the signup operation. Takes a SignupDTO, perform the query and return the result.
+     * @param signupDTO: SignupDTO type which contains user data to be stored
+     * @return boolean value indicating if the signup operation was successful or not
+     */
     @Override
     public boolean signup(@NotNull SignupDTO signupDTO){
         try(Connection connection = dataSource.getConnection()) {
+            //Prepare the query
             String query = "INSERT INTO `student` VALUES ( UUID_TO_BIN(UUID()) ,?, ?, ?, ?, ? ,?, ?);";
 
                 try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -39,7 +51,7 @@ public class SignupEJBImpl implements SignupEJB {
                 }
             }
             catch (SQLException e) {
-                throw new RuntimeException(e);
+                return false;
             }
     }
 }

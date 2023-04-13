@@ -36,9 +36,10 @@
           action="${pageContext.request.contextPath}/student/booking?id=<%=id%>&offset=<%=offset%>">
         <%
             int i=0;
+			//Create a button for each available slot
             for(BookingDTO bDTO : bookingDTOS){
         %>
-                <input type="submit" class="timeslotbox" name="timeslot" value=<%=i%>><%=bDTO.toString()%>
+                <input type="submit" class="timeslot" name="timeslot" value=<%=i%>><%=bDTO.toString()%>
                 <br>
         <%
                 i++;
@@ -48,32 +49,38 @@
 
     <form method="post" action="${pageContext.request.contextPath}/student/booking?action=offsetChange&id=<%=id%>&offset=<%=offset - 1%>">
         <%
-        if(offset <=0 ){%>
+        // Create buttons to change month, backward is enabled only if we are looking for at least a month in the future
+        if(offset <=0 ){
+        %>
             <button disabled="disabled"><-</button>
         <%}
-        else{%>
+        else{
+        %>
             <button type="submit"><-</button>
-        <%}%>
+        <%}
+        %>
     </form>
     <form method="post" action="${pageContext.request.contextPath}/student/booking?action=offsetChange&id=<%=id%>&offset=<%=offset + 1%>">
         <button type="submit">-></button>
     </form>
 
     <div id="response">
-        <%
-            // Check if the user failed the login
-            String rParam = request.getParameter("r");
-            if (rParam != null && rParam.equals("error")) {
-        %>
-        <div id="errorResponse">Error during your booking, try again later!</div>
-        <%
-            }
-            else if (rParam != null && rParam.equals("success")) {
-        %>
-        <div id="successResponse">Booking successful!</div>
-        <%
-            }
-        %>
+        <script>
+            <%
+                // Check if we have been redirected here after a booking request, in that case "r" parameter is set
+                String rParam = request.getParameter("r");
+                if (rParam != null && rParam.equals("error")) {
+            %>
+                alert("Booking failed");
+            <%
+                }
+                else if (rParam != null && rParam.equals("success")) {
+            %>
+                alert("Booking successful");
+            <%
+                }
+            %>
+        </script>
     </div>
 </div>
 

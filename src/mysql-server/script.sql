@@ -87,6 +87,7 @@ CREATE TABLE `course` (
   `description` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `course__professor.id_fk` (`professor`),
+  UNIQUE KEY `name` (`name`),
   CONSTRAINT `course__professor.id_fk` FOREIGN KEY (`professor`) REFERENCES `professor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;

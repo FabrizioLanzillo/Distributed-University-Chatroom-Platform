@@ -1,5 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
-<%@ page import="java.util.List" %>
 <%@ page import="it.unipi.dsmt.student_platform.dto.MeetingDTO" %>
 <%@ page import="java.util.ArrayList" %>
 
@@ -9,10 +8,9 @@
     try{
         bookedSlots = (ArrayList<MeetingDTO>)request.getAttribute("bookedSlots");
     }catch(Exception e){
-        System.out.println(e.getMessage());
 		bookedSlots = new ArrayList<>();
     }
-
+    // Extract current offset if not set initialize to 0 (current month)
     int offset = request.getParameter("offset")==null ? 0 : Integer.parseInt(request.getParameter("offset"));
 %>
 <html>
@@ -30,6 +28,7 @@
     <form name="selected_slot" method="post"
           action="${pageContext.request.contextPath}/professor/meeting?offset=<%=offset%>">
         <%
+            // If any, show booked meeting in the selected month
             if(bookedSlots.isEmpty()){
                 %>
                 <div class="alert"> No booked meeting yet! </div>
@@ -49,20 +48,22 @@
         %>
     </form>
     <div>
-        <%
-            // Check if the user failed the login
+        <script>
+            <%
             String rParam = request.getParameter("r");
-            if (rParam != null && rParam.equals("error")) {
-        %>
-        <div>Error during your booking removal, try again later!</div>
-        <%
-        }
-        else if (rParam != null && rParam.equals("success")) {
-        %>
-        <div>Removal successful!</div>
-        <%
+            // check on the result of the delete operation, if it has been made
+            if(rParam != null && rParam.equals("error")){
+            %>
+                alert("Error during meeting deletion");
+            <%
             }
+            else if(rParam!= null && rParam.equals("success")){
+            %>
+                alert("Meeting deleted successfully");
+            <%
+			}
         %>
+        </script>
     </div>
     <form method="post" action="${pageContext.request.contextPath}/professor/meeting?action=offsetChange&offset=<%=offset - 1%>">
         <%

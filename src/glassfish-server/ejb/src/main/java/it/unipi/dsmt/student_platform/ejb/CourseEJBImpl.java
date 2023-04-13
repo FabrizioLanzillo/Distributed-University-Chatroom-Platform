@@ -11,10 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -296,10 +293,11 @@ public class CourseEJBImpl implements CourseEJB {
 				preparedStatement.setInt(2, courseId);
 
 				// Execute query
-				return 1 == preparedStatement.executeUpdate();
+				return preparedStatement.executeUpdate() == 1;
 			}
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			e.printStackTrace();
+			return false;
 		}
 	}
 	
@@ -341,18 +339,20 @@ public class CourseEJBImpl implements CourseEJB {
 			// Check if username and password is correct
 			String query = "INSERT INTO `course` (`name`, `professor`, `description`) " +
 					"VALUES (?, UUID_TO_BIN(?), ?);";
-
+			
 			try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 				// Set parameters in prepared statement
 				preparedStatement.setString(1, course.getName());
 				preparedStatement.setString(2, course.getProfessorId());
 				preparedStatement.setString(3, course.getDescription());
-
+				
 				// Execute query
-				return !preparedStatement.execute();
+				return preparedStatement.executeUpdate() == 1;
+				
 			}
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			e.printStackTrace();
+			return false;
 		}
 	}
 	

@@ -7,19 +7,26 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
-
 import java.io.IOException;
-import java.sql.SQLException;
-
 
 @WebServlet(name = "SignUpServlet", value="/student/signup")
 public class SignupServlet extends HttpServlet {
 	@EJB
 	private SignupEJB signupEJB;
 	
+	/**
+	 * Redefinition of doPost method for signup page. Accessed when the user clicks on the signup button after
+	 * inserting the data in the form.
+	 *
+	 * @param request
+	 * @param response
+	 * @throws IOException
+	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
+		
+		//Extracting the data from the form
 		String _username = request.getParameter("username");
 		String _password = request.getParameter("password");
 		String _email = request.getParameter("email");
@@ -29,7 +36,7 @@ public class SignupServlet extends HttpServlet {
 		String _language = request.getParameter("language");
 		
 		boolean r = false;
-		
+		// Creating a new signup object
 		SignupDTO dto = new SignupDTO(
 				_username,
 				_password,
@@ -39,14 +46,11 @@ public class SignupServlet extends HttpServlet {
 				_degree,
 				_language);
 		
+		// TODO Hash & salt the password
+		// Try to store the data, if the entry is duplicated (same username) the query will fail
+		r = signupEJB.signup(dto);
+
 		
-		//Some SQL call to store the data (remember to hash the pwd (?))
-		try{
-			r = signupEJB.signup(dto);
-		}
-		catch(Exception error){
-			error.printStackTrace();
-		}
 		//Let's proceed to login page if signup succeeded, otherwise show an error
 		if(!r) {
 			response.sendRedirect(request.getContextPath() + "/student/signup?r=error");
@@ -55,6 +59,13 @@ public class SignupServlet extends HttpServlet {
 		response.sendRedirect(request.getContextPath() + "/");
 	}
 	
+	/***
+	 * Redefinition of doGet method for signup page. Accessed when the user access it from the login page.
+	 * @param request
+	 * @param response
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/WEB-INF/jsp/student/signup.jsp")

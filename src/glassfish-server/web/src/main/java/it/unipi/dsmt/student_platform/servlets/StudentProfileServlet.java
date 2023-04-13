@@ -3,8 +3,7 @@ package it.unipi.dsmt.student_platform.servlets;
 import it.unipi.dsmt.student_platform.dto.LoggedUserDTO;
 import it.unipi.dsmt.student_platform.dto.StudentBookedMeetingDTO;
 import it.unipi.dsmt.student_platform.enums.UserRole;
-import it.unipi.dsmt.student_platform.interfaces.BookingEJB;
-import it.unipi.dsmt.student_platform.interfaces.MeetingEJB;
+import it.unipi.dsmt.student_platform.interfaces.BookedMeetingEJB;
 import it.unipi.dsmt.student_platform.utility.AccessController;
 import jakarta.ejb.EJB;
 import jakarta.servlet.RequestDispatcher;
@@ -21,9 +20,7 @@ import java.util.List;
 public class StudentProfileServlet extends HttpServlet {
 
 	@EJB
-	private BookingEJB bookingEJB;
-	@EJB
-	private MeetingEJB meetingEJB;
+	private BookedMeetingEJB bookedMeetingEJB;
 
 	private void handleRequest(HttpServletRequest request, HttpServletResponse response, Boolean deleteAlert) throws ServletException, IOException {
 
@@ -34,7 +31,7 @@ public class StudentProfileServlet extends HttpServlet {
 			return;
 		}
 
-		// check if a delete has been made, and in the case check the response
+		// check if delete has been made, and in the case check the response
 		if(deleteAlert != null){
 			if(deleteAlert == Boolean.TRUE){
 				request.setAttribute("delete_ack", "ok");
@@ -44,7 +41,7 @@ public class StudentProfileServlet extends HttpServlet {
 			}
 		}
 
-		bookedMeeting = bookingEJB.getBookedMeetingsForStudent(loggedUserDTO.getId());
+		bookedMeeting = bookedMeetingEJB.getBookedMeetingsForStudent(loggedUserDTO.getId());
 		request.setAttribute("booked-meeting", bookedMeeting);
 
 		String targetJSP = "/WEB-INF/jsp/student/profile.jsp";
@@ -71,7 +68,7 @@ public class StudentProfileServlet extends HttpServlet {
 		Boolean successful = null;
 
 		try{
-			successful = meetingEJB.removeSlot(request.getParameter("meeting_id"));
+			successful = bookedMeetingEJB.removeSlot(request.getParameter("meeting_id"));
 		}
 		catch(Exception error){
 			error.printStackTrace();
