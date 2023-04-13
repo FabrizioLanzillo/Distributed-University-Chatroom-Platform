@@ -1,4 +1,4 @@
-package it.unipi.dsmt.student_platform.servlets;
+package it.unipi.dsmt.student_platform.servlets.student;
 
 import it.unipi.dsmt.student_platform.dto.CourseDTO;
 import it.unipi.dsmt.student_platform.dto.LoggedUserDTO;
@@ -19,8 +19,8 @@ import java.util.Optional;
  * Servlet handling GET and POST request for the webpage
  * which shows the details of a course.
  */
-@WebServlet(name = "CourseServlet", value = "/student/course")
-public class CourseServlet extends HttpServlet {
+@WebServlet(name = "StudentCourseServlet", value = "/student/course")
+public class StudentCourseServlet extends HttpServlet {
 	
 	@EJB
 	CourseEJB courseEJB;

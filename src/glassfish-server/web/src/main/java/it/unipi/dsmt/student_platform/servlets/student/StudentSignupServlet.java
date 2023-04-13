@@ -1,7 +1,7 @@
-package it.unipi.dsmt.student_platform.servlets;
+package it.unipi.dsmt.student_platform.servlets.student;
 
 import it.unipi.dsmt.student_platform.dto.SignupDTO;
-import it.unipi.dsmt.student_platform.interfaces.SignupEJB;
+import it.unipi.dsmt.student_platform.interfaces.UserEJB;
 import jakarta.ejb.EJB;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -9,10 +9,10 @@ import jakarta.servlet.http.*;
 
 import java.io.IOException;
 
-@WebServlet(name = "SignUpServlet", value="/student/signup")
-public class SignupServlet extends HttpServlet {
+@WebServlet(name = "StudentSignupServlet", value="/student/signup")
+public class StudentSignupServlet extends HttpServlet {
 	@EJB
-	private SignupEJB signupEJB;
+	private UserEJB userEJB;
 	
 	/**
 	 * Redefinition of doPost method for signup page. Accessed when the user clicks on the signup button after
@@ -48,7 +48,7 @@ public class SignupServlet extends HttpServlet {
 		
 		// TODO Hash & salt the password
 		// Try to store the data, if the entry is duplicated (same username) the query will fail
-		r = signupEJB.signup(dto);
+		r = userEJB.signup(dto);
 
 		
 		//Let's proceed to login page if signup succeeded, otherwise show an error

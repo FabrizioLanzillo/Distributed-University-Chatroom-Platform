@@ -1,4 +1,4 @@
-package it.unipi.dsmt.student_platform.servlets;
+package it.unipi.dsmt.student_platform.servlets.professor;
 
 import it.unipi.dsmt.student_platform.dto.LoggedUserDTO;
 import it.unipi.dsmt.student_platform.dto.MeetingDTO;
@@ -10,21 +10,18 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
-
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "MeetingServlet", value = "/professor/meeting")
-public class MeetingServlet extends HttpServlet {
+
+@WebServlet(name = "ProfessorMeetingServlet", value = "/professor/meeting")
+public class ProfessorMeetingServlet extends HttpServlet {
 
     @EJB
     private BookedMeetingEJB bookedMeetingEJB;
     
     /**
      * Redefinition of doPOST. Invoked when the user (professor in this case) tries to delete a booked meeting
-     * @param request
-     * @param response
-     * @throws IOException
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -44,7 +41,7 @@ public class MeetingServlet extends HttpServlet {
         }
 
         // Extract the list of booked slots
-        List<MeetingDTO> mDTOs = bookedMeetingEJB.getSlots(loggedUser.getId(), offset);
+        List<MeetingDTO> mDTOs = bookedMeetingEJB.getProfessorMeetings(loggedUser.getId(), offset);
         
         // Get the iterator to understand which of the list haas been clicked
         int iterator = request.getParameter("timeslot").isEmpty() ? -1 : Integer.parseInt(request.getParameter("timeslot"));
@@ -68,10 +65,6 @@ public class MeetingServlet extends HttpServlet {
     
     /**
      * Redefinition of doGET method
-     * @param request
-     * @param response
-     * @throws IOException
-     * @throws ServletException
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -84,7 +77,7 @@ public class MeetingServlet extends HttpServlet {
         int offset = request.getParameter("offset") == null ? 0 : Integer.parseInt(request.getParameter("offset"));
 
         // Extract the slots for that specific offset
-        List<MeetingDTO> bDTOs = bookedMeetingEJB.getSlots(loggedUser.getId(), offset);
+        List<MeetingDTO> bDTOs = bookedMeetingEJB.getProfessorMeetings(loggedUser.getId(), offset);
         request.setAttribute("bookedSlots", bDTOs);
 
         request.getRequestDispatcher("/WEB-INF/jsp/professor/meeting.jsp")

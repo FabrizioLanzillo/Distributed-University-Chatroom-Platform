@@ -1,4 +1,4 @@
-package it.unipi.dsmt.student_platform.servlets;
+package it.unipi.dsmt.student_platform.servlets.student;
 
 import it.unipi.dsmt.student_platform.dto.BookingDTO;
 import it.unipi.dsmt.student_platform.dto.LoggedUserDTO;
@@ -14,8 +14,8 @@ import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "BookingServlet", value = "/student/booking")
-public class BookingServlet extends HttpServlet {
+@WebServlet(name = "StudentBookingServlet", value = "/student/booking")
+public class StudentBookingServlet extends HttpServlet {
 
     @EJB
     private BookedMeetingEJB BookedMeetingEJB;
@@ -66,7 +66,7 @@ public class BookingServlet extends HttpServlet {
         /* If the action is not specified, get the booking from the database with the current offset since the user is
         * trying to book a slot
          */
-        List<BookingDTO> bDTOs = BookedMeetingEJB.getSlots(id, offset);
+        List<BookingDTO> bDTOs = BookedMeetingEJB.getBookableSlots(id, offset);
 
         // Understand which slot has been selected by the user
         int iterator = request.getParameter("timeslot").isEmpty() ? -1 : Integer.parseInt(request.getParameter("timeslot"));
@@ -115,7 +115,7 @@ public class BookingServlet extends HttpServlet {
         int offset = request.getParameter("offset") == null ? 0 : Integer.parseInt(request.getParameter("offset"));
         
         // Get available slots of the selected month and return them to the client
-        List<BookingDTO> bDTOs = BookedMeetingEJB.getSlots(id, offset);
+        List<BookingDTO> bDTOs = BookedMeetingEJB.getBookableSlots(id, offset);
         
         request.setAttribute("slots", bDTOs);
         request.getRequestDispatcher("/WEB-INF/jsp/student/booking.jsp")

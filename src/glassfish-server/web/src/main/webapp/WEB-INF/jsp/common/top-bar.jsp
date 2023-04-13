@@ -4,6 +4,7 @@
 --%>
 <%@ page import="it.unipi.dsmt.student_platform.dto.LoggedUserDTO" %>
 <%@ page import="it.unipi.dsmt.student_platform.utility.AccessController" %>
+<%@ page import="it.unipi.dsmt.student_platform.enums.UserRole" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 
 <%
@@ -19,9 +20,15 @@
         Portal
     </button>
     
+<%
+    if (loggedUserDTO.getRole() == UserRole.student || loggedUserDTO.getRole() == UserRole.professor) {
+%>
     <button onclick="location.href = '${pageContext.request.contextPath}/<%= loggedUserDTO.getRole().name() %>/profile'">
         Profile
     </button>
+<%
+    }
+%>
     
     <button onclick="location.href = '${pageContext.request.contextPath}/logout'">
         Logout

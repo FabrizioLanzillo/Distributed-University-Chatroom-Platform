@@ -10,13 +10,10 @@ import java.util.List;
 @Remote
 public interface BookedMeetingEJB {
     
-    List<BookingDTO> getSlots(int id, int offset);
-
+    List<BookingDTO> getBookableSlots(int courseID, int offset);
     boolean bookSlot(String studentID, int courseID, BookingDTO dto, int offset);
-    
-    List<StudentBookedMeetingDTO> getBookedMeetingsForStudent(String id);
-    
     boolean removeSlot(String bookingID);
     
-    List<MeetingDTO> getSlots(String professorID, int offset);
+    List<StudentBookedMeetingDTO> getStudentMeetings(String studentID);
+    List<MeetingDTO> getProfessorMeetings(String professorID, int offset);
 }

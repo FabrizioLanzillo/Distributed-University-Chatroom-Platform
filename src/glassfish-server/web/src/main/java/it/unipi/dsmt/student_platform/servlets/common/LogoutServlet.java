@@ -1,4 +1,4 @@
-package it.unipi.dsmt.student_platform.servlets;
+package it.unipi.dsmt.student_platform.servlets.common;
 
 import it.unipi.dsmt.student_platform.utility.ClientRedirector;
 import jakarta.servlet.annotation.WebServlet;

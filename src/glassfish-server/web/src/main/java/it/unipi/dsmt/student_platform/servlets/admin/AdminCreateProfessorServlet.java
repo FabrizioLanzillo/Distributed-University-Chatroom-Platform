@@ -1,4 +1,4 @@
-package it.unipi.dsmt.student_platform.servlets;
+package it.unipi.dsmt.student_platform.servlets.admin;
 
 import it.unipi.dsmt.student_platform.dto.CreateProfessorDTO;
 import it.unipi.dsmt.student_platform.dto.LoggedUserDTO;

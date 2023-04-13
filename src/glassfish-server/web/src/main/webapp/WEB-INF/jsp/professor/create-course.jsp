@@ -1,4 +1,4 @@
-<%@ page import="it.unipi.dsmt.student_platform.servlets.CreateCourseServlet" %><%--
+<%@ page import="it.unipi.dsmt.student_platform.servlets.professor.ProfessorCreateCourseServlet" %><%--
     Website page for creating a new course.
 --%>
 
@@ -14,7 +14,7 @@
     <h1>Create a course</h1>
 
 <%
-    Boolean successful = (Boolean) request.getAttribute(CreateCourseServlet.attributeSuccessfulCreation);
+    Boolean successful = (Boolean) request.getAttribute(ProfessorCreateCourseServlet.attributeSuccessfulCreation);
 	if (successful == Boolean.TRUE) {
 %>
     <script>
