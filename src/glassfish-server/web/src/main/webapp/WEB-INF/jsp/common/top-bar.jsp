@@ -14,7 +14,9 @@
     }
 %>
 
-<div id="top-bar" class="top-bar">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/top-bar.css">
+
+<div class="topnav">
     
     <button onclick="location.href = '${pageContext.request.contextPath}/<%= loggedUserDTO.getRole().name() %>/portal'">
         Portal
