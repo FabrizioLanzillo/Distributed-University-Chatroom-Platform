@@ -33,7 +33,7 @@ public class BookedMeetingEJBImpl implements BookedMeetingEJB {
      * @param offset: offset from current month, 0 means current month, no negative values allowed
      * @return List of BookingDTO objects representing the bookable slots
      */
-    public List<BookingDTO> getSlots(int CourseID, int offset){
+    public List<BookingDTO> getBookableSlots(int CourseID, int offset){
         // Get current date
         LocalDate start = LocalDate.now().plusMonths(offset);
         
@@ -101,7 +101,7 @@ public class BookedMeetingEJBImpl implements BookedMeetingEJB {
     public boolean bookSlot(String studentID, int courseID, BookingDTO dto, int offset){
 
         // Get all available slots showed to the user
-        List<BookingDTO> allSlots = getSlots(courseID, offset);
+        List<BookingDTO> allSlots = getBookableSlots(courseID, offset);
         if(allSlots == null){
             System.out.println("Error: No slots available");
             return false;
@@ -119,7 +119,7 @@ public class BookedMeetingEJBImpl implements BookedMeetingEJB {
         return bookedMeetingDAO.bookSlotDAO(studentID, meetingID, dto, dataSource);
     }
     
-    public List<StudentBookedMeetingDTO> getBookedMeetingsForStudent(String id){
+    public List<StudentBookedMeetingDTO> getStudentMeetings(String id){
         return bookedMeetingDAO.getBookedMeetingsForStudentDAO(id, dataSource);
     }
     
@@ -138,7 +138,7 @@ public class BookedMeetingEJBImpl implements BookedMeetingEJB {
      * @param offset: Offset of the month in which the professor wants to see the booked slots (0 is current month)
      * @return List of MeetingDTO objects representing booked slots
      */
-    public List<MeetingDTO> getSlots(String professorID, int offset){
+    public List<MeetingDTO> getProfessorMeetings(String professorID, int offset){
         // Extract starting date
         LocalDate start = LocalDate.now().plusMonths(offset);
         if(offset != 0){

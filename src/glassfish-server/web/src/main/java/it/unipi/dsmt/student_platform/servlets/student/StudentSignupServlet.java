@@ -9,8 +9,8 @@ import jakarta.servlet.http.*;
 
 import java.io.IOException;
 
-@WebServlet(name = "SignUpServlet", value="/student/signup")
-public class SignupServlet extends HttpServlet {
+@WebServlet(name = "StudentSignupServlet", value="/student/signup")
+public class StudentSignupServlet extends HttpServlet {
 	@EJB
 	private UserEJB userEJB;
 	

@@ -41,7 +41,7 @@ public class StudentProfileServlet extends HttpServlet {
 			}
 		}
 
-		bookedMeeting = bookedMeetingEJB.getBookedMeetingsForStudent(loggedUserDTO.getId());
+		bookedMeeting = bookedMeetingEJB.getStudentMeetings(loggedUserDTO.getId());
 		request.setAttribute("booked-meeting", bookedMeeting);
 
 		String targetJSP = "/WEB-INF/jsp/student/profile.jsp";
