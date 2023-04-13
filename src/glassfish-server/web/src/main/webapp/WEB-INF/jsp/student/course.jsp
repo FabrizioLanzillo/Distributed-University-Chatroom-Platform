@@ -29,6 +29,8 @@ else {
     <head>
         <title> <%= courseDTO.getName() %> </title>
         
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/course.css">
+        
         <script src="${pageContext.request.contextPath}/assets/libs/jquery/js/jquery-3.6.4.min.js"></script>
         <script type="text/javascript">
             
@@ -74,39 +76,46 @@ else {
 
     <body>
         <jsp:include page="/WEB-INF/jsp/common/top-bar.jsp" />
-
-        <h1><%=courseDTO.getName()%></h1>
-
-        <div id="professor">
-            This course is held by prof. <%= courseDTO.getProfessor().getFullName() %>
-        </div>
-
-        <div id="details">
-            <h2>Details</h2>
-            <%= courseDTO.getDescription() %>
-        </div>
-
-        <!-- Buttons for chatroom and booking -->
-        <a href="${pageContext.request.contextPath}/student/chatroom?id=<%= courseDTO.getId() %>">
-            <button>Go to chatroom</button>
-        </a>
-        <a href="${pageContext.request.contextPath}/student/booking?id=<%= courseDTO.getId() %>&offset=0">
-            <button>Book a meeting</button>
-        </a>
         
+        <div class="course-container">
+            <div>
+                <h1><%=courseDTO.getName()%></h1>
+        
+                <div class="course-professor">
+                    This course is held by prof. <%= courseDTO.getProfessor().getFullName() %>
+                </div>
+        
+                <div class="course-details">
+                    <h2>Details</h2>
+                    <span><%= courseDTO.getDescription() %></span>
+                </div>
+                
+                <div class="buttons">
+                    <!-- Buttons for chatroom and booking -->
+                    <button onclick='location.href="${pageContext.request.contextPath}/student/chatroom?id=<%= courseDTO.getId() %>"'>
+                        Go to chatroom
+                    </button>
+                    <button onclick='location.href="${pageContext.request.contextPath}/student/booking?id=<%= courseDTO.getId() %>&offset=0"'>
+                        Book a meeting
+                    </button>
+                
 <%
-    // Insert button to star or unstar a course (depending on from the current state)
-    if (courseDTO.isStarred()) {
+                // Insert button to star or unstar a course (depending on from the current state)
+                if (courseDTO.isStarred()) {
 %>
-        <button onclick="unstarCourse()">Unstar this course</button>
+                    <button onclick="unstarCourse()">Unstar this course</button>
 <%
-    }
-    else {
+                }
+                else {
 %>
-        <button onclick="starCourse()">Star this course</button>
+                    <button onclick="starCourse()">Star this course</button>
 <%
-    }
+                }
 %>
+                </div>
+            </div>
+
+        </div>
     </body>
 <%
 }

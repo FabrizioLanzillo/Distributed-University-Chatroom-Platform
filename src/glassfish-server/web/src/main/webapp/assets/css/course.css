@@ -1,0 +1,31 @@
+.course-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.course-container > div {
+    width: 75%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.course-details {
+    margin: 30px;
+    text-align: justify;
+}
+
+.buttons button {
+    background-color: darkblue;
+    color: white;
+    padding: 5px 20px;
+    margin: 5px 30px;
+    border: none;
+    cursor: pointer;
+}
+
+.buttons button:hover {
+    background-color: cyan;
+    color: black;
+}
