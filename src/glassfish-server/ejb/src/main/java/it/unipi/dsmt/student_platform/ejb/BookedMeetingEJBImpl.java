@@ -5,7 +5,6 @@ import it.unipi.dsmt.student_platform.dto.BookingDTO;
 import it.unipi.dsmt.student_platform.dto.MeetingDTO;
 import it.unipi.dsmt.student_platform.dto.StudentBookedMeetingDTO;
 import it.unipi.dsmt.student_platform.interfaces.BookedMeetingEJB;
-
 import jakarta.annotation.Resource;
 import jakarta.ejb.Stateless;
 
@@ -16,14 +15,14 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Stateless
 public class BookedMeetingEJBImpl implements BookedMeetingEJB {
     
-    /**
-     * Datasource used to access the database.
-     */
+    // Datasource used to access MySQL database
     @Resource(lookup = "jdbc/StudentPlatformPool")
     private DataSource dataSource;
+    // DAO to query the database
     BookedMeetingDAO bookedMeetingDAO = new BookedMeetingDAO();
     
     
