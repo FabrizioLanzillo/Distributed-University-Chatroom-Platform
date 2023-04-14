@@ -18,6 +18,5 @@
 }
 
 .topnav button:hover {
-    background-color: #ddd;
-    color: black;
+    opacity: 0.6;
 }
