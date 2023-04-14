@@ -15,16 +15,28 @@
 %>
 <html>
 <head>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/professor/meeting.css">
     <title>StudentChat</title>
 </head>
 <body>
 
 <jsp:include page="/WEB-INF/jsp/common/top-bar.jsp" />
 
-<h1>Sign up to StudentChat</h1>
+<h1 id="header1"></h1>
 
-<div>
-    <h2>All available slots:</h2>
+<script>
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+
+    const d = new Date();
+    const month = d.getMonth() + <%=offset%>;
+    d.setMonth(month)
+    document.getElementById("header1").textContent = "Your meetings for " + monthNames[d.getMonth()] + " " + d.getFullYear();
+</script>
+
+<div id="meeting_tab">
+    <h2>Booked slots:</h2>
     <form name="selected_slot" method="post"
           action="${pageContext.request.contextPath}/professor/meeting?offset=<%=offset%>">
         <%
