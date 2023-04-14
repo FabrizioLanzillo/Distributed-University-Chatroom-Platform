@@ -1,0 +1,35 @@
+.form-container {
+	display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-container > form {
+	border: 3px solid darkslategrey;
+    width: 50%;
+    text-align: center;
+    padding: 16px;
+}
+
+.form-container > form > input {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.form-container > form > button {
+    background-color: dodgerblue;
+    color: white;
+    padding: 10px 20px;
+    margin: 10px 0;
+    border: none;
+    cursor: pointer;
+    width: 50%;
+}
+
+.form-container > form > button:hover {
+    opacity: 0.8;
+}
