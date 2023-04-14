@@ -12,8 +12,6 @@
 <body>
     <jsp:include page="/WEB-INF/jsp/common/top-bar.jsp" />
 
-    <h1>Create a course</h1>
-
 <%
     Boolean successful = (Boolean) request.getAttribute(ProfessorCreateCourseServlet.attributeSuccessfulCreation);
 	if (successful == Boolean.TRUE) {
@@ -35,19 +33,23 @@
 %>
     
     <div class="form-container">
-        <form method="post" action="${pageContext.request.contextPath}/professor/create-course">
-            <label>
-                Name of the course:
-                <input type="text" name="name" required />
-            </label>
-            <br>
-            <label>
-                Description:
-                <textarea name="description" required></textarea>
-            </label>
-            <br>
-            <button type="submit">CREATE</button>
-        </form>
+        <div>
+            <h1>Create a course</h1>
+            
+            <form method="post" action="${pageContext.request.contextPath}/professor/create-course">
+                <label>
+                    Name of the course:
+                    <input type="text" name="name" required />
+                </label>
+                <br>
+                <label>
+                    Description:
+                    <textarea name="description" required></textarea>
+                </label>
+                <br>
+                <button type="submit">CREATE</button>
+            </form>
+        </div>
     </div>
 
 </body>

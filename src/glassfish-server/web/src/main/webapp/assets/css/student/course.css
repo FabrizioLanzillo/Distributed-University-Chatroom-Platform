@@ -23,6 +23,7 @@
     margin: 5px 30px;
     border: none;
     cursor: pointer;
+    font-size: 12pt;
 }
 
 .buttons button:hover {

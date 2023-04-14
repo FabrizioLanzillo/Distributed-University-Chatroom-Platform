@@ -23,7 +23,7 @@
     </button>
     
 <%
-    if (loggedUserDTO.getRole() == UserRole.student || loggedUserDTO.getRole() == UserRole.professor) {
+    if (loggedUserDTO.getRole() == UserRole.student) {
 %>
     <button onclick="location.href = '${pageContext.request.contextPath}/<%= loggedUserDTO.getRole().name() %>/profile'">
         Profile
