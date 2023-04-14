@@ -11,11 +11,6 @@
     flex-direction: column;
 }
 
-.course-details {
-    margin: 30px;
-    text-align: justify;
-}
-
 .buttons button {
     background-color: darkblue;
     color: white;

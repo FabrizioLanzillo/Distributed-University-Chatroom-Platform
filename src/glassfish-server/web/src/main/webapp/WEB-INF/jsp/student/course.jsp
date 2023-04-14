@@ -77,7 +77,7 @@ else {
     <body>
         <jsp:include page="/WEB-INF/jsp/common/top-bar.jsp" />
         
-        <div class="course-container">
+        <div class="vertical-container">
             <div>
                 <h1><%=courseDTO.getName()%></h1>
         
