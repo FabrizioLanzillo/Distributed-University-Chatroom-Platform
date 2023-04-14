@@ -29,7 +29,7 @@ else {
     <head>
         <title> <%= courseDTO.getName() %> </title>
         
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/course.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/student/course.css">
         
         <script src="${pageContext.request.contextPath}/assets/libs/jquery/js/jquery-3.6.4.min.js"></script>
         <script type="text/javascript">

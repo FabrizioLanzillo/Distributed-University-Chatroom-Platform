@@ -14,7 +14,7 @@
     }
 %>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/top-bar.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/common/top-bar.css">
 
 <div class="topnav">
     
