@@ -1,0 +1,22 @@
+.topnav {
+    overflow: hidden;
+    background-color: dodgerblue;
+    position: relative;
+    top: -8px;
+    left: -8px;
+}
+
+.topnav button {
+    float: left;
+    color: white;
+    background-color: blue;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    margin-right: 10px;
+}
+
+.topnav button:hover {
+    opacity: 0.6;
+}

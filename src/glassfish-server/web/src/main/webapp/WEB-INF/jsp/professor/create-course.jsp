@@ -6,6 +6,7 @@
 
 <head>
     <title>Create course</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/professor/create-course.css">
 </head>
 
 <body>
@@ -32,8 +33,8 @@
 	// Reset attribute
 	request.setAttribute("successful-creation", null);
 %>
-
-    <div class="form">
+    
+    <div class="form-container">
         <form method="post" action="${pageContext.request.contextPath}/professor/create-course">
             <label>
                 Name of the course:
