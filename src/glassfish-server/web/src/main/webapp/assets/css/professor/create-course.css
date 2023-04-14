@@ -4,24 +4,29 @@
     align-items: center;
 }
 
-.form-container > form {
-	border: 3px solid darkslategrey;
+.form-container > div {
+	border: 3px solid #f1f1f1;
     width: 50%;
     text-align: center;
     padding: 16px;
 }
 
-.form-container > form > input {
+form input, form textarea {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
     display: inline-block;
-    border: 1px solid #ccc;
+    border: 1px solid grey;
     box-sizing: border-box;
 }
 
-.form-container > form > button {
-    background-color: dodgerblue;
+form textarea {
+    resize: none;
+    height: 200px;
+}
+
+form button {
+    background-color: darkblue;
     color: white;
     padding: 10px 20px;
     margin: 10px 0;
@@ -30,6 +35,6 @@
     width: 50%;
 }
 
-.form-container > form > button:hover {
-    opacity: 0.8;
+form > button:hover {
+    background-color: cyan;
 }
