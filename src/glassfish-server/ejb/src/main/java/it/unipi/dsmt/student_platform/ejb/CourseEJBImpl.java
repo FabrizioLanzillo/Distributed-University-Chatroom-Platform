@@ -273,7 +273,35 @@ public class CourseEJBImpl implements CourseEJB {
 		}
 		return courses;
 	}
-	
+
+	@Override
+	public String getCourseName(int id){
+
+		String couseName = "";
+
+		try (Connection connection = dataSource.getConnection()) {
+			// Get details of requested course
+			String query =  "SELECT c.name " +
+							"FROM course c  " +
+							"WHERE c.id = ?;";
+
+			try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+				// Set parameters in prepared statement
+				preparedStatement.setInt(1, id);
+
+				// Execute query
+				try (ResultSet resultSet = preparedStatement.executeQuery()) {
+					if(resultSet.next()){
+						couseName = resultSet.getString("c.name");
+					}
+				}
+			}
+		}
+		catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		return couseName;
+	}
 	
 	/**
 	 * Add a "star" relationship between a student and a course (i.e. "star the course").

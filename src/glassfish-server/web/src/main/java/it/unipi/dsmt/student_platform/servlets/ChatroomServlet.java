@@ -3,7 +3,9 @@ package it.unipi.dsmt.student_platform.servlets;
 import it.unipi.dsmt.student_platform.dto.LoggedUserDTO;
 import it.unipi.dsmt.student_platform.dto.MinimalCourseDTO;
 import it.unipi.dsmt.student_platform.enums.UserRole;
+import it.unipi.dsmt.student_platform.interfaces.CourseEJB;
 import it.unipi.dsmt.student_platform.utility.AccessController;
+import jakarta.ejb.EJB;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -20,11 +22,14 @@ import java.util.List;
 @WebServlet(name = "ChatroomServlet", value = "/student/chatroom")
 public class ChatroomServlet extends HttpServlet {
 
+	@EJB
+	private CourseEJB courseEJB;
+
 	private void handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 
 		int courseId =  Integer.parseInt(request.getParameter("id"));
-		String courseName = "corso pippo";
+		String courseName = courseEJB.getCourseName(courseId);
 
 		request.setAttribute("course_name", courseName);
 
