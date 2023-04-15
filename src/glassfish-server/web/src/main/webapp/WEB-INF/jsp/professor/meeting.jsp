@@ -16,7 +16,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/professor/meeting.css">
-    <title>StudentChat</title>
+    <title>Meetings</title>
 </head>
 <body>
 

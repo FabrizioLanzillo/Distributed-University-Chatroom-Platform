@@ -22,7 +22,7 @@
 %>
 <html>
 <head>
-    <title>StudentChat</title>
+    <title>Book a meeting</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/student/booking.css">
 </head>
 <body>

@@ -40,7 +40,9 @@ button:hover{
 }
 
 .offset{
-    margin: 0vw 2vw 0vw 2vw;
+    margin: 0 2vw 0 2vw;
+    height: 2vw;
+    width: 5vw;
 }
 
 .offsetForm{
