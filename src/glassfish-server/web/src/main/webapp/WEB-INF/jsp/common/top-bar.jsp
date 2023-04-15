@@ -9,30 +9,36 @@
 
 <%
     LoggedUserDTO loggedUserDTO = AccessController.getLoggedUserWithRedirect(request, response);
-	if (loggedUserDTO == null) {
-		return;
+    if (loggedUserDTO == null) {
+        return;
     }
 %>
 
-<div id="top-bar" class="top-bar">
-    
-    <button onclick="location.href = '${pageContext.request.contextPath}/<%= loggedUserDTO.getRole().name() %>/portal'">
-        Portal
-    </button>
-    
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/common/top-bar.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/common/common.css">
+
+<div class="topnav">
+
+    <div id="left-container">
+        <button onclick="location.href = '${pageContext.request.contextPath}/<%= loggedUserDTO.getRole().name() %>/portal'">
+            Portal
+        </button>
+
 <%
-    if (loggedUserDTO.getRole() == UserRole.student || loggedUserDTO.getRole() == UserRole.professor) {
+        if (loggedUserDTO.getRole() == UserRole.student) {
 %>
-    <button onclick="location.href = '${pageContext.request.contextPath}/<%= loggedUserDTO.getRole().name() %>/profile'">
-        Profile
-    </button>
+            <button onclick="location.href = '${pageContext.request.contextPath}/<%= loggedUserDTO.getRole().name() %>/profile'">
+                Profile
+            </button>
 <%
-    }
+        }
 %>
-    
-    <button onclick="location.href = '${pageContext.request.contextPath}/logout'">
-        Logout
-    </button>
+    </div>
+    <div id="flex-container"></div>
+    <div id="right-container">
+        <button onclick="location.href = '${pageContext.request.contextPath}/logout'">
+            Logout
+        </button>
+    </div>
 
 </div>
-

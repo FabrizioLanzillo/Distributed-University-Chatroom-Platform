@@ -8,7 +8,7 @@
 <html>
 <head>
     <title>StudentPlatform</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/login.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/common/login.css">
 </head>
 <body>
 <h1>Welcome to StudentPlatform!</h1>

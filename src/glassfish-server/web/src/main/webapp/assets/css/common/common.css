@@ -1,0 +1,20 @@
+:root {
+    --body-bg: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    --chatroom-background-color: #fff;
+    --border: 2px solid #ddd;
+    --received-message-background-color: #ececec;
+    --sent-message-background-color: #579ffb;
+    --base-color: #97c6f2;
+}
+
+/* page style */
+html {
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+body {
+    background-image: var(--body-bg);
+    font-family: Helvetica, sans-serif;
+    margin: 0;
+}
