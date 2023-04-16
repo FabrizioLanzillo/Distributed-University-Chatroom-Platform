@@ -1,12 +1,3 @@
-:root {
-    --body-bg: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    --chatroom-bg: #fff;
-    --border: 1px solid #000;
-    --received-message-bgcolor: #ececec;
-    --sent-message-bgcolor: #579ffb;
-    --base-color: #97c6f2;
-}
-
 .title{
     text-align: center;
     display: flex;
