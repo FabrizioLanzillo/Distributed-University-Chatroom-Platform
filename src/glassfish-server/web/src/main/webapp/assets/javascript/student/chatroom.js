@@ -9,7 +9,7 @@ var username = "";
 var course = null;
 var id_timer = null;
 
-const server_url = "ws://localhost:8080/";
+const server_url = "ws://localhost:8000/";
 // const server_url = "ws://10.2.1.4:8300/";
 
 const websocketConfigurationParameters = {
@@ -66,7 +66,7 @@ function receiveObjectThroughWebsocket(event){
 
     var message = JSON.parse(event.data);
     if(message.opcode === MESSAGE){
-        appendMessageToTheChat("You", message_text, false);
+        appendMessageToTheChat(message.sender, message.text, false);
     }
     else if(message.opcode == GET_ONLINE_USERS){
         updateOnlineStudentsList(message.list);
@@ -77,10 +77,10 @@ function receiveObjectThroughWebsocket(event){
 
 }
 
-function connect(logged_user, course){
+function connect(_logged_user, _course){
 
-    username = logged_user;
-    course = course;
+    username = _logged_user;
+    course = _course;
 
     websocket = new WebSocket(server_url);
     websocket.onopen = openWebsocketConnection;
@@ -99,16 +99,9 @@ function sendMessage(){
     var message_text = input_message.value;
     input_message.value = "";
 
-    // TEST sendObjectThroughWebsocket(true, LOGIN, username, course);
+    sendObjectThroughWebsocket(false, MESSAGE, message_text);
     appendMessageToTheChat("You", message_text, true);
-    appendMessageToTheChat("You", message_text, false);
 
-    var list = [
-        { username: "Mario" },
-        { username: "Luigi" },
-        { username: "Giovanni" }
-    ];
-    updateOnlineStudentsList(list);
 }
 
 function appendMessageToTheChat(sender_name, message, isMyMessage){
@@ -158,7 +151,7 @@ function updateOnlineStudentsList(studentList){
     student_list = [...new Set(studentList)];
     student_list.forEach(student => {
         var li = document.createElement("li");
-        li.textContent = student.username;
+        li.textContent = student;
         ulOnlineStudents.appendChild(li);
     });
 }

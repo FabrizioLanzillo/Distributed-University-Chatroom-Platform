@@ -16,13 +16,21 @@
         courseName = request.getAttribute("course_name").toString();
         System.out.println(courseName);
     }
+
+	int courseId = 0;
+	if(request.getAttribute("id") != null){
+        courseId = (int)request.getAttribute("id");
+        System.out.println(courseId);
+    }
+
+
 %>
     <head>
         <title>Chatroom</title>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/student/chatroom.css">
         <script src="${pageContext.request.contextPath}/assets/javascript/student/chatroom.js"></script>
     </head>
-    <body>
+    <body onload="connect('<%= loggedUserDTO.getUsername() %>', <%= courseId %>)" onunload="disconnect()">
         <div id="chatroom-page">
             <jsp:include page="/WEB-INF/jsp/common/top-bar.jsp" />
 

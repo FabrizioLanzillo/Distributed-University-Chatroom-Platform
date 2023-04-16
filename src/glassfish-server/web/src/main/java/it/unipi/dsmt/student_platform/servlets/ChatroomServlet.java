@@ -32,6 +32,7 @@ public class ChatroomServlet extends HttpServlet {
 		String courseName = courseEJB.getCourseName(courseId);
 
 		request.setAttribute("course_name", courseName);
+		request.setAttribute("id", courseId);
 
 		String targetJSP = "/WEB-INF/jsp/student/chatroom.jsp";
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(targetJSP);
