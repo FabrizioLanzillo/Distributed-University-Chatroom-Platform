@@ -19,6 +19,8 @@ import java.util.Optional;
 @WebServlet(name = "LoginServlet", value = "/login")
 public class LoginServlet extends HttpServlet {
 	
+	public static final String errorAttribute = "error";
+	
 	@EJB
 	private UserEJB userEJB;
 	

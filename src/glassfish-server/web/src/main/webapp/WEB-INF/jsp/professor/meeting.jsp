@@ -15,17 +15,29 @@
 %>
 <html>
 <head>
-    <title>StudentChat</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/professor/meeting.css">
+    <title>Meetings</title>
 </head>
 <body>
 
 <jsp:include page="/WEB-INF/jsp/common/top-bar.jsp" />
 
-<h1>Sign up to StudentChat</h1>
+<h1 id="header1"></h1>
 
-<div>
-    <h2>All available slots:</h2>
-    <form name="selected_slot" method="post"
+<script>
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+
+    const d = new Date();
+    const month = d.getMonth() + <%=offset%>;
+    d.setMonth(month)
+    document.getElementById("header1").textContent = "Your meetings for " + monthNames[d.getMonth()] + " " + d.getFullYear();
+</script>
+
+<div id="meeting_tab">
+    <h2>Booked slots:</h2>
+    <form id="formMeetings" name="selected_slot" method="post"
           action="${pageContext.request.contextPath}/professor/meeting?offset=<%=offset%>">
         <%
             // If any, show booked meeting in the selected month
@@ -39,7 +51,7 @@
                 for(MeetingDTO bDTO : bookedSlots){%>
 
                         <%=bDTO.toString()%>
-                        <input class="remove" name="timeslot" type="submit" value=<%=i%>> Delete this meeting </input>
+                        <button class="remove" name="timeslot" type="submit" value=<%=i%>> Delete this meeting </button>
                         <br>
                 <%
                     i++;
@@ -47,37 +59,39 @@
             }
         %>
     </form>
-    <div>
-        <script>
+    <div id="offsetDiv">
+        <form class="offsetForm" method="post" action="${pageContext.request.contextPath}/professor/meeting?action=offsetChange&offset=<%=offset - 1%>">
             <%
-            String rParam = request.getParameter("r");
-            // check on the result of the delete operation, if it has been made
-            if(rParam != null && rParam.equals("error")){
-            %>
-                alert("Error during meeting deletion");
-            <%
-            }
-            else if(rParam!= null && rParam.equals("success")){
-            %>
-                alert("Meeting deleted successfully");
-            <%
-			}
-        %>
-        </script>
+                if(offset <=0 ){%>
+            <button class="offset" disabled="disabled"><-</button>
+            <%}
+            else{%>
+            <button type="submit"><-</button>
+            <%}%>
+        </form>
+        <form class="offsetForm" method="post" action="${pageContext.request.contextPath}/professor/meeting?action=offsetChange&offset=<%=offset + 1%>">
+            <button class="offset" type="submit">-></button>
+        </form>
     </div>
-    <form method="post" action="${pageContext.request.contextPath}/professor/meeting?action=offsetChange&offset=<%=offset - 1%>">
-        <%
-            if(offset <=0 ){%>
-        <button disabled="disabled"><-</button>
-        <%}
-        else{%>
-        <button type="submit"><-</button>
-        <%}%>
-    </form>
-    <form method="post" action="${pageContext.request.contextPath}/professor/meeting?action=offsetChange&offset=<%=offset + 1%>">
-        <button type="submit">-></button>
-    </form>
 </div>
+
+<script>
+    <%
+    String rParam = request.getParameter("r");
+    // check on the result of the delete operation, if it has been made
+    if(rParam != null && rParam.equals("error")){
+    %>
+    alert("Error during meeting deletion");
+    <%
+    }
+    else if(rParam!= null && rParam.equals("success")){
+    %>
+    alert("Meeting deleted successfully");
+    <%
+    }
+%>
+</script>
+
 
 </body>
 </html>
