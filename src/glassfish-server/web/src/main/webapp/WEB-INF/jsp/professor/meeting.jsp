@@ -66,7 +66,7 @@
             <button class="offset" disabled="disabled"><-</button>
             <%}
             else{%>
-            <button type="submit"><-</button>
+            <button class="offset" type="submit"><-</button>
             <%}%>
         </form>
         <form class="offsetForm" method="post" action="${pageContext.request.contextPath}/professor/meeting?action=offsetChange&offset=<%=offset + 1%>">
