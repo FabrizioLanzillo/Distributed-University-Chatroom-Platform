@@ -275,24 +275,24 @@ public class CourseEJBImpl implements CourseEJB {
 	}
 
 	@Override
-	public String getCourseName(int id){
+	public @Nullable String getCourseName(int id) {
 
-		String couseName = "";
-
+		String courseName = null;
+		
 		try (Connection connection = dataSource.getConnection()) {
 			// Get details of requested course
 			String query =  "SELECT c.name " +
 							"FROM course c  " +
 							"WHERE c.id = ?;";
-
+			
 			try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 				// Set parameters in prepared statement
 				preparedStatement.setInt(1, id);
-
+				
 				// Execute query
 				try (ResultSet resultSet = preparedStatement.executeQuery()) {
-					if(resultSet.next()){
-						couseName = resultSet.getString("c.name");
+					if (resultSet.next()) {
+						courseName = resultSet.getString("c.name");
 					}
 				}
 			}
@@ -300,7 +300,7 @@ public class CourseEJBImpl implements CourseEJB {
 		catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
-		return couseName;
+		return courseName;
 	}
 	
 	/**

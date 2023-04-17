@@ -1,4 +1,3 @@
-<%@ page import="java.util.List" %>
 <%@ page import="it.unipi.dsmt.student_platform.dto.*" %>
 <%@ page import="it.unipi.dsmt.student_platform.utility.AccessController" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
@@ -10,19 +9,16 @@
     if (loggedUserDTO == null) {
         return;
     }
-
-    String courseName = "";
-    if(request.getAttribute("course_name") != null){
+    
+    int courseId = Integer.parseInt(request.getParameter("id"));
+	
+    String courseName;
+    if (request.getAttribute("course_name") != null) {
         courseName = request.getAttribute("course_name").toString();
-        System.out.println(courseName);
     }
-
-	int courseId = 0;
-	if(request.getAttribute("id") != null){
-        courseId = (int)request.getAttribute("id");
-        System.out.println(courseId);
+	else {
+		return;
     }
-
 
 %>
     <head>

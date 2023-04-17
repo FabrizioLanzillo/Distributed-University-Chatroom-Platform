@@ -28,8 +28,11 @@ public class ChatroomServlet extends HttpServlet {
 		int courseId =  Integer.parseInt(request.getParameter("id"));
 		String courseName = courseEJB.getCourseName(courseId);
 		
+		if (courseName == null) {
+			throw new RuntimeException(String.format("Course %d does not exist", courseId));
+		}
+		
 		request.setAttribute("course_name", courseName);
-		request.setAttribute("id", courseId);
 		
 		String targetJSP = "/WEB-INF/jsp/student/chatroom.jsp";
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(targetJSP);
