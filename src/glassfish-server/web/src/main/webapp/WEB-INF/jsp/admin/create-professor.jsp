@@ -1,4 +1,3 @@
-<%@ page import="java.util.List" %>
 <%@ page import="it.unipi.dsmt.student_platform.dto.*" %>
 <%@ page import="it.unipi.dsmt.student_platform.utility.AccessController" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
@@ -18,65 +17,71 @@
     }
 %>
 
-    <head>
-        <title>Admin Create Professor Account</title>
-    </head>
-    <body>
-        <jsp:include page="/WEB-INF/jsp/common/top-bar.jsp" />
+<head>
+    <title>Admin Create Professor Account</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/admin/create-professor.css">
+</head>
 
-        <script>
+<body>
+    <jsp:include page="/WEB-INF/jsp/common/top-bar.jsp" />
+
+    <script>
 <%
-            // check on the result of the delete operation, if it has been made
-            if(!professorAccountCreationACK.equals("")){
-                if(professorAccountCreationACK.equals("ok")){
+        // check on the result of the delete operation, if it has been made
+        if(!professorAccountCreationACK.equals("")){
+            if(professorAccountCreationACK.equals("ok")){
 %>
-                    alert("Professor Account correctly created");
+                alert("Professor Account correctly created");
 <%
-                }
-                else{
-%>
-                    alert("An error occurred while creating the professor account");
-<%
-                }
-                request.removeAttribute("insertAck");
             }
+            else{
 %>
-        </script>
+                alert("An error occurred while creating the professor account");
+<%
+            }
+            request.removeAttribute("insertAck");
+        }
+%>
+    </script>
+    
+    <div class="form-container">
+        <div>
+            <h1>
+                Welcome to the professor account creation page, <%= loggedUserDTO.getUsername() %>
+            </h1>
+            
+            <form name="create_professor_account" method="post"
+                  action="${pageContext.request.contextPath}/admin/create-professor">
+    
+                <label>
+                    Name:
+                    <input type="text" name="name" placeholder="Name" required />
+                </label>
+                <br>
+                <label>
+                    Surname:
+                    <input type="text" name="surname" placeholder="Surname" required />
+                </label>
+                <br>
+                <label>
+                    Email:
+                    <input type="text" name="email" placeholder="Email" required />
+                </label>
+                <br>
+                <label>
+                    Username:
+                    <input type="text" name="username" placeholder="Username" required />
+                </label>
+                <br>
+                <label>
+                    Password:
+                    <input type="password" name="password" placeholder="Password" required />
+                </label>
+                <br>
+                <button type="submit">Create Account!</button>
+            </form>
+        </div>
+    </div>
 
-        <h1>
-            Welcome to the professor account creation page, <%= loggedUserDTO.getUsername() %>
-        </h1>
-
-        <form name="create_professor_account" method="post"
-              action="${pageContext.request.contextPath}/admin/create-professor">
-
-            <label>
-                name:
-                <input type="text" name="name" placeholder="name" required />
-            </label>
-            <br>
-            <label>
-                surname:
-                <input type="text" name="surname" placeholder="surname" required />
-            </label>
-            <br>
-            <label>
-                email:
-                <input type="text" name="email" placeholder="email" required />
-            </label>
-            <br>
-            <label>
-                Username:
-                <input type="text" name="username" placeholder="username" required />
-            </label>
-            <br>
-            <label>
-                Password:
-                <input type="password" name="password" placeholder="password" required />
-            </label>
-            <br>
-            <button type="submit">Create Account!</button>
-        </form>
-
-    </body>
+</body>
 </html>
