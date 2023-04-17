@@ -1,7 +1,5 @@
-package it.unipi.dsmt.student_platform.servlets;
+package it.unipi.dsmt.student_platform.servlets.student;
 
-import it.unipi.dsmt.student_platform.dto.LoggedUserDTO;
-import it.unipi.dsmt.student_platform.dto.MinimalCourseDTO;
 import it.unipi.dsmt.student_platform.enums.UserRole;
 import it.unipi.dsmt.student_platform.interfaces.CourseEJB;
 import it.unipi.dsmt.student_platform.utility.AccessController;
@@ -14,7 +12,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Servlet which redirects the user to the chatroom JSP page.
@@ -25,30 +22,27 @@ public class ChatroomServlet extends HttpServlet {
 	@EJB
 	private CourseEJB courseEJB;
 
-	private void handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-
+	private void handleRequest (HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException
+	{
 		int courseId =  Integer.parseInt(request.getParameter("id"));
 		String courseName = courseEJB.getCourseName(courseId);
-
+		
 		request.setAttribute("course_name", courseName);
 		request.setAttribute("id", courseId);
-
+		
 		String targetJSP = "/WEB-INF/jsp/student/chatroom.jsp";
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(targetJSP);
 		requestDispatcher.forward(request, response);
 	}
-
+	
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+	protected void doGet (HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException
+	{
 		if (AccessController.checkAccess(request, response, UserRole.student) == null) {
 			return;
 		}
-
-		// TODO ? get information about chatroom
-		// TODO check if course exists
-
 		handleRequest(request, response);
 	}
 	
