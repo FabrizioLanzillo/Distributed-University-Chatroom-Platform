@@ -1,38 +1,42 @@
-var websocket;
+let websocket;
 
 const LOGIN = "LOGIN";
-const LOGOUT = "LOGOUT";
 const MESSAGE = "MESSAGE";
 const GET_ONLINE_USERS = "GET_ONLINE_USERS"
 
-var username = "";
-var course = null;
-var id_timer = null;
+let username = "";
+let course = null;
+let id_timer = null;
 
 const server_url = "ws://localhost:8000/";
 // const server_url = "ws://10.2.1.4:8300/";
 
 const websocketConfigurationParameters = {
-
     0: "opcode",
     1: "username",
     2: "course"
 };
 
 const messageParameters = {
-
     0: "opcode",
     1: "text"
 };
 
+
+
+/*
+    WEBSOCKET HANDLERS
+ */
+
 function sendObjectThroughWebsocket(isWebsocketConfigurationMessage, ...args){
-
-    var json_string = {};
-
-    for( let i = 0; i < args.length; i++ ){
+    // Create JSON object
+    const json_string = {};
+    // Generate right parameters for type of object (websocket configuration vs chatroom message)
+    for (let i = 0; i < args.length; i++) {
         const parameter = isWebsocketConfigurationMessage ? websocketConfigurationParameters[i]: messageParameters[i];
         json_string[parameter] = args[i];
     }
+    // Send JSON object
     websocket.send(JSON.stringify(json_string));
 }
 
@@ -63,29 +67,44 @@ function closeWebsocketConnection(){
 }
 
 function receiveObjectThroughWebsocket(event){
-
-    var message = JSON.parse(event.data);
-    if(message.opcode === MESSAGE){
+    // Parse received JSON message and execute necessary action
+    const message = JSON.parse(event.data);
+    if (message.opcode === MESSAGE) {
         appendMessageToTheChat(message.sender, message.text, false);
     }
-    else if(message.opcode == GET_ONLINE_USERS){
+    else if (message.opcode === GET_ONLINE_USERS) {
         updateOnlineStudentsList(message.list);
     }
-    else{
+    else {
         alert("Unknown Message Recived");
     }
 
 }
 
-function connect(_logged_user, _course){
+function handleWebsocketError() {
+    if (websocket.readyState === 3) {
+        // Connection closed
+        alert("Error: cannot connect to chatroom server");
+    }
+}
 
+
+
+/*
+    METHODS FOR WEBSOCKET CONNECTION
+ */
+
+function connect(_logged_user, _course){
+    // Initialize username and course
     username = _logged_user;
     course = _course;
 
+    // Create websocket connection
     websocket = new WebSocket(server_url);
     websocket.onopen = openWebsocketConnection;
     websocket.onclose = closeWebsocketConnection;
     websocket.onmessage = receiveObjectThroughWebsocket;
+    websocket.onerror = handleWebsocketError;
 }
 
 function disconnect(){
@@ -95,8 +114,8 @@ function disconnect(){
 
 function sendMessage(){
 
-    var input_message = document.getElementById("chatroom-submit-area-input");
-    var message_text = input_message.value;
+    const input_message = document.getElementById("chatroom-submit-area-input");
+    const message_text = input_message.value;
     input_message.value = "";
 
     sendObjectThroughWebsocket(false, MESSAGE, message_text);
@@ -104,33 +123,39 @@ function sendMessage(){
 
 }
 
+
+
+/*
+    METHODS FOR DOM HANDLING
+ */
+
 function appendMessageToTheChat(sender_name, message, isMyMessage){
 
-    var chatContainer = document.getElementById("chatroom-chat");
+    const chatContainer = document.getElementById("chatroom-chat");
 
-    var divMessageContainer = document.createElement("div");
+    const divMessageContainer = document.createElement("div");
 
-    var divStudentProfile = document.createElement("div");
+    const divStudentProfile = document.createElement("div");
     divStudentProfile.setAttribute("class", "student-profile-image");
 
-    var divMessage = document.createElement("div");
+    const divMessage = document.createElement("div");
     divMessage.setAttribute("class", "message");
 
-    var divMessageHeader = document.createElement("div");
+    const divMessageHeader = document.createElement("div");
     divMessageHeader.setAttribute("class", "message-header");
 
-    var divMessageHeaderUsername = document.createElement("div");
+    const divMessageHeaderUsername = document.createElement("div");
     divMessageHeaderUsername.setAttribute("class", "message-header-username");
     divMessageHeaderUsername.textContent = sender_name;
 
-    var divMessageContent = document.createElement("div");
+    const divMessageContent = document.createElement("div");
     divMessageContent.setAttribute("class", "message-content");
     divMessageContent.textContent = message;
 
-    if(isMyMessage){
+    if (isMyMessage) {
         divMessageContainer.setAttribute("class", "message-container sent-message");
     }
-    else{
+    else {
         divMessageContainer.setAttribute("class", "message-container received-message");
     }
 
@@ -143,14 +168,14 @@ function appendMessageToTheChat(sender_name, message, isMyMessage){
 }
 
 function updateOnlineStudentsList(studentList){
-    var ulOnlineStudents = document.getElementById("online-student-list");
+    const ulOnlineStudents = document.getElementById("online-student-list");
     // Flush old list from HTML page
     ulOnlineStudents.innerHTML = "";
     // Remove duplicates from new list
-
-    student_list = [...new Set(studentList)];
+    let student_list = [...new Set(studentList)];
+    // Add online students in HTML list
     student_list.forEach(student => {
-        var li = document.createElement("li");
+        const li = document.createElement("li");
         li.textContent = student;
         ulOnlineStudents.appendChild(li);
     });
