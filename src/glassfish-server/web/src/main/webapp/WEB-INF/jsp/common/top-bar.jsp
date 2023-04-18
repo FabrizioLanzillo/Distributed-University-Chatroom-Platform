@@ -15,7 +15,6 @@
 %>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/common/top-bar.css">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/common/common.css">
 
 <div class="topnav">
 

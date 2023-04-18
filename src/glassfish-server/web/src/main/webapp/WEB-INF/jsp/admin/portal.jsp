@@ -12,27 +12,34 @@
     }
 %>
 
-    <head>
-        <title>Admin Portal</title>
-    </head>
-    <body>
-        <jsp:include page="/WEB-INF/jsp/common/top-bar.jsp" />
+<head>
+    <title>Admin Portal</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/admin/portal.css">
+</head>
 
-        <h1>
-            Welcome to your admin portal, <%= loggedUserDTO.getUsername() %>
-        </h1>
 
+<body>
+    <jsp:include page="/WEB-INF/jsp/common/top-bar.jsp" />
+    
+    <div class="vertical-container">
         <div>
-            <button type="button" class="admin_portal_button"
-                    onclick="location.href = '${pageContext.request.contextPath}/admin/users'">
-                    Browse Users
-            </button>
-
-            <button type="button" class="admin_portal_button"
-                    onclick="location.href = '${pageContext.request.contextPath}/admin/create-professor'">
-                Create a new professor account
-            </button>
+            <h1>
+                Welcome to your admin portal, <%= loggedUserDTO.getUsername() %>
+            </h1>
+            
+            <div class="buttons">
+                <button type="button" class="admin_portal_button"
+                        onclick="location.href = '${pageContext.request.contextPath}/admin/users'">
+                        Browse Users
+                </button>
+        
+                <button type="button" class="admin_portal_button"
+                        onclick="location.href = '${pageContext.request.contextPath}/admin/create-professor'">
+                    Create a new professor account
+                </button>
+            </div>
         </div>
+    </div>
 
-    </body>
+</body>
 </html>

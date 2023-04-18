@@ -1,5 +1,5 @@
 .form-container {
-	display: flex;
+    display: flex;
     justify-content: center;
     align-items: center;
 }
@@ -10,18 +10,13 @@
     padding: 16px;
 }
 
-form input, form textarea {
+form input {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
     display: inline-block;
     border: 1px solid grey;
     box-sizing: border-box;
-}
-
-form textarea {
-    resize: none;
-    height: 200px;
 }
 
 form button {
