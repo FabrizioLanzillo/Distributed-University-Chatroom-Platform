@@ -16,7 +16,7 @@ $(document).ready(function(){
 
 
 function fillWeekdayInput () {
-	const WEEKDAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+	const WEEKDAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
 	const weekdayElem = document.getElementById("weekday");
 	WEEKDAYS.forEach(
 		(value, i) => {

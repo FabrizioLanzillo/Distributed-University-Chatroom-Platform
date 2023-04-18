@@ -115,7 +115,7 @@ public class ProfessorCreateCourseServlet extends HttpServlet {
 		
 		// Convert weekday to integer
 		int _weekday = Integer.parseInt(_weekdayString);
-		if (_weekday < 1 || _weekday > 6) { // from Monday to Saturday
+		if (_weekday < 1 || _weekday > 5) { // from Monday to Friday
 			// Not valid weekday
 			notifyFailedCreation(request, response);
 			return;
