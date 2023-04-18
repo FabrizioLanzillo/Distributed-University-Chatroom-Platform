@@ -37,3 +37,22 @@ form button {
 form > button:hover {
     background-color: cyan;
 }
+
+.meeting_pickers {
+    display: flex;
+    justify-content: space-around;
+}
+
+.meeting_pickers > * {
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+}
+
+form input:disabled {
+    background-color: darkslategrey;
+}
+
+form > * {
+    margin: 20px 0;
+}

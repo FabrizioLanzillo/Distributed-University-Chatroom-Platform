@@ -50,29 +50,21 @@
                 <br>
                 
                 
-                <h3>Meeting hours:</h3>
-                <br>
-                
-                <label for="weekday">
-                    Weekday:
-                </label>
-                <br>
-                <select id ="weekday" name="weekday" required></select>
-                <br>
-                
-                <label for="start-time">
-                    From:
-                </label>
-                <br>
-                <input id="start-time" name="start-time" class="timepicker" required>
-                <br>
-                
-                <label for="end-time">
-                    To:
-                </label>
-                <br>
-                <input id="end-time" name="end-time" class="timepicker" required disabled>
-                <br>
+                <div>Meeting hours:</div>
+                <div class="meeting_pickers">
+                    <label>
+                        Weekday:
+                        <select id ="weekday" name="weekday" required></select>
+                    </label>
+                    <label>
+                        From:
+                        <input id="start-time" name="start-time" class="timepicker" required>
+                    </label>
+                    <label>
+                        To:
+                        <input id="end-time" name="end-time" class="timepicker" required disabled>
+                    </label>
+                </div>
                 
                 
                 <label>
