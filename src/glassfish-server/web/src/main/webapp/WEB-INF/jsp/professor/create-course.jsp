@@ -60,18 +60,18 @@
                 <select id ="weekday" name="weekday" required></select>
                 <br>
                 
-                <label for="time-from">
+                <label for="start-time">
                     From:
                 </label>
                 <br>
-                <input id="time-from" name="time-from" class="timepicker" required>
+                <input id="start-time" name="start-time" class="timepicker" required>
                 <br>
                 
-                <label for="time-to">
+                <label for="end-time">
                     To:
                 </label>
                 <br>
-                <input id="time-to" name="time-to" class="timepicker" required disabled>
+                <input id="end-time" name="end-time" class="timepicker" required disabled>
                 <br>
                 
                 

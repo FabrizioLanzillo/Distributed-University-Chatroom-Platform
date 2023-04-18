@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.time.LocalTime;
 
 /**
  * Servlet handling GET and POST requests for the webpage for creating a new course.
@@ -39,6 +40,23 @@ public class ProfessorCreateCourseServlet extends HttpServlet {
 				.forward(request, response);
 	}
 	
+	
+	/**
+	 * Notify the failure of the course creation to the user and forward the request to the JSP page.
+	 * @param request HttpServletRequest instance
+	 * @param response HttpServletResponse instance
+	 * @throws ServletException if forwarding fails
+	 * @throws IOException if forwarding fails
+	 */
+	private void notifyFailedCreation (HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException
+	{ // TODO: different reason for failure
+		request.setAttribute(attributeSuccessfulCreation, false);
+		redirectToJsp(request, response);
+	}
+	
+	
+	
 	/**
 	 * Check user privileges and forward request to JSP page.
 	 * @param request HttpServletRequest object
@@ -57,6 +75,7 @@ public class ProfessorCreateCourseServlet extends HttpServlet {
 		redirectToJsp(request, response);
 	}
 	
+	
 	/**
 	 * Handle a POST request, i.e. create a new course.
 	 * @param request HttpServletRequest object
@@ -74,27 +93,53 @@ public class ProfessorCreateCourseServlet extends HttpServlet {
 			return;
 		}
 		
+		// Get professor id
+		String _professorId = loggedUser.getId();
+		if (_professorId == null) {
+			notifyFailedCreation(request, response);
+			return;
+		}
+		
 		// Fetch POST parameters
 		String _name = request.getParameter("name");
 		String _description = request.getParameter("description");
-		if (_name == null || _description == null) {
-			request.setAttribute(attributeSuccessfulCreation, false);
-			redirectToJsp(request, response);
+		String _weekdayString = request.getParameter("weekday");
+		String _startTimeString = request.getParameter("start-time");
+		String _endTimeString = request.getParameter("end-time");
+		if (_name == null || _description == null || _weekdayString == null
+				|| _startTimeString == null || _endTimeString == null)
+		{
+			notifyFailedCreation(request, response);
 			return;
 		}
-		String _professorId = loggedUser.getId();
-		if (_professorId == null) {
-			request.setAttribute(attributeSuccessfulCreation, false);
-			redirectToJsp(request, response);
+		
+		// Convert weekday to integer
+		int _weekday = Integer.parseInt(_weekdayString);
+		if (_weekday < 1 || _weekday > 6) { // from Monday to Saturday
+			// Not valid weekday
+			notifyFailedCreation(request, response);
 			return;
 		}
+		
+		// Convert start and end time
+		LocalTime _startTime = LocalTime.parse(_startTimeString);
+		LocalTime _endTime = LocalTime.parse(_endTimeString);
+		if (!_startTime.isBefore(_endTime)) {
+			// Inconsistent start and end time
+			notifyFailedCreation(request, response);
+			return;
+		}
+		
 		
 		// Create course
 		boolean successful = courseEJB.createCourse(
 				new CourseCreationDTO(
 						_name,
 						_professorId,
-						_description
+						_description,
+						_weekday,
+						_startTime,
+						_endTime
 				)
 		);
 		
