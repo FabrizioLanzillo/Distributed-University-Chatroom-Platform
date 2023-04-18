@@ -11,12 +11,14 @@
 
 .topnav button {
     display: flex;
-    color: black;
-    background-color: var(--base-color);
+    color: white;
+    background-color: rgb(91 109 246);
     box-shadow: 0 6px 6px -3px rgba(0, 0, 0, 0.3);
     cursor: pointer;
     border: 1px solid #ddd;
-    border-radius: 3px;
+    border-radius: 5px;
+    font-weight: bold;
+    padding: 4px 10px;
     font-size: 1.25vw;
 }
 

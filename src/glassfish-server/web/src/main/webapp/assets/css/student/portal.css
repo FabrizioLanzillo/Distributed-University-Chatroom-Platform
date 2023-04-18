@@ -1,0 +1,112 @@
+
+#course-selection{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+#course-type{
+    display: flex;
+}
+
+.course-search{
+    display: flex;
+    align-items: center;
+    width: 80%;
+}
+
+#courses{
+    display: flex;
+    width: 90%;
+    height: 40vh;
+    flex-direction: column;
+    overflow-y: auto;
+    margin-top: 2vw;
+}
+
+.course-row-buttons{
+    margin: 0.5vw 1vw;
+    display: flex;
+    justify-content: space-around;
+}
+
+#course-selection-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 70%;
+    height: 60vh;
+    border: var(--border);
+    border-radius: 10px;
+    padding: 2.5vw;
+    background-color: white;
+    justify-content: flex-start;
+}
+
+.hr-style{
+    color: black;
+    width: 90%;
+}
+
+#student-portal-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.search-form{
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-bottom: 3vw;
+}
+
+.search-input-label{
+    width: 7vw;
+}
+
+#search-input {
+    border-radius: 5px;
+    background: #ffffff;
+    height: 3vw;
+    width: 40vw;
+    border: var(--border);
+    margin-right: 1vw;
+    padding-left: 1vw;
+}
+
+.portal-button {
+    background: rgb(0, 196, 65);
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    height: 3vw;
+    width: 5vw;
+    box-shadow: 0 6px 6px -3px rgba(0, 0, 0, 0.3);
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.selected-courses{
+    background: rgb(91 109 246);
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    height: 6vw;
+    width: 18vw;
+    overflow-y: auto;
+    overflow-x: auto;
+    font-size: 1.25vw;
+    box-shadow: 0 6px 6px -3px rgba(0, 0, 0, 0.3);
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.portal-button:hover {
+    background: rgb(0, 120, 34);
+}
+
+.normal_courses{
+    display: flex;
+}
