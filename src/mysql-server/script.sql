@@ -175,40 +175,70 @@ CREATE TABLE `student_starred_courses` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 INSERT INTO professor (id, username, password, email, name, surname)
-VALUES (UUID_TO_BIN(UUID()), 'm.rossi', 'pass', 'm.rossi@unipi.it', 'Mario', 'Rossi'),
-       (UUID_TO_BIN(UUID()), 'l.marrone', 'pass', 'l.marrone@unipi.it', 'Luca', 'Marrone'),
-        (UUID_TO_BIN(UUID()), 'g.bianchi', 'pass', 'g.bianchi@unipi.it', 'Gianni', 'Bianchi');
+VALUES  (UUID_TO_BIN(UUID()), 'm.rossi', 'pass', 'm.rossi@unipi.it', 'Mario', 'Rossi'),
+        (UUID_TO_BIN(UUID()), 'l.marrone', 'pass', 'l.marrone@unipi.it', 'Luca', 'Marrone'),
+        (UUID_TO_BIN(UUID()), 'g.fantini', 'pass', 'g.fantini@unipi.it', 'Giorgio', 'Fantini'),
+        (UUID_TO_BIN(UUID()), 't.baldini', 'pass', 't.baldini@unipi.it', 'Tommaso', 'Baldini'),
+        (UUID_TO_BIN(UUID()), 'r.paoli', 'pass', 'r.paoli@unipi.it', 'Ruggero', 'Paoli'),
+        (UUID_TO_BIN(UUID()), 'v.cantini', 'pass', 'v.cantini@unipi.it', 'Valerio', 'Cantini'),
+        (UUID_TO_BIN(UUID()), 'a.torri', 'pass', 'a.torri@unipi.it', 'Antonio', 'Torri'),
+        (UUID_TO_BIN(UUID()), 'e.romani', 'pass', 'e.romani@unipi.it', 'Ettore', 'Romani'),
+        (UUID_TO_BIN(UUID()), 'm.banti', 'pass', 'm.banti@unipi.it', 'Maurizio', 'Banti'),
+        (UUID_TO_BIN(UUID()), 'g.lini', 'pass', 'g.lini@unipi.it', 'Giulia', 'Lini');
 
 INSERT INTO student (id, username, password, email, name, surname, degree, language)
-VALUES (UUID_TO_BIN(UUID()), 'f.lanzillo', 'pass', 'f.lanzillo@unipi.it', 'Fabrizio', 'Lanzillo','CE', 'ITA'),
-       (UUID_TO_BIN(UUID()), 'f.montini', 'pass', 'f.montini@unipi.it', 'Federico', 'Montini','CE', 'ITA'),
-        (UUID_TO_BIN(UUID()), 'r.sagramoni', 'pass', 'r.sagramoni@unipi.it', 'Riccardo', 'Sagramoni','CE', 'ITA');
+VALUES  (UUID_TO_BIN(UUID()), 'f.lanzillo', 'pass', 'f.lanzillo@unipi.it', 'Fabrizio', 'Lanzillo','CE', 'ITA'),
+        (UUID_TO_BIN(UUID()), 'f.montini', 'pass', 'f.montini@unipi.it', 'Federico', 'Montini','CE', 'ITA'),
+        (UUID_TO_BIN(UUID()), 'r.sagramoni', 'pass', 'r.sagramoni@unipi.it', 'Riccardo', 'Sagramoni','CE', 'ITA'),
+        (UUID_TO_BIN(UUID()), 's.trussardi', 'pass', 's.trussardi@unipi.it', 'Sandro', 'Trussardi','AIDE', 'ITA'),
+        (UUID_TO_BIN(UUID()), 'g.giannetti', 'pass', 'g.giannetti@unipi.it', 'Giulio', 'Giannetti','AIDE', 'ITA'),
+        (UUID_TO_BIN(UUID()), 'o.galiazzo', 'pass', 'o.galiazzo@unipi.it', 'Olga', 'Galiazzo','CE', 'ITA'),
+        (UUID_TO_BIN(UUID()), 'e.mazzeo', 'pass', 'e.mazzeo@unipi.it', 'Eraldo', 'Mazzeo','CE', 'ITA'),
+        (UUID_TO_BIN(UUID()), 'b.antonetti', 'pass', 'b.antonetti@unipi.it', 'Benito', 'Antonetti','AIDE', 'ITA'),
+        (UUID_TO_BIN(UUID()), 'v.abatantuono', 'pass', 'v.abatantuono@unipi.it', 'Veronica', 'Abatantuono','AIDE', 'ITA'),
+        (UUID_TO_BIN(UUID()), 'r.finetti', 'pass', 'r.finetti@unipi.it', 'Roberto', 'Finetti','AIDE', 'ITA'),
+        (UUID_TO_BIN(UUID()), 'g.trentini', 'pass', 'g.trentini@unipi.it', 'Giulietta', 'Trentini','CE', 'ITA'),
+        (UUID_TO_BIN(UUID()), 'b.gori', 'pass', 'b.gori@unipi.it', 'Bianca', 'Gori','AIDE', 'ITA'),
+        (UUID_TO_BIN(UUID()), 'n.abbagnale', 'pass', 'n.abbagnale@unipi.it', 'Nicoletta', 'Abbagnale','AIDE', 'ITA'),
+        (UUID_TO_BIN(UUID()), 'p.lancisi', 'pass', 'p.lancisi@unipi.it', 'Pina', 'Lancisi','CE', 'ITA'),
+        (UUID_TO_BIN(UUID()), 'l.tomaselli', 'pass', 'l.tomaselli@unipi.it', 'Liana', 'Tomaselli','CE', 'ITA');
 
 INSERT INTO course (name, professor, description)
-VALUES ('dsmt', (SELECT id FROM professor WHERE surname = 'Bianchi'), 'description'),
-       ('msss', (SELECT id FROM professor WHERE surname = 'Marrone'), 'description'),
-       ('nsh', (SELECT id FROM professor WHERE surname = 'Marrone'), 'description'),
-       ('foc', (SELECT id FROM professor WHERE surname = 'Rossi'), 'description'),
-       ('fmfss', (SELECT id FROM professor WHERE surname = 'Rossi'), 'description');
+VALUES ('DSMT', (SELECT id FROM professor WHERE surname = 'Rossi'), 'The course is aimed at providing students with proper conceptual and technological tools for the design, analysis, and development of modern distributed applications. After introducing models, paradigms and algorithms for distributed software, various types of middleware systems are presented, focusing on the issues they have been designed to deal with. Students will learn to design, implement, and integrate distributed software, possibly made of heterogeneous components; moreover, they will acquire the ability to choose and apply the most suitable middleware solutions to address practical problems in distributed enterprise applications.'),
+       ('MaSSS', (SELECT id FROM professor WHERE surname = 'Marrone'), 'The course is aimed at providing students a knowledge about architectural and operating system issues, middleware abstractions and mechanisms (distributed objects middleware), wireless sensor network programming (event-driven, in-network, power-aware). In laboratory sessions students will exercise with programming smartphones-based mobile applications (Android), their integration with back-end servers, and wireless and wearable sensor applications.'),
+       ('SNH', (SELECT id FROM professor WHERE surname = 'Fantini'), 'The best way to understand what attackers can do is to reason like one of them. In this course we will explore the tecniques that are common knowledge among attackers. The purpose is to understand the strenghts and, most importantantly, the limits of all the countermeasures that modern systems implement to mitigate these attacks. In turn, this requires a study of some topics that are sometimes skipped in architectural courses, like heap implementation, dynamic libraries and Virtual Machines.'),
+       ('FOC', (SELECT id FROM professor WHERE surname = 'Paoli'), 'student will acquire knowledge about applied cryptography, secure coding and web security. The objective of the course is to make a student able to properly design and implement a secure distributed application. More precisely, the student will get a detailed knowledge of the main cryptographic primitives (ciphers, hash functions, digital signatures), their properties in terms of security and performance, and their appropriate usage in designing and building protocols and systems. The student will also get basic notions about secure coding, and web security and the related main attacks including buffer overflow and SQL injection.'),
+       ('ECS', (SELECT id FROM professor WHERE surname = 'Baldini'), 'description'),
+       ('LSMSD', (SELECT id FROM professor WHERE surname = 'Cantini'), 'description'),
+       ('PESN', (SELECT id FROM professor WHERE surname = 'Torri'), 'description'),
+       ('IS', (SELECT id FROM professor WHERE surname = 'Romani'), 'description'),
+       ('CC', (SELECT id FROM professor WHERE surname = 'Banti'), 'description'),
+       ('ANAWS', (SELECT id FROM professor WHERE surname = 'Lini'), 'description'),
+       ('FMFSS', (SELECT id FROM professor WHERE surname = 'Rossi'), 'description');
 
 INSERT INTO admin (id, username, password)
 VALUES (UUID_TO_BIN(UUID()), 'admin', 'admin');
 
 
 INSERT INTO student_starred_courses (student, course)
-VALUES ((SELECT id FROM student WHERE surname = 'Lanzillo'), (SELECT id FROM course WHERE name = 'dsmt')),
-       ((SELECT id FROM student WHERE surname = 'Lanzillo'), (SELECT id FROM course WHERE name = 'foc')),
-       ((SELECT id FROM student WHERE surname = 'Montini'), (SELECT id FROM course WHERE name = 'dsmt')),
-       ((SELECT id FROM student WHERE surname = 'Montini'), (SELECT id FROM course WHERE name = 'fmfss')),
-       ((SELECT id FROM student WHERE surname = 'Sagramoni'), (SELECT id FROM course WHERE name = 'dsmt'));
+VALUES ((SELECT id FROM student WHERE surname = 'Lanzillo'), (SELECT id FROM course WHERE name = 'DSMT')),
+       ((SELECT id FROM student WHERE surname = 'Lanzillo'), (SELECT id FROM course WHERE name = 'FOC')),
+       ((SELECT id FROM student WHERE surname = 'Montini'), (SELECT id FROM course WHERE name = 'DSMT')),
+       ((SELECT id FROM student WHERE surname = 'Montini'), (SELECT id FROM course WHERE name = 'FMFSS')),
+       ((SELECT id FROM student WHERE surname = 'Sagramoni'), (SELECT id FROM course WHERE name = 'DSMT'));
 
 INSERT INTO meeting_slot
-VALUES (UUID_TO_BIN(UUID()), (SELECT id FROM course WHERE name = 'dsmt'), 3, '15:20:40'),
-       (UUID_TO_BIN(UUID()), (SELECT id FROM course WHERE name = 'foc'), 5, '18:20:40');
+VALUES (UUID_TO_BIN(UUID()), (SELECT id FROM course WHERE name = 'DSMT'), 3, '15:30:00'),
+       (UUID_TO_BIN(UUID()), (SELECT id FROM course WHERE name = 'FMFSS'), 1, '13:00:00'),
+       (UUID_TO_BIN(UUID()), (SELECT id FROM course WHERE name = 'MaSSS'), 2, '17:00:00'),
+       (UUID_TO_BIN(UUID()), (SELECT id FROM course WHERE name = 'ECS'), 4, '10:00:00'),
+       (UUID_TO_BIN(UUID()), (SELECT id FROM course WHERE name = 'LSMSD'), 5, '09:00:00'),
+       (UUID_TO_BIN(UUID()), (SELECT id FROM course WHERE name = 'ANAWS'), 4, '09:30:00'),
+       (UUID_TO_BIN(UUID()), (SELECT id FROM course WHERE name = 'FOC'), 2, '14:30:00');
 
 INSERT INTO booked_meeting
-VALUES (UUID_TO_BIN(UUID()), (SELECT id FROM meeting_slot WHERE course = (SELECT id FROM course WHERE name = 'dsmt')), '2023-04-05', (SELECT id FROM student WHERE surname = 'Lanzillo')),
-       (UUID_TO_BIN(UUID()), (SELECT id FROM meeting_slot WHERE course = (SELECT id FROM course WHERE name = 'foc')), '2023-04-08', (SELECT id FROM student WHERE surname = 'Lanzillo'));
+VALUES (UUID_TO_BIN(UUID()), (SELECT id FROM meeting_slot WHERE course = (SELECT id FROM course WHERE name = 'DSMT')), '2023-05-05', (SELECT id FROM student WHERE surname = 'Lanzillo')),
+       (UUID_TO_BIN(UUID()), (SELECT id FROM meeting_slot WHERE course = (SELECT id FROM course WHERE name = 'FOC')), '2023-05-08', (SELECT id FROM student WHERE surname = 'Lanzillo'));
 
 
 

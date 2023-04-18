@@ -37,7 +37,7 @@ CREATE TABLE `admin` (
 
 LOCK TABLES `admin` WRITE;
 /*!40000 ALTER TABLE `admin` DISABLE KEYS */;
-INSERT INTO `admin` VALUES (_binary '|J•ŒÓ´\í¾\î\äp¸\ÉW§','admin','admin');
+INSERT INTO `admin` VALUES (_binary '\Í>GŸÝ±\íº\öX\Î*‹m ','admin','admin');
 /*!40000 ALTER TABLE `admin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -67,7 +67,7 @@ CREATE TABLE `booked_meeting` (
 
 LOCK TABLES `booked_meeting` WRITE;
 /*!40000 ALTER TABLE `booked_meeting` DISABLE KEYS */;
-INSERT INTO `booked_meeting` VALUES (_binary '|\êüiÓ´\í¾\î\äp¸\ÉW§',_binary '|½Ò¨Ó´\í¾\î\äp¸\ÉW§','2023-04-05',_binary '{\áþÓ´\í¾\î\äp¸\ÉW§'),(_binary '|\ëŒÓ´\í¾\î\äp¸\ÉW§',_binary '|½\Ø\îÓ´\í¾\î\äp¸\ÉW§','2023-04-08',_binary '{\áþÓ´\í¾\î\äp¸\ÉW§');
+INSERT INTO `booked_meeting` VALUES (_binary '\Í?‘\ZÝ±\íº\öX\Î*‹m ',_binary '\Í?+Ý±\íº\öX\Î*‹m ','2023-05-05',_binary '\Í=3\ïÝ±\íº\öX\Î*‹m '),(_binary '\Í?”\ÔÝ±\íº\öX\Î*‹m ',_binary '\Í?/­Ý±\íº\öX\Î*‹m ','2023-05-08',_binary '\Í=3\ïÝ±\íº\öX\Î*‹m '),(_binary '\ö%\êÝ±\íº\öX\Î*‹m ',_binary '\Í?/­Ý±\íº\öX\Î*‹m ','2023-05-16',_binary '\Í=52Ý±\íº\öX\Î*‹m ');
 /*!40000 ALTER TABLE `booked_meeting` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -87,7 +87,7 @@ CREATE TABLE `course` (
   UNIQUE KEY `name` (`name`),
   KEY `course__professor.id_fk` (`professor`),
   CONSTRAINT `course__professor.id_fk` FOREIGN KEY (`professor`) REFERENCES `professor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -96,7 +96,7 @@ CREATE TABLE `course` (
 
 LOCK TABLES `course` WRITE;
 /*!40000 ALTER TABLE `course` DISABLE KEYS */;
-INSERT INTO `course` VALUES (2,'dsmt',_binary '{¨FsÓ´\í¾\î\äp¸\ÉW§','description'),(3,'msss',_binary '{¨E+Ó´\í¾\î\äp¸\ÉW§','description'),(4,'nsh',_binary '{¨E+Ó´\í¾\î\äp¸\ÉW§','description'),(5,'foc',_binary '{¨B\"Ó´\í¾\î\äp¸\ÉW§','description'),(6,'fmfss',_binary '{¨B\"Ó´\í¾\î\äp¸\ÉW§','description');
+INSERT INTO `course` VALUES (2,'DSMT',_binary '\Í<–.Ý±\íº\öX\Î*‹m ','The course is aimed at providing students with proper conceptual and technological tools for the design, analysis, and development of modern distributed applications. After introducing models, paradigms and algorithms for distributed software, various types of middleware systems are presented, focusing on the issues they have been designed to deal with. Students will learn to design, implement, and integrate distributed software, possibly made of heterogeneous components; moreover, they will acquire the ability to choose and apply the most suitable middleware solutions to address practical problems in distributed enterprise applications.'),(3,'MaSSS',_binary '\Í<˜Ý±\íº\öX\Î*‹m ','The course is aimed at providing students a knowledge about architectural and operating system issues, middleware abstractions and mechanisms (distributed objects middleware), wireless sensor network programming (event-driven, in-network, power-aware). In laboratory sessions students will exercise with programming smartphones-based mobile applications (Android), their integration with back-end servers, and wireless and wearable sensor applications.'),(4,'SNH',_binary '\Í<˜Ý±\íº\öX\Î*‹m ','The best way to understand what attackers can do is to reason like one of them. In this course we will explore the tecniques that are common knowledge among attackers. The purpose is to understand the strenghts and, most importantantly, the limits of all the countermeasures that modern systems implement to mitigate these attacks. In turn, this requires a study of some topics that are sometimes skipped in architectural courses, like heap implementation, dynamic libraries and Virtual Machines.'),(5,'FOC',_binary '\Í<˜üÝ±\íº\öX\Î*‹m ','student will acquire knowledge about applied cryptography, secure coding and web security. The objective of the course is to make a student able to properly design and implement a secure distributed application. More precisely, the student will get a detailed knowledge of the main cryptographic primitives (ciphers, hash functions, digital signatures), their properties in terms of security and performance, and their appropriate usage in designing and building protocols and systems. The student will also get basic notions about secure coding, and web security and the related main attacks including buffer overflow and SQL injection.'),(6,'ECS',_binary '\Í<˜\ÇÝ±\íº\öX\Î*‹m ','description'),(7,'LSMSD',_binary '\Í<™0Ý±\íº\öX\Î*‹m ','description'),(8,'PESN',_binary '\Í<™gÝ±\íº\öX\Î*‹m ','description'),(9,'IS',_binary '\Í<™™Ý±\íº\öX\Î*‹m ','description'),(10,'CC',_binary '\Í<™\íÝ±\íº\öX\Î*‹m ','description'),(11,'ANAWS',_binary '\Í<š>Ý±\íº\öX\Î*‹m ','description'),(12,'FMFSS',_binary '\Í<–.Ý±\íº\öX\Î*‹m ','description');
 /*!40000 ALTER TABLE `course` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -124,7 +124,7 @@ CREATE TABLE `meeting_slot` (
 
 LOCK TABLES `meeting_slot` WRITE;
 /*!40000 ALTER TABLE `meeting_slot` DISABLE KEYS */;
-INSERT INTO `meeting_slot` VALUES (_binary '|½Ò¨Ó´\í¾\î\äp¸\ÉW§',2,3,'15:20:40'),(_binary '|½\Ø\îÓ´\í¾\î\äp¸\ÉW§',5,5,'18:20:40');
+INSERT INTO `meeting_slot` VALUES (_binary '\Í?+Ý±\íº\öX\Î*‹m ',2,3,'15:30:00'),(_binary '\Í?,¡Ý±\íº\öX\Î*‹m ',12,1,'13:00:00'),(_binary '\Í?-<Ý±\íº\öX\Î*‹m ',3,2,'17:00:00'),(_binary '\Í?-\ÛÝ±\íº\öX\Î*‹m ',6,4,'10:00:00'),(_binary '\Í?.{Ý±\íº\öX\Î*‹m ',7,5,'09:00:00'),(_binary '\Í?/\'Ý±\íº\öX\Î*‹m ',11,4,'09:30:00'),(_binary '\Í?/­Ý±\íº\öX\Î*‹m ',5,2,'14:30:00');
 /*!40000 ALTER TABLE `meeting_slot` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -153,7 +153,7 @@ CREATE TABLE `professor` (
 
 LOCK TABLES `professor` WRITE;
 /*!40000 ALTER TABLE `professor` DISABLE KEYS */;
-INSERT INTO `professor` VALUES (_binary '{¨B\"Ó´\í¾\î\äp¸\ÉW§','m.rossi','pass','m.rossi@unipi.it','Mario','Rossi'),(_binary '{¨E+Ó´\í¾\î\äp¸\ÉW§','l.marrone','pass','l.marrone@unipi.it','Luca','Marrone'),(_binary '{¨FsÓ´\í¾\î\äp¸\ÉW§','g.bianchi','pass','g.bianchi@unipi.it','Gianni','Bianchi');
+INSERT INTO `professor` VALUES (_binary '\Í<–.Ý±\íº\öX\Î*‹m ','m.rossi','pass','m.rossi@unipi.it','Mario','Rossi'),(_binary '\Í<˜Ý±\íº\öX\Î*‹m ','l.marrone','pass','l.marrone@unipi.it','Luca','Marrone'),(_binary '\Í<˜Ý±\íº\öX\Î*‹m ','g.fantini','pass','g.fantini@unipi.it','Giorgio','Fantini'),(_binary '\Í<˜\ÇÝ±\íº\öX\Î*‹m ','t.baldini','pass','t.baldini@unipi.it','Tommaso','Baldini'),(_binary '\Í<˜üÝ±\íº\öX\Î*‹m ','r.paoli','pass','r.paoli@unipi.it','Ruggero','Paoli'),(_binary '\Í<™0Ý±\íº\öX\Î*‹m ','v.cantini','pass','v.cantini@unipi.it','Valerio','Cantini'),(_binary '\Í<™gÝ±\íº\öX\Î*‹m ','a.torri','pass','a.torri@unipi.it','Antonio','Torri'),(_binary '\Í<™™Ý±\íº\öX\Î*‹m ','e.romani','pass','e.romani@unipi.it','Ettore','Romani'),(_binary '\Í<™\íÝ±\íº\öX\Î*‹m ','m.banti','pass','m.banti@unipi.it','Maurizio','Banti'),(_binary '\Í<š>Ý±\íº\öX\Î*‹m ','g.lini','pass','g.lini@unipi.it','Giulia','Lini');
 /*!40000 ALTER TABLE `professor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -184,7 +184,7 @@ CREATE TABLE `student` (
 
 LOCK TABLES `student` WRITE;
 /*!40000 ALTER TABLE `student` DISABLE KEYS */;
-INSERT INTO `student` VALUES (_binary '{\áþÓ´\í¾\î\äp¸\ÉW§','f.lanzillo','pass','f.lanzillo@unipi.it','Fabrizio','Lanzillo','CE','ITA'),(_binary '{\á!úÓ´\í¾\î\äp¸\ÉW§','f.montini','pass','f.montini@unipi.it','Federico','Montini','CE','ITA'),(_binary '{\á#‰Ó´\í¾\î\äp¸\ÉW§','r.sagramoni','pass','r.sagramoni@unipi.it','Riccardo','Sagramoni','CE','ITA');
+INSERT INTO `student` VALUES (_binary '\Í=3\ïÝ±\íº\öX\Î*‹m ','f.lanzillo','pass','f.lanzillo@unipi.it','Fabrizio','Lanzillo','CE','ITA'),(_binary '\Í=52Ý±\íº\öX\Î*‹m ','f.montini','pass','f.montini@unipi.it','Federico','Montini','CE','ITA'),(_binary '\Í=5’Ý±\íº\öX\Î*‹m ','r.sagramoni','pass','r.sagramoni@unipi.it','Riccardo','Sagramoni','CE','ITA'),(_binary '\Í=5\ËÝ±\íº\öX\Î*‹m ','s.trussardi','pass','s.trussardi@unipi.it','Sandro','Trussardi','AIDE','ITA'),(_binary '\Í=6Ý±\íº\öX\Î*‹m ','g.giannetti','pass','g.giannetti@unipi.it','Giulio','Giannetti','AIDE','ITA'),(_binary '\Í=65Ý±\íº\öX\Î*‹m ','o.galiazzo','pass','o.galiazzo@unipi.it','Olga','Galiazzo','CE','ITA'),(_binary '\Í=6hÝ±\íº\öX\Î*‹m ','e.mazzeo','pass','e.mazzeo@unipi.it','Eraldo','Mazzeo','CE','ITA'),(_binary '\Í=6›Ý±\íº\öX\Î*‹m ','b.antonetti','pass','b.antonetti@unipi.it','Benito','Antonetti','AIDE','ITA'),(_binary '\Í=6\ÎÝ±\íº\öX\Î*‹m ','v.abatantuono','pass','v.abatantuono@unipi.it','Veronica','Abatantuono','AIDE','ITA'),(_binary '\Í=7Ý±\íº\öX\Î*‹m ','r.finetti','pass','r.finetti@unipi.it','Roberto','Finetti','AIDE','ITA'),(_binary '\Í=79Ý±\íº\öX\Î*‹m ','g.trentini','pass','g.trentini@unipi.it','Giulietta','Trentini','CE','ITA'),(_binary '\Í=7lÝ±\íº\öX\Î*‹m ','b.gori','pass','b.gori@unipi.it','Bianca','Gori','AIDE','ITA'),(_binary '\Í=7¡Ý±\íº\öX\Î*‹m ','n.abbagnale','pass','n.abbagnale@unipi.it','Nicoletta','Abbagnale','AIDE','ITA'),(_binary '\Í=7\ØÝ±\íº\öX\Î*‹m ','p.lancisi','pass','p.lancisi@unipi.it','Pina','Lancisi','CE','ITA'),(_binary '\Í=8Ý±\íº\öX\Î*‹m ','l.tomaselli','pass','l.tomaselli@unipi.it','Liana','Tomaselli','CE','ITA');
 /*!40000 ALTER TABLE `student` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -211,7 +211,7 @@ CREATE TABLE `student_starred_courses` (
 
 LOCK TABLES `student_starred_courses` WRITE;
 /*!40000 ALTER TABLE `student_starred_courses` DISABLE KEYS */;
-INSERT INTO `student_starred_courses` VALUES (_binary '{\áþÓ´\í¾\î\äp¸\ÉW§',2),(_binary '{\á!úÓ´\í¾\î\äp¸\ÉW§',2),(_binary '{\á#‰Ó´\í¾\î\äp¸\ÉW§',2),(_binary '{\áþÓ´\í¾\î\äp¸\ÉW§',5),(_binary '{\á!úÓ´\í¾\î\äp¸\ÉW§',6);
+INSERT INTO `student_starred_courses` VALUES (_binary '\Í=3\ïÝ±\íº\öX\Î*‹m ',2),(_binary '\Í=52Ý±\íº\öX\Î*‹m ',2),(_binary '\Í=5’Ý±\íº\öX\Î*‹m ',2),(_binary '\Í=3\ïÝ±\íº\öX\Î*‹m ',5),(_binary '\Í=52Ý±\íº\öX\Î*‹m ',12);
 /*!40000 ALTER TABLE `student_starred_courses` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -224,4 +224,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-05 15:22:35
+-- Dump completed on 2023-04-18  8:30:27
