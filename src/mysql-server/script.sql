@@ -212,8 +212,12 @@ VALUES ('DSMT', (SELECT id FROM professor WHERE surname = 'Rossi'), 'The course 
        ('LSMSD', (SELECT id FROM professor WHERE surname = 'Cantini'), 'description'),
        ('PESN', (SELECT id FROM professor WHERE surname = 'Torri'), 'description'),
        ('IS', (SELECT id FROM professor WHERE surname = 'Romani'), 'description'),
-       ('CC', (SELECT id FROM professor WHERE surname = 'Banti'), 'description'),
+       ('CCA', (SELECT id FROM professor WHERE surname = 'Banti'), 'description'),
        ('ANAWS', (SELECT id FROM professor WHERE surname = 'Lini'), 'description'),
+       ('CC', (SELECT id FROM professor WHERE surname = 'Rossi'), 'description'),
+       ('FOE', (SELECT id FROM professor WHERE surname = 'Rossi'), 'description'),
+       ('TREA', (SELECT id FROM professor WHERE surname = 'Rossi'), 'description'),
+       ('NAO', (SELECT id FROM professor WHERE surname = 'Rossi'), 'description'),
        ('FMFSS', (SELECT id FROM professor WHERE surname = 'Rossi'), 'description');
 
 INSERT INTO admin (id, username, password)

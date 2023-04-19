@@ -21,91 +21,87 @@
 
     <head>
         <title>Delete Course</title>
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/professor/delete-course.css">
+        <script src="${pageContext.request.contextPath}/assets/javascript/professor/deleteCourse.js"></script>
     </head>
     <body>
-        <jsp:include page="/WEB-INF/jsp/common/top-bar.jsp" />
-        <h1>
-            Welcome to the delete course Section, <%= loggedUserDTO.getUsername() %>
-        </h1>
-        <h1>University Courses</h1>
+        <div id="professor-delete-course-container">
+            <jsp:include page="/WEB-INF/jsp/common/top-bar.jsp" />
 
-        <%-- Form for the course search --%>
-        <form action="${pageContext.request.contextPath}/professor/delete-course" method="get">
-            <label for="searchInput">Search Courses:</label>
-            <input type="text" id="searchInput" name="search_input" placeholder="Type the course name...">
-            <button type="submit">Search</button>
-        </form>
-
-        <div id="courses">
-            <script>
-                const coursesDiv = document.getElementById("courses");
-                coursesDiv.innerHTML = "";
-
+            <br>
+            <h1>
+                Welcome to the Delete Course Page, <%= loggedUserDTO.getUsername() %>
+            </h1>
+            <br>
+            <div id="course-to-delete-selection-container">
+                <div id="course-to-delete-selection">
+                    <div class="course-to-delete-search">
+                        <%-- Form for the course search --%>
+                        <form class="search-courses-form" action="${pageContext.request.contextPath}/professor/delete-course" method="get">
+                            <label class="search-input-label">Search Courses:</label>
+                            <input type="text" id="search-delete-course-input" name="search_input" placeholder="Type the course name...">
+                            <button type="submit" class="delete-course-button">Search</button>
+                        </form>
+                    </div>
+                </div>
+                <hr class="hr-style">
+                <div id="courses-to-delete">
+                    <script>
+                        const coursesDiv = document.getElementById("courses-to-delete");
+                        coursesDiv.innerHTML = "";
 <%
-                // check on the result of the delete operation, if it has been made
-                if(!courseDeleteACK.equals("")){
-					if(courseDeleteACK.equals("ok")){
+                        // check on the result of the delete operation, if it has been made
+                        if(!courseDeleteACK.equals("")){
+                            if(courseDeleteACK.equals("ok")){
 %>
-                        alert("Course correctly deleted");
+                                alert("Course correctly deleted");
 <%
+                            }
+                            else{
+%>
+                                alert("An error occurred while deleting the course");
+<%
+                            }
+                            request.removeAttribute("deleteAck");
+                        }
+%>
+                    </script>
+<%
+                    // load of the courses
+                    int counter = 0;
+                    for (MinimalCourseDTO course : courses) {
+                        if(counter == 0){
+%>
+                            <div class="course-row-buttons">
+<%
+                        }
+%>
+                                <button type="button" id="<%= course.getName() %>" class="selected-courses" onclick="showDeleteAlert('<%= course.getId() %>')">
+                                    <%= course.getName() %>
+                                </button>
+<%
+                        if(counter == 2 || courses.indexOf(course) == courses.size() - 1){
+                            counter = 0;
+%>
+                            </div>
+<%
+                        }
+                        else{
+                            counter++;
+                        }
                     }
-					else{
 %>
-                        alert("An error occurred while deleting the course");
-<%
-					}
-					request.removeAttribute("deleteAck");
-                }
-%>
-
-                // function that show the hidden form, that send the post request for the course delete
-                // it also add the relative button to the selected course, setting up the value
-                // to be submitted with the id of the course selected
-                function showDeleteAlert(courseIdToDelete) {
-                    // disable of all the buttons of the course until the operation is finished
-                    // or the cancel button is clicked
-                    var coursesButtons = document.querySelectorAll('.courses_to_delete');
-                    Array.from(coursesButtons).forEach(function (button){
-                        button.disabled = true;
-                    });
-                    document.getElementById("delete-alert").style.display = "block";
-                    var deleteCourseForm = document.getElementById("delete-course-form");
-                    var submitButton = document.createElement("button");
-                    submitButton.innerHTML = "Delete";
-                    submitButton.setAttribute("type", "submit");
-                    submitButton.setAttribute("name", "courseId");
-                    submitButton.setAttribute("value", courseIdToDelete);
-                    deleteCourseForm.appendChild(submitButton);
-                }
-
-                // function that hide the form, if the cancel button is clicked
-                function closeDeleteAlert() {
-                    // enable of all the buttons of the course previously disabled
-                    var coursesButtons = document.querySelectorAll('.courses_to_delete');
-                    Array.from(coursesButtons).forEach(function (button){
-                        button.disabled = false;
-                    });
-                    document.getElementById("delete-alert").style.display = "none";
-                    var deleteCourseForm = document.getElementById("delete-course-form");
-                    deleteCourseForm.innerHTML = "";
-                }
-            </script>
-<%
-                // load of the courses
-                for (MinimalCourseDTO course : courses) {
-%>
-                    <button type="button" id="<%= course.getName() %>" class="courses_to_delete" onclick="showDeleteAlert('<%= course.getId() %>')">
-                        <%= course.getName() %>
-                    </button>
-<%
-                }
-%>
+                </div>
+            </div>
+            <br>
             <%-- hidden form for the course delete --%>
-            <div id="delete-alert" style="display:none;"><br>
-                <label>Are you really sure to delete this course?</label><br><br>
-                <button onclick="closeDeleteAlert()">Cancel</button>
-                <form id="delete-course-form" action="${pageContext.request.contextPath}/professor/delete-course" method="POST">
-                </form>
+            <div id="delete-course-alert" style="display:none;">
+                <span class="close-alert-button" onclick="closeDeleteAlert();">&times;</span>
+                <div class="delete-button-container">
+                    <strong style="font-size: 1.2vw;">Attention! Are you really sure to delete this meeting?</strong>
+                    <form id="delete-course-form" action="${pageContext.request.contextPath}/professor/delete-course" method="POST">
+                    </form>
+                </div>
             </div>
         </div>
     </body>
