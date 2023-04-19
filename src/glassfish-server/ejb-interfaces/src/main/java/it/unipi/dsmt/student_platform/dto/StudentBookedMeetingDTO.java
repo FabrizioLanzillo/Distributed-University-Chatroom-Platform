@@ -53,10 +53,8 @@ public class StudentBookedMeetingDTO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "StudentBookedMeetingDTO{" +
-				"courseName='" + courseName + '\'' +
-				", date=" + date +
-				", time=" + time +
-				'}';
+		return "Course = " + courseName + "<br>" +
+				"Date = " + date + "<br>" +
+				"Time = " + time;
 	}
 }
