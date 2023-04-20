@@ -7,6 +7,6 @@
    [kernel,
     stdlib
    ]},
-  {env,[{nodes, ['rick@127.0.0.1']}]},
+  {env,[{nodes, ['server@127.0.0.1']}]},
   {modules, []}
  ]}.
