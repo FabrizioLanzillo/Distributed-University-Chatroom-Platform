@@ -15,9 +15,14 @@
 %>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/common/top-bar.css">
+<link rel="icon" type="image/png" href="${pageContext.request.contextPath}/assets/img/logo.svg">
 
 <div class="topnav">
-
+    
+    <div id="logo">
+        <img src="${pageContext.request.contextPath}/assets/img/logo.svg" alt="Logo"/>
+    </div>
+    
     <div id="left-container">
         <button onclick="location.href = '${pageContext.request.contextPath}/<%= loggedUserDTO.getRole().name() %>/portal'">
             Portal

@@ -4,12 +4,12 @@
 <%@ page import="it.unipi.dsmt.student_platform.utility.ClientRedirector" %>
 <%@ page import="it.unipi.dsmt.student_platform.dto.LoggedUserDTO" %>
 <%@ page import="it.unipi.dsmt.student_platform.utility.AccessController" %>
-<%@ page import="it.unipi.dsmt.student_platform.servlets.common.LoginServlet" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <title>StudentPlatform</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/common/login.css">
+    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/assets/img/logo.svg">
 </head>
 <body>
 <div class="login-container">
