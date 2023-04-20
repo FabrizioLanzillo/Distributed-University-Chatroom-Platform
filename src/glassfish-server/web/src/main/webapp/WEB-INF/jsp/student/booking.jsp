@@ -22,58 +22,78 @@
 %>
 <html>
 <head>
-    <title>StudentChat</title>
+    <title>Book a meeting</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/student/booking.css">
 </head>
 <body>
 
 <jsp:include page="/WEB-INF/jsp/common/top-bar.jsp" />
 
-<h1>Sign up to StudentChat</h1>
+<h1 id="header1"></h1>
 
-<div>
+<script>
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+
+    const d = new Date();
+    const month = d.getMonth() + <%=offset%>;
+    d.setMonth(month)
+    document.getElementById("header1").textContent = "Available meetings for " + monthNames[d.getMonth()] + " " + d.getFullYear();
+</script>
+
+<div id="booking_tab">
     <h2>All available slots:</h2>
-    <form name="selected_slot" method="post"
+    <form id="formBookings" name="selected_slot" method="post"
           action="${pageContext.request.contextPath}/student/booking?id=<%=id%>&offset=<%=offset%>">
         <%
             int i=0;
+			//Create a button for each available slot
             for(BookingDTO bDTO : bookingDTOS){
         %>
-                <input type="submit" class="timeslotbox" name="timeslot" value=<%=i%>><%=bDTO.toString()%>
+        <button type="submit" class="timeslot" name="timeslot" value=<%=i%>><%=bDTO.toString()%></button>
                 <br>
         <%
                 i++;
             }
         %>
     </form>
-
-    <form method="post" action="${pageContext.request.contextPath}/student/booking?action=offsetChange&id=<%=id%>&offset=<%=offset - 1%>">
-        <%
-        if(offset <=0 ){%>
-            <button disabled="disabled"><-</button>
-        <%}
-        else{%>
-            <button type="submit"><-</button>
-        <%}%>
-    </form>
-    <form method="post" action="${pageContext.request.contextPath}/student/booking?action=offsetChange&id=<%=id%>&offset=<%=offset + 1%>">
-        <button type="submit">-></button>
-    </form>
+    <div id="offsetDiv">
+        <form class="offsetForm" method="post" action="${pageContext.request.contextPath}/student/booking?action=offsetChange&id=<%=id%>&offset=<%=offset - 1%>">
+            <%
+            // Create buttons to change month, backward is enabled only if we are looking for at least a month in the future
+            if(offset <=0 ){
+            %>
+                <button  class="offset" disabled="disabled"><-</button>
+            <%}
+            else{
+            %>
+                <button  class="offset" type="submit"><-</button>
+            <%}
+            %>
+        </form>
+        <form method="post" action="${pageContext.request.contextPath}/student/booking?action=offsetChange&id=<%=id%>&offset=<%=offset + 1%>">
+            <button class="offset" type="submit">-></button>
+        </form>
+    </div>
 
     <div id="response">
-        <%
-            // Check if the user failed the login
-            String rParam = request.getParameter("r");
-            if (rParam != null && rParam.equals("error")) {
-        %>
-        <div id="errorResponse">Error during your booking, try again later!</div>
-        <%
-            }
-            else if (rParam != null && rParam.equals("success")) {
-        %>
-        <div id="successResponse">Booking successful!</div>
-        <%
-            }
-        %>
+        <script>
+            <%
+                // Check if we have been redirected here after a booking request, in that case "r" parameter is set
+                String rParam = request.getParameter("r");
+                if (rParam != null && rParam.equals("error")) {
+            %>
+                alert("Booking failed");
+            <%
+                }
+                else if (rParam != null && rParam.equals("success")) {
+            %>
+                alert("Booking successful");
+            <%
+                }
+            %>
+        </script>
     </div>
 </div>
 

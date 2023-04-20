@@ -2,6 +2,9 @@ package it.unipi.dsmt.student_platform.dto;
 
 import java.io.Serializable;
 
+/**
+ * DTO that stores the necessary information to create a professor
+ */
 public class CreateProfessorDTO implements Serializable {
 	private String username;
 	private String password;

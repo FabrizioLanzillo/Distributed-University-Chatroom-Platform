@@ -23,50 +23,78 @@
 
     <head>
         <title>Student Portal</title>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/student/portal.css">
     </head>
     <body>
-        <jsp:include page="/WEB-INF/jsp/common/top-bar.jsp" />
-        
-        <h1>
-            Welcome to your student portal, <%= loggedUserDTO.getUsername() %>
-        </h1>
-        <h1>University Courses</h1>
+        <div id="student-portal-container">
+            <jsp:include page="/WEB-INF/jsp/common/top-bar.jsp" />
 
-        <form action="${pageContext.request.contextPath}/student/portal" method="get">
-            <label for="searchInput">Search Courses:</label>
-            <input type="text" id="searchInput" name="search_input" placeholder="Type the course name...">
-            <button type="submit">Search</button>
-        </form>
-
-        <form action="${pageContext.request.contextPath}/student/portal" method="get">
+            <br>
+            <h1>University Courses Research</h1>
+            <br>
+            <div id="course-selection-container">
+                <div id="course-selection">
+                    <div class="course-search">
+                        <form class="search-form" action="${pageContext.request.contextPath}/student/portal" method="get">
+                            <label class="search-input-label" for="search-input">Search Courses:</label>
+                            <input type="text" id="search-input" name="search_input" placeholder="Type the course name or the professor surname ...">
+                            <button type="submit" class="portal-button">Search</button>
+                        </form>
+                    </div>
+                    <div id="course-type">
+                        <form class="search-form" action="${pageContext.request.contextPath}/student/portal" method="get">
 <%
-                if(isStarredView.equals("true")){
+                            if(isStarredView.equals("true")){
 %>
-                    <button type="submit" name="starred" value="false">See Other Courses</button>
+                                <button type="submit" name="starred" class="student-platform-button" value="false">
+                                    See Other Courses
+                                </button>
 <%
-                }
-				else{
+                            }
+                            else{
 %>
-                    <button type="submit" name="starred" value="true">See Starred Courses</button>
+                                <button type="submit" name="starred" class="student-platform-button" value="true">
+                                    See Starred Courses
+                                </button>
 <%
-                }
+                            }
 %>
-        </form>
-        <div id="courses">
-            <script>
-                const coursesDiv = document.getElementById("courses");
-                coursesDiv.innerHTML = "";
-            </script>
+                        </form>
+                    </div>
+                </div>
+                <hr class="hr-style">
+                <div id="courses">
+                    <script>
+                        const coursesDiv = document.getElementById("courses");
+                        coursesDiv.innerHTML = "";
+                    </script>
 <%
-                for (MinimalCourseDTO course : courses) {
+                        int counter = 0;
+                        for (MinimalCourseDTO course : courses) {
+							if(counter == 0){
 %>
-                    <button type="button" id="<%= course.getName() %>" class="normal_courses"
-                            onclick="location.href = '${pageContext.request.contextPath}/student/course?id=<%= course.getId() %>'">
-                            <%= course.getName() %>
-                    </button>
+                                <div class="course-row-buttons">
 <%
-				}
+                            }
 %>
+                                    <button type="button" id="<%= course.getName() %>" class="selected-courses"
+                                            onclick="location.href = '${pageContext.request.contextPath}/student/course?id=<%= course.getId() %>'">
+                                            <%= course.toString() %>
+                                    </button>
+<%
+                            if(counter == 2 || courses.indexOf(course) == courses.size() - 1){
+								counter = 0;
+%>
+                                </div>
+<%
+                            }
+							else{
+								counter++;
+                            }
+                        }
+%>
+                </div>
+            </div>
         </div>
     </body>
 </html>

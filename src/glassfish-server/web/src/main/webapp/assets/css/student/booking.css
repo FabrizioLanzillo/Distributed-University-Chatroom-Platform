@@ -1,0 +1,51 @@
+#header1{
+    text-align: center;
+    margin-top: 4vw;
+}
+
+#booking_tab{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 3px solid #f1f1f1;
+    margin: 10vw 10vw;
+}
+
+#formBookings{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.timeslot{
+    margin: 1vw 2vw 1vw 2vw;
+    background-color: blue;
+    padding: 14px 20px;
+    border: none;
+    cursor: pointer;
+    width: 40vw;
+    color: white;
+}
+
+#offsetDiv{
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    width: 100%;
+    gap: 15vw;
+}
+
+button:hover{
+    opacity: 0.8;
+}
+
+.offset{
+    margin: 0 2vw 0 2vw;
+    height: 2vw;
+    width: 5vw;
+}
+
+.offsetForm{
+    display: flex;
+    justify-content: center;
+}

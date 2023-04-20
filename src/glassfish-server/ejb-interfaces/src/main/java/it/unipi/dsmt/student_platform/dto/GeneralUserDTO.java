@@ -2,6 +2,9 @@ package it.unipi.dsmt.student_platform.dto;
 
 import java.io.Serializable;
 
+/**
+ * Serializable object used in admin/users to travel users information in the admin ban page
+ */
 public class GeneralUserDTO implements Serializable {
     private String id;
     private String username;

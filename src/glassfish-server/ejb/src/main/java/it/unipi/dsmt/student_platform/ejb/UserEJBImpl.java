@@ -1,9 +1,6 @@
 package it.unipi.dsmt.student_platform.ejb;
 
-import it.unipi.dsmt.student_platform.dto.CreateProfessorDTO;
-import it.unipi.dsmt.student_platform.dto.LoggedUserDTO;
-import it.unipi.dsmt.student_platform.dto.LoginInformationDTO;
-import it.unipi.dsmt.student_platform.dto.GeneralUserDTO;
+import it.unipi.dsmt.student_platform.dto.*;
 import it.unipi.dsmt.student_platform.enums.UserRole;
 import it.unipi.dsmt.student_platform.interfaces.UserEJB;
 import jakarta.annotation.Resource;
@@ -16,20 +13,31 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * EJBs responsible for handling all the business logic related to the user management.
+ */
 @Stateless
 public class UserEJBImpl implements UserEJB {
 	
+	// Data source to MySQL database
 	@Resource(lookup = "jdbc/StudentPlatformPool")
 	private DataSource dataSource;
 	
+	/**
+	 * Execute login procedure.
+	 * @param loginInformation object containing the user's login data.
+	 * @return a LoggedUserDTO object if login is successful, null otherwise
+	 */
 	@Override
 	public @Nullable LoggedUserDTO login (@NotNull LoginInformationDTO loginInformation) {
 		
 		try (Connection connection = dataSource.getConnection()) {
 			// Check if username and password is correct
-			String query = "SELECT BIN_TO_UUID(id) AS id FROM "
-					+ loginInformation.getRole().name()
-					+ " WHERE `username` = ? AND `password` = ?";
+			String query = String.format(
+					"SELECT BIN_TO_UUID(id) AS id " +
+						"FROM %s WHERE `username` = ? AND `password` = ?",
+					loginInformation.getRole().name()
+			);
 			
 			try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 				// Set parameters in prepared statement
@@ -54,28 +62,43 @@ public class UserEJBImpl implements UserEJB {
 			throw new RuntimeException(e);
 		}
 	}
-
+	
+	/**
+	 * Function that search users based on a specified string
+	 * @param entered_string String on which the search is performed
+	 * @param role role of the users to search
+	 * @param index index that indicate current page to be shown
+	 * @return list of GeneralUserDTOs representing the users
+	 */
 	public List<GeneralUserDTO> searchUsers(String entered_string, UserRole role, int index){
+		//List to return
 		List<GeneralUserDTO> users = new ArrayList<>();
+		//Try connection
 		try (Connection connection = dataSource.getConnection()) {
-			String query = "SELECT BIN_TO_UUID(`id`) as id, `username` as username, `email` as email, `name` as name, `surname` as surname FROM ";
-			if (role == UserRole.student) {
-				query = query + "student ";
-			} else{
-				query = query + "professor ";
-			}
-			if(entered_string.compareTo("") != 0){
-				query = query + " WHERE `username` LIKE ? ";
-			}
-			query = query + "ORDER BY username DESC LIMIT 10 OFFSET " + index * 10 + ";";
+			String tableName =
+					(role == UserRole.student)
+							? UserRole.student.name()
+							: UserRole.professor.name();
+			String whereCondition =
+					(entered_string != null  && !entered_string.equals(""))
+							? "WHERE `username` LIKE ?"
+							: "";
+			// Build query
+			String query = String.format(
+					"SELECT BIN_TO_UUID(`id`) as id, `username`, `email`, `name`, `surname` " +
+					"FROM %s %s ORDER BY username DESC LIMIT 10 OFFSET %d;",
+					tableName, whereCondition, index * 10
+			);
+			// Build prepared string
 			try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 				// Look in the correct table
-				if(entered_string.compareTo("") != 0)
+				if(entered_string != null && !entered_string.equals("")) {
 					preparedStatement.setString(1, "%" + entered_string + "%");
+				}
 				
 				// Execute query
 				try (ResultSet resultSet = preparedStatement.executeQuery()) {
-					// If the query returned some results, then the login is successful!
+					// Build GeneralUserDTO for each result
 					while (resultSet.next()) {
 						GeneralUserDTO usr = new GeneralUserDTO();
 						usr.setId(resultSet.getString("id"));
@@ -92,19 +115,23 @@ public class UserEJBImpl implements UserEJB {
 			throw new RuntimeException(e);
 		}
 	}
-
+	
+	/**
+	 * Function that remove the user account that the admin choose to remove
+	 * @param id userID to ban
+	 * @param role role of the user that have to be banned
+	 * @return True if the operation has been successful, false otherwise
+	 */
 	public boolean banUser(String id, UserRole role) {
+		//Try connection to datasource
 		try (Connection connection = dataSource.getConnection()) {
-            String query = "DELETE FROM  ";
-			if (role == UserRole.student) {
-				query = query + "student ";
-			}
-			else {
-				query = query + "professor ";
-			}
+			String tableName =
+					(role == UserRole.student)
+							? UserRole.student.name()
+							: UserRole.professor.name();
+			//build query
+			String query = String.format("DELETE FROM %s WHERE `id` = UUID_TO_BIN(?);", tableName);
 			
-			query = query + "WHERE `id` = UUID_TO_BIN(?);";
-
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 				// Look in the correct table
                 preparedStatement.setString(1, id);
@@ -118,6 +145,11 @@ public class UserEJBImpl implements UserEJB {
         }
 	}
 
+	/**
+	 * function that create a new professor account on the platform
+	 * @param createProfessorDTO is the dto with data of the professor
+	 * @return the result of the insert
+	 */
 	@Override
 	public boolean createProfessorAccount(@NotNull CreateProfessorDTO createProfessorDTO){
 		try(Connection connection = dataSource.getConnection()) {
@@ -136,7 +168,39 @@ public class UserEJBImpl implements UserEJB {
 			}
 		}
 		catch (SQLException e) {
-			throw new RuntimeException(e);
+			return false;
+		}
+	}
+	
+	/**
+	 * definition of the signup operation. Takes a SignupDTO, perform the query and return the result.
+	 * @param signupDTO: SignupDTO type which contains user data to be stored
+	 * @return boolean value indicating if the signup operation was successful or not
+	 */
+	@Override
+	public boolean signup(@NotNull SignupDTO signupDTO){
+		try(Connection connection = dataSource.getConnection()) {
+			//Prepare the query
+			String query = "INSERT INTO `student` VALUES ( UUID_TO_BIN(UUID()) ,?, ?, ?, ?, ? ,?, ?);";
+			
+			try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+				// Set parameters in prepared statement
+				preparedStatement.setString(1, signupDTO.getUsername());
+				preparedStatement.setString(2, signupDTO.getPassword());
+				preparedStatement.setString(3, signupDTO.getEmail());
+				preparedStatement.setString(4, signupDTO.getName());
+				preparedStatement.setString(5, signupDTO.getSurname());
+				preparedStatement.setString(6, signupDTO.getDegree());
+				preparedStatement.setString(7, signupDTO.getLanguage());
+				
+				// Execute query
+				int result = preparedStatement.executeUpdate();
+				// evaluate the return value
+				return result == 1;
+			}
+		}
+		catch (SQLException e) {
+			return false;
 		}
 	}
 }

@@ -1,0 +1,12 @@
+{application, master_node,
+ [{description, "An OTP application"},
+  {vsn, "0.1.0"},
+  {registered, []},
+  {mod, {master_node_app, []}},
+  {applications,
+   [kernel,
+    stdlib
+   ]},
+  {env,[{nodes, ['rick@127.0.0.1']}]},
+  {modules, []}
+ ]}.

@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.sql.Time;
 import java.time.LocalDate;
 
+/**
+ * DTO that stores the information of the booked meeting of a student
+ */
 public class StudentBookedMeetingDTO implements Serializable {
 
 	private String BookedMeetingId = "";
@@ -53,10 +56,8 @@ public class StudentBookedMeetingDTO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "StudentBookedMeetingDTO{" +
-				"courseName='" + courseName + '\'' +
-				", date=" + date +
-				", time=" + time +
-				'}';
+		return "Course = " + courseName + "<br>" +
+				"Date = " + date + "<br>" +
+				"Time = " + time;
 	}
 }

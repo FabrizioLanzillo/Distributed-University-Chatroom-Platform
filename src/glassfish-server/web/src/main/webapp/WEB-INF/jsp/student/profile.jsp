@@ -22,92 +22,67 @@
 
     <head>
         <title>Student Profile</title>
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/student/profile.css">
+        <script src="${pageContext.request.contextPath}/assets/javascript/student/profile.js"></script>
     </head>
     <body>
-        <jsp:include page="/WEB-INF/jsp/common/top-bar.jsp" />
-
-        <h1>
-            Welcome to your student profile, <%= loggedUserDTO.getUsername() %>
-        </h1>
-
-        <div id="meetings">
-            <script>
-                const meetingsDiv = document.getElementById("meetings");
-                meetingsDiv.innerHTML = "";
+        <div id="profile-page">
+            <jsp:include page="/WEB-INF/jsp/common/top-bar.jsp" />
+            <br>
+            <h1>
+                Welcome to your student profile, <%= loggedUserDTO.getUsername() %>
+            </h1>
+            <br>
+            <div id="meetings-container">
+                <div id="meetings">
+                    <script>
+                        const meetingsDiv = document.getElementById("meetings");
+                        meetingsDiv.innerHTML = "";
 <%
-                // check on the result of the delete operation, if it has been made
-                if(!meetingDeleteACK.equals("")){
-                    if(meetingDeleteACK.equals("ok")){
+                        // check on the result of the delete operation, if it has been made
+                        if(!meetingDeleteACK.equals("")){
+                            if(meetingDeleteACK.equals("ok")){
 %>
-                        alert("Meeting correctly deleted");
+                                alert("Meeting correctly deleted");
+<%
+                            }
+                            else{
+%>
+                                alert("An error occurred while deleting the meeting");
+<%
+                            }
+                            request.removeAttribute("delete_ack");
+                        }
+%>
+                    </script>
+<%
+                    if(bookedMeeting.isEmpty()){
+%>
+                        <label>No booked meeting yet!</label>
 <%
                     }
                     else{
+                        for(StudentBookedMeetingDTO meeting : bookedMeeting){
 %>
-                        alert("An error occurred while deleting the meeting");
+                            <button type="button" id="<%= meeting.getBookedMeetingId() %>" class="remove_booked_meeting" onclick="showDeleteMeetingAlert('<%= meeting.getBookedMeetingId() %>')">
+                                <%=meeting.toString()%>
+                            </button>
 <%
+                        }
                     }
-                    request.removeAttribute("delete_ack");
-                }
 %>
-
-                // function that show the hidden form, that send the post request for the meeting delete
-                // it also add the relative button to the selected meeeting, setting up the value
-                // to be submitted with the id of the meeting selected
-                function showDeleteMeetingAlert(meetingIdToDelete) {
-                    // disable of all the buttons of the course until the operation is finished
-                    // or the cancel button is clicked
-                    var meetingButtons = document.querySelectorAll('.remove_booked_meeting');
-                    Array.from(meetingButtons).forEach(function (button){
-                        button.disabled = true;
-                    });
-                    document.getElementById("delete-meeting-alert").style.display = "block";
-                    var deleteMeetingForm = document.getElementById("delete-meeting-form");
-                    var submitButton = document.createElement("button");
-                    submitButton.innerHTML = "Delete";
-                    submitButton.setAttribute("type", "submit");
-                    submitButton.setAttribute("id", meetingIdToDelete);
-                    submitButton.setAttribute("name", "meeting_id");
-                    submitButton.setAttribute("value", meetingIdToDelete);
-                    deleteMeetingForm.appendChild(submitButton);
-                }
-
-                // function that hide the form, if the cancel button is clicked
-                function closeDeleteMeetingAlert() {
-                    // enable of all the buttons of the course previously disabled
-                    var meetingButtons = document.querySelectorAll('.remove_booked_meeting');
-                    Array.from(meetingButtons).forEach(function (button){
-                        button.disabled = false;
-                    });
-                    document.getElementById("delete-meeting-alert").style.display = "none";
-                    var deleteMeetingForm = document.getElementById("delete-meeting-form");
-                    deleteMeetingForm.innerHTML = "";
-                }
-            </script>
-<%
-            if(bookedMeeting.isEmpty()){
-%>
-                <label>No booked meeting yet!</label>
-<%
-            }
-            else{
-                for(StudentBookedMeetingDTO meeting : bookedMeeting){
-%>
-                    <button type="button" id="<%= meeting.getBookedMeetingId() %>" class="remove_booked_meeting" onclick="showDeleteMeetingAlert('<%= meeting.getBookedMeetingId() %>')">
-                        <%=meeting.toString()%>
-                    </button>
-<%
-                }
-            }
-%>
+                </div>
+            </div>
+            <br>
+            <%-- hidden form for the course delete --%>
+            <div id="delete-meeting-alert" style="display:none;">
+                <span class="close-alert-button" onclick="closeDeleteMeetingAlert();">&times;</span>
+                <div class="delete-button-container">
+                    <strong style="font-size: 1.2vw;">Attention! Are you really sure to delete this meeting?</strong>
+                    <form id="delete-meeting-form" action="${pageContext.request.contextPath}/student/profile" method="POST">
+                    </form>
+                </div>
+            </div>
         </div>
-        <%-- hidden form for the course delete --%>
-        <div id="delete-meeting-alert" style="display:none;"><br>
-            <label>Are you really sure to delete this meeting?</label><br><br>
-            <button onclick="closeDeleteMeetingAlert()">Cancel</button>
-            <form id="delete-meeting-form" action="${pageContext.request.contextPath}/student/profile" method="POST">
-            </form>
-        </div>
-
     </body>
 </html>

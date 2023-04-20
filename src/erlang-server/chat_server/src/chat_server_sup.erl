@@ -1,20 +1,13 @@
-%%%-------------------------------------------------------------------
-%% @doc chat_server top level supervisor.
-%% @end
-%%%-------------------------------------------------------------------
-
 -module(chat_server_sup).
-
 -behaviour(supervisor).
 
--export([start_link/0]).
+-export([start_link/0, init/1]).
 
--export([init/1]).
 
--define(SERVER, ?MODULE).
-
+% Start supervisor
 start_link() ->
-    supervisor:start_link({local, ?SERVER}, ?MODULE, []).
+    supervisor:start_link({local, ?MODULE}, ?MODULE, []).
+
 
 %% sup_flags() = #{strategy => strategy(),         % optional
 %%                 intensity => non_neg_integer(), % optional
@@ -26,10 +19,14 @@ start_link() ->
 %%                  type => worker(),       % optional
 %%                  modules => modules()}   % optional
 init([]) ->
-    SupFlags = #{strategy => one_for_all,
-                 intensity => 0,
+    % Supervisor parameters
+    SupFlags = #{strategy => one_for_one,
+                 intensity => 1,
                  period => 1},
-    ChildSpecs = [],
+    % Specs for child processes
+    CowboyListener = #{id => cowboy_listener, % child process name
+                        start => {cowboy_listener, start_link, []}, % function that will be executed
+                        restart => permanent}, % always restart when crashes
+    ChildSpecs = [CowboyListener],
+    % Return value
     {ok, {SupFlags, ChildSpecs}}.
-
-%% internal functions
