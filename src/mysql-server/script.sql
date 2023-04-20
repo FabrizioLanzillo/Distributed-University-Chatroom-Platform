@@ -238,7 +238,14 @@ VALUES (UUID_TO_BIN(UUID()), (SELECT id FROM course WHERE name = 'DSMT'), 3, '15
 
 INSERT INTO booked_meeting
 VALUES (UUID_TO_BIN(UUID()), (SELECT id FROM meeting_slot WHERE course = (SELECT id FROM course WHERE name = 'DSMT')), '2023-05-05', (SELECT id FROM student WHERE surname = 'Lanzillo')),
-       (UUID_TO_BIN(UUID()), (SELECT id FROM meeting_slot WHERE course = (SELECT id FROM course WHERE name = 'FOC')), '2023-05-08', (SELECT id FROM student WHERE surname = 'Lanzillo'));
+       (UUID_TO_BIN(UUID()), (SELECT id FROM meeting_slot WHERE course = (SELECT id FROM course WHERE name = 'FOC')), '2023-05-08', (SELECT id FROM student WHERE surname = 'Lanzillo')),
+       (UUID_TO_BIN(UUID()), (SELECT id FROM meeting_slot WHERE course = (SELECT id FROM course WHERE name = 'ECS')), '2023-05-10', (SELECT id FROM student WHERE surname = 'Lanzillo')),
+       (UUID_TO_BIN(UUID()), (SELECT id FROM meeting_slot WHERE course = (SELECT id FROM course WHERE name = 'ANAWS')), '2023-05-27', (SELECT id FROM student WHERE surname = 'Lanzillo')),
+       (UUID_TO_BIN(UUID()), (SELECT id FROM meeting_slot WHERE course = (SELECT id FROM course WHERE name = 'ECS')), '2023-05-11', (SELECT id FROM student WHERE surname = 'Montini')),
+       (UUID_TO_BIN(UUID()), (SELECT id FROM meeting_slot WHERE course = (SELECT id FROM course WHERE name = 'ANAWS')), '2023-05-22', (SELECT id FROM student WHERE surname = 'Montini')),
+       (UUID_TO_BIN(UUID()), (SELECT id FROM meeting_slot WHERE course = (SELECT id FROM course WHERE name = 'ECS')), '2023-05-09', (SELECT id FROM student WHERE surname = 'Sagramoni')),
+       (UUID_TO_BIN(UUID()), (SELECT id FROM meeting_slot WHERE course = (SELECT id FROM course WHERE name = 'ANAWS')), '2023-05-25', (SELECT id FROM student WHERE surname = 'Sagramoni'));
+
 
 
 

@@ -34,3 +34,7 @@ body {
     padding: 0 1vw;
     border-radius: 5px;
 }
+
+.student-platform-button:hover {
+    background: rgb(41, 67, 253);
+}

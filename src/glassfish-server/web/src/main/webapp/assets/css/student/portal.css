@@ -103,6 +103,10 @@
     border-radius: 5px;
 }
 
+.selected-courses:hover{
+    background: rgb(41, 67, 253);
+}
+
 .portal-button:hover {
     background: rgb(0, 120, 34);
 }
