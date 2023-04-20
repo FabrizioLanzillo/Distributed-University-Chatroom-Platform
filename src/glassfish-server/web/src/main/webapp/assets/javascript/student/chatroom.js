@@ -8,8 +8,8 @@ let username = "";
 let course = null;
 let id_timer = null;
 
-const server_url = "ws://localhost:8300/";
-// const server_url = "ws://10.2.1.4:8300/";
+// const server_url = "ws://localhost:8300/";
+const server_url = "ws://10.2.1.4:8300/";
 
 const websocketConfigurationParameters = {
 
