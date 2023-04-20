@@ -1,10 +1,11 @@
 package it.unipi.dsmt.student_platform.dto;
 
 import java.io.Serializable;
-import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
 
+/** Serializable class that contains the information that has to be shown inside professor/meeting page
+ */
 public class MeetingDTO implements Serializable {
 
     private String meetingId = "";

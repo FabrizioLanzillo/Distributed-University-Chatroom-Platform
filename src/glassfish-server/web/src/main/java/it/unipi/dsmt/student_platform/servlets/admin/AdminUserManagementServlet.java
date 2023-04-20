@@ -22,8 +22,6 @@ public class AdminUserManagementServlet extends HttpServlet {
     /**
      * Method accessed after a POST request in which the user tries to find a
      * specific user by a string clicking "search" button.
-     * @param request HttpServletRequest instance
-     * @param response HttpServletResponse response
      */
     private void searchWithStringByOffset(HttpServletRequest request, HttpServletResponse response) {
         // Extract the research input and the user type to search
@@ -60,8 +58,6 @@ public class AdminUserManagementServlet extends HttpServlet {
     /**
      * Method accessed after a POST request triggered by clicking on switch button. it switches showed results type
      * between "professor" and "student".
-     * @param request
-     * @param response
      */
     private void switchUserType(HttpServletRequest request, HttpServletResponse response) {
         String switch_ = request.getParameter("switch");
@@ -93,8 +89,6 @@ public class AdminUserManagementServlet extends HttpServlet {
     /**
      * method accessed after a POST request triggered by clicking on user button in the list.
      * It manages admin ban requests
-     * @param request
-     * @param response
      */
     private void deleteUser(HttpServletRequest request, HttpServletResponse response){
         // Get the role of the user to be banned
@@ -142,12 +136,8 @@ public class AdminUserManagementServlet extends HttpServlet {
     /**
      * Generic method invoked after a GET or POST request. It initializes the page with default values if called by the
      * GET otherwise it allow to specify parameters of the user research, i.e. specific offset, search input or role
-     * @param request
-     * @param response
-     * @param role
-     * @param searchInput
-     * @throws IOException
-     * @throws ServletException
+     * @param role logged user role
+     * @param searchInput value inside the search bar
      */
     private void update (HttpServletRequest request, HttpServletResponse response, UserRole role, String searchInput) throws IOException, ServletException {
         // Extract offset
@@ -172,12 +162,7 @@ public class AdminUserManagementServlet extends HttpServlet {
     
     }
     
-    /**
-     * Redefinition of doGET
-     * @param request
-     * @param response
-     * @throws IOException
-     * @throws ServletException
+    /** Redefinition of doGET for first access of the page
      */
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -192,16 +177,14 @@ public class AdminUserManagementServlet extends HttpServlet {
     
     /**
      * Redefinition of doPOST. Select correct request and redirect to the corresponding handle function.
-     * @param request
-     * @param response
-     * @throws IOException
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        
+        //Check if the user is logged
         if (AccessController.checkAccess(request, response, UserRole.admin) == null) {
             return;
         }
+        //Get the action user requested
         String action = request.getParameter("action");
         
         switch (action) {

@@ -62,9 +62,18 @@ public class UserEJBImpl implements UserEJB {
 			throw new RuntimeException(e);
 		}
 	}
-
+	
+	/**
+	 * Function that search users based on a specified string
+	 * @param entered_string String on which the search is performed
+	 * @param role role of the users to search
+	 * @param index index that indicate current page to be shown
+	 * @return list of GeneralUserDTOs representing the users
+	 */
 	public List<GeneralUserDTO> searchUsers(String entered_string, UserRole role, int index){
+		//List to return
 		List<GeneralUserDTO> users = new ArrayList<>();
+		//Try connection
 		try (Connection connection = dataSource.getConnection()) {
 			String tableName =
 					(role == UserRole.student)
@@ -80,7 +89,7 @@ public class UserEJBImpl implements UserEJB {
 					"FROM %s %s ORDER BY username DESC LIMIT 10 OFFSET %d;",
 					tableName, whereCondition, index * 10
 			);
-			
+			// Build prepared string
 			try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 				// Look in the correct table
 				if(entered_string != null && !entered_string.equals("")) {
@@ -89,7 +98,7 @@ public class UserEJBImpl implements UserEJB {
 				
 				// Execute query
 				try (ResultSet resultSet = preparedStatement.executeQuery()) {
-					// If the query returned some results, then the login is successful!
+					// Build GeneralUserDTO for each result
 					while (resultSet.next()) {
 						GeneralUserDTO usr = new GeneralUserDTO();
 						usr.setId(resultSet.getString("id"));
@@ -106,14 +115,21 @@ public class UserEJBImpl implements UserEJB {
 			throw new RuntimeException(e);
 		}
 	}
-
+	
+	/**
+	 * Function that remove the user account that the admin choose to remove
+	 * @param id userID to ban
+	 * @param role role of the user that have to be banned
+	 * @return True if the operation has been successful, false otherwise
+	 */
 	public boolean banUser(String id, UserRole role) {
+		//Try connection to datasource
 		try (Connection connection = dataSource.getConnection()) {
 			String tableName =
 					(role == UserRole.student)
 							? UserRole.student.name()
 							: UserRole.professor.name();
-			
+			//build query
 			String query = String.format("DELETE FROM %s WHERE `id` = UUID_TO_BIN(?);", tableName);
 			
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {

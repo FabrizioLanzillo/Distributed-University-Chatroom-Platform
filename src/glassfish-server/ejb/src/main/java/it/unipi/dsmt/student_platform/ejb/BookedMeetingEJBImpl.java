@@ -15,7 +15,9 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * EJB class which handles all the business logic related to the bookings and meetings
+ */
 @Stateless
 public class BookedMeetingEJBImpl implements BookedMeetingEJB {
     

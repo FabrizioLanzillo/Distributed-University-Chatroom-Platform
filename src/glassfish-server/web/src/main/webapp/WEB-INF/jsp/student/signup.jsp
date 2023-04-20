@@ -9,8 +9,6 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/student/signup.css">
 </head>
 <body>
-
-<%--TODO: change website name--%>
     <h1 class = "title">Sign up to StudentChat</h1>
 
     <div id="maincontainer">
