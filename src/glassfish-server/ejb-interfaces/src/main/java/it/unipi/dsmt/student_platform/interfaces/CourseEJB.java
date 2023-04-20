@@ -23,7 +23,10 @@ public interface CourseEJB {
 	List<MinimalCourseDTO> getAllCoursesForProfessor (String professorId);
 	List<MinimalCourseDTO> getStarredCourses(String id);
 	String getCourseName(int id);
+	
 	boolean addStarredCourse(@NotNull String studentId, int courseId);
 	boolean removeStarredCourse(@NotNull String studentId, int courseId);
+	
 	boolean deleteCourse(int id);
+	
 }

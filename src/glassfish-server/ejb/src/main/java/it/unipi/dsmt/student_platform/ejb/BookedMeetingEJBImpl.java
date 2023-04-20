@@ -50,7 +50,7 @@ public class BookedMeetingEJBImpl implements BookedMeetingEJB {
         
         //Check if the course have slots to be booked, otherwise return empty list
         if(allSlots == null){
-            System.out.println("Error: No slots available");
+            System.err.println("Error: No slots available");
             return new ArrayList<>();
         }
 
@@ -59,11 +59,11 @@ public class BookedMeetingEJBImpl implements BookedMeetingEJB {
 
         // Sunday or Saturday are not allowed
         for(BookingDTO slot : allSlots){
-            if(slot.getDayOfWeek() == 6 || slot.getDayOfWeek() == 7){
-                System.out.println("Error: Saturday and Sunday are not allowed");
+            if (slot.getDayOfWeek() <= 0 || slot.getDayOfWeek() >= 6){
+                System.err.println("Error: Saturday and Sunday are not allowed");
                 continue;
             }
-
+            
             // Get first occurrence, for the specified month, of the slot week day; i.e. first monday of July etc.
             LocalDate day = start.with(
                     TemporalAdjusters.nextOrSame(
@@ -102,7 +102,7 @@ public class BookedMeetingEJBImpl implements BookedMeetingEJB {
         // Get all available slots showed to the user
         List<BookingDTO> allSlots = getBookableSlots(courseID, offset);
         if(allSlots == null){
-            System.out.println("Error: No slots available");
+            System.err.println("Error: No slots available");
             return false;
         }
 
