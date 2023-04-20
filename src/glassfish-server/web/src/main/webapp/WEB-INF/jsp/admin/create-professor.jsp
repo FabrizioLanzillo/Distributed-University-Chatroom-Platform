@@ -17,71 +17,69 @@
     }
 %>
 
-<head>
-    <title>Admin Create Professor Account</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/admin/create-professor.css">
-</head>
-
-<body>
-    <jsp:include page="/WEB-INF/jsp/common/top-bar.jsp" />
-
-    <script>
-<%
-        // check on the result of the delete operation, if it has been made
-        if(!professorAccountCreationACK.equals("")){
-            if(professorAccountCreationACK.equals("ok")){
-%>
-                alert("Professor Account correctly created");
-<%
-            }
-            else{
-%>
-                alert("An error occurred while creating the professor account");
-<%
-            }
-            request.removeAttribute("insertAck");
-        }
-%>
-    </script>
-    
-    <div class="form-container">
-        <div>
+    <head>
+        <title>Admin Create Professor Account</title>
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/admin/create-professor.css">
+    </head>
+    <body>
+        <div id="create-professor-page">
+            <jsp:include page="/WEB-INF/jsp/common/top-bar.jsp" />
+            <br>
             <h1>
-                Welcome to the professor account creation page, <%= loggedUserDTO.getUsername() %>
+                Welcome to the professor creation page
             </h1>
-            
-            <form name="create_professor_account" method="post"
-                  action="${pageContext.request.contextPath}/admin/create-professor">
-    
-                <label>
-                    Name:
-                    <input type="text" name="name" placeholder="Name" required />
-                </label>
-                <br>
-                <label>
-                    Surname:
-                    <input type="text" name="surname" placeholder="Surname" required />
-                </label>
-                <br>
-                <label>
-                    Email:
-                    <input type="text" name="email" placeholder="Email" required />
-                </label>
-                <br>
-                <label>
-                    Username:
-                    <input type="text" name="username" placeholder="Username" required />
-                </label>
-                <br>
-                <label>
-                    Password:
-                    <input type="password" name="password" placeholder="Password" required />
-                </label>
-                <br>
-                <button type="submit">Create Account!</button>
-            </form>
-        </div>
-    </div>
+            <br>
+            <div id="form-container">
+                <script>
+<%
+                    // check on the result of the delete operation, if it has been made
+                    if(!professorAccountCreationACK.equals("")){
+                        if(professorAccountCreationACK.equals("ok")){
+%>
+                            alert("Professor Account correctly created");
+<%
+                        }
+                        else{
+%>
+                            alert("An error occurred while creating the professor account");
+<%
+                        }
+                        request.removeAttribute("insertAck");
+                    }
+%>
+                </script>
 
-</body>
+                <form class="professor-creation" name="create_professor_account" method="post"
+                      action="${pageContext.request.contextPath}/admin/create-professor">
+
+                    <div class="insert-field">
+                        <label>Name:</label>
+                        <input type="text" class="input-field" name="name" placeholder="Insert the Name" required />
+                    </div>
+
+                    <div class="insert-field">
+                        <label>Surname:</label>
+                        <input type="text" class="input-field" name="surname" placeholder="Insert the Surname" required />
+                    </div>
+
+                    <div class="insert-field">
+                        <label>Email:</label>
+                        <input type="text" class="input-field" name="email" placeholder="Insert the Email" required />
+                    </div>
+
+                    <div class="insert-field">
+                        <label>Username:</label>
+                        <input type="text" class="input-field" name="username" placeholder="Insert the Username" required />
+                    </div>
+
+                    <div class="insert-field">
+                        <label>Password:</label>
+                        <input type="text" class="input-field" name="password" placeholder="Insert the Password" required />
+                    </div>
+                    <br>
+                    <button type="submit" class="create_account_button">Create Account!</button>
+                </form>
+            </div>
+        </div>
+    </body>
 </html>

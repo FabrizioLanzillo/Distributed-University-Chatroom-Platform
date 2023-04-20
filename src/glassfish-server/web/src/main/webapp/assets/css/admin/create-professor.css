@@ -1,34 +1,59 @@
-.form-container {
+#create-professor-page{
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
 }
 
-.form-container > div {
-    width: 50%;
-    text-align: center;
-    padding: 16px;
+#form-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 70%;
+    height: 60vh;
+    border: var(--border);
+    border-radius: 10px;
+    padding: 2.5vw;
+    background-color: white;
+    justify-content: flex-start;
 }
 
-form input {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid grey;
-    box-sizing: border-box;
+.professor-creation{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    height: 100%;
 }
 
-form button {
-    background-color: darkblue;
-    color: white;
-    padding: 10px 20px;
-    margin: 10px 0;
-    border: none;
+.input-field{
+    display: flex;
+    border-radius: 5px;
+    background: #ffffff;
+    height: 3vw;
+    width: 40vw;
+    margin-top: 0.4vw;
+    border: var(--border);
+    padding: 1vw;
+}
+
+.insert-field{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 1vw;
+}
+
+.create_account_button{
+    background: rgb(0, 196, 65);
+    color: #fff;
+    font-weight: bold;
     cursor: pointer;
-    width: 50%;
+    height: 3vw;
+    width: 18vw;
+    box-shadow: 0 6px 6px -3px rgba(0, 0, 0, 0.3);
+    border: 1px solid #ddd;
+    border-radius: 5px;
 }
 
-form > button:hover {
-    background-color: cyan;
-}
+.create_account_button:hover {
+    background: rgb(0, 120, 34);
