@@ -15,7 +15,6 @@
 %>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/common/top-bar.css">
-<link rel="icon" type="image/png" href="${pageContext.request.contextPath}/assets/img/logo.svg">
 
 <div class="topnav">
     

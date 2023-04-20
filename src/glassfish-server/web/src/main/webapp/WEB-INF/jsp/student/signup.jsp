@@ -7,7 +7,6 @@
 <head>
     <title>StudentChat</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/student/signup.css">
-    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/assets/img/logo.svg">
 </head>
 <body>
     <h1 class = "title">Sign up to StudentChat</h1>

@@ -9,7 +9,6 @@
 <head>
     <title>StudentPlatform</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/common/login.css">
-    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/assets/img/logo.svg">
 </head>
 <body>
 <div class="login-container">
