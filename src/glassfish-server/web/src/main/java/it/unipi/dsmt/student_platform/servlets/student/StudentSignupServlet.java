@@ -17,10 +17,6 @@ public class StudentSignupServlet extends HttpServlet {
 	/**
 	 * Redefinition of doPost method for signup page. Accessed when the user clicks on the signup button after
 	 * inserting the data in the form.
-	 *
-	 * @param request
-	 * @param response
-	 * @throws IOException
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -35,7 +31,7 @@ public class StudentSignupServlet extends HttpServlet {
 		String _degree = request.getParameter("degree");
 		String _language = request.getParameter("language");
 		
-		boolean r = false;
+		boolean r;
 		// Creating a new signup object
 		SignupDTO dto = new SignupDTO(
 				_username,
@@ -61,10 +57,6 @@ public class StudentSignupServlet extends HttpServlet {
 	
 	/***
 	 * Redefinition of doGet method for signup page. Accessed when the user access it from the login page.
-	 * @param request
-	 * @param response
-	 * @throws ServletException
-	 * @throws IOException
 	 */
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

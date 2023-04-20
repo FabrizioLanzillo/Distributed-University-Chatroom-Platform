@@ -24,10 +24,6 @@ public class StudentBookingServlet extends HttpServlet {
      * Redefinition of doPost method for booking page. This method is called when the user tries to book a slot showed
      * in the booking page. The method after retrieving the data from the request insert the requested booking inside
      * the database.
-     *
-     * @param request
-     * @param response
-     * @throws IOException
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -90,10 +86,6 @@ public class StudentBookingServlet extends HttpServlet {
     /**
      * Redefinition of doGet method for booking page. Called when accessing the page from the course page or if the user
      * changes the offset through a POST request.
-     * @param request
-     * @param response
-     * @throws IOException
-     * @throws ServletException
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
