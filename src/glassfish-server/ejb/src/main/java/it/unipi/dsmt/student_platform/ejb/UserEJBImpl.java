@@ -129,6 +129,11 @@ public class UserEJBImpl implements UserEJB {
         }
 	}
 
+	/**
+	 * function that create a new professor account on the platform
+	 * @param createProfessorDTO is the dto with data of the professor
+	 * @return the result of the insert
+	 */
 	@Override
 	public boolean createProfessorAccount(@NotNull CreateProfessorDTO createProfessorDTO){
 		try(Connection connection = dataSource.getConnection()) {
