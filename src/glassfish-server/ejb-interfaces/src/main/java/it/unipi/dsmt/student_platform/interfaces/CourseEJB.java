@@ -5,6 +5,7 @@ import it.unipi.dsmt.student_platform.dto.CourseDTO;
 import it.unipi.dsmt.student_platform.dto.MinimalCourseDTO;
 import jakarta.ejb.Remote;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public interface CourseEJB {
 	List<MinimalCourseDTO> getAllCourses ();
 	List<MinimalCourseDTO> getAllCoursesForProfessor (String professorId);
 	List<MinimalCourseDTO> getStarredCourses(String id);
-	String getCourseName(int id);
+	@Nullable String getCourseName(int id);
 	boolean addStarredCourse(@NotNull String studentId, int courseId);
 	boolean removeStarredCourse(@NotNull String studentId, int courseId);
 	boolean deleteCourse(int id);

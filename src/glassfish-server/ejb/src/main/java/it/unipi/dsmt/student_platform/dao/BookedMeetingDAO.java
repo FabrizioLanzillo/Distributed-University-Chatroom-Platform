@@ -108,7 +108,13 @@ public class BookedMeetingDAO {
 			return false;
 		}
 	}
-	
+
+	/**
+	 * function that get all the booked meeting for a student
+	 * @param id of the student
+	 * @param dataSource dataSource object from which extract requested data
+	 * @return the list of the StudentBookedMeetingDTO object
+	 */
 	public List<StudentBookedMeetingDTO> getBookedMeetingsForStudentDAO(String id, DataSource dataSource) {
 		List<StudentBookedMeetingDTO> bookedMeeting = new ArrayList<>();
 		

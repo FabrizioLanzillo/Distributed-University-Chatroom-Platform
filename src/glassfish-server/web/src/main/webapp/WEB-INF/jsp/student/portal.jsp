@@ -36,7 +36,7 @@
                 <div id="course-selection">
                     <div class="course-search">
                         <form class="search-form" action="${pageContext.request.contextPath}/student/portal" method="get">
-                            <label class="search-input-label">Search Courses:</label>
+                            <label class="search-input-label" for="search-input">Search Courses:</label>
                             <input type="text" id="search-input" name="search_input" placeholder="Type the course name or the professor surname ...">
                             <button type="submit" class="portal-button">Search</button>
                         </form>
@@ -79,7 +79,7 @@
 %>
                                     <button type="button" id="<%= course.getName() %>" class="selected-courses"
                                             onclick="location.href = '${pageContext.request.contextPath}/student/course?id=<%= course.getId() %>'">
-                                            <%= course.getName() %>
+                                            <%= course.toString() %>
                                     </button>
 <%
                             if(counter == 2 || courses.indexOf(course) == courses.size() - 1){
