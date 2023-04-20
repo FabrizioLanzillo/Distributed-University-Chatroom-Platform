@@ -12,7 +12,7 @@
   {env,
     [
       {websocket_endpoint, "/"},
-      {websocket_port, 8080}
+      {websocket_port, 8300}
     ]
   },
   {modules, []}
