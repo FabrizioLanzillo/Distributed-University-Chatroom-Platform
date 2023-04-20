@@ -411,6 +411,14 @@ public class CourseEJBImpl implements CourseEJB {
 	}
 
 	
+	
+	/**
+	 * Insert a course inside the database with the related meeting slots as an atomic operation.
+	 * @param connection connection object to database
+	 * @param course information about the new course
+	 * @param meetingSlots list of meeting slots for the new course
+	 * @throws SQLException if query fails
+	 */
 	private void insertCourseWithMeetingSlots(@NotNull Connection connection,
 	                                          @NotNull CourseCreationDTO course,
 	                                          @NotNull List<MeetingSlotCreationDTO> meetingSlots)
@@ -470,7 +478,7 @@ public class CourseEJBImpl implements CourseEJB {
 	
 	
 	
-		/**
+	/**
 	 * function that delete a course by its id
 	 * @param id of the course
 	 * @return the result of the request
