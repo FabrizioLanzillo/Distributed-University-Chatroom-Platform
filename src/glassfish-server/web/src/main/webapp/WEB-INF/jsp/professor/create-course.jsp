@@ -30,7 +30,7 @@
 	else if (successful == Boolean.FALSE) {
 %>
     <script>
-        alert("Course creation failed because a duplicate course was found")
+        alert("Course creation failed")
     </script>
 <%
     }

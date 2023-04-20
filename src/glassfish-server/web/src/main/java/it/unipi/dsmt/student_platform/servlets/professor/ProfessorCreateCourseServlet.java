@@ -50,7 +50,7 @@ public class ProfessorCreateCourseServlet extends HttpServlet {
 	 */
 	private void notifyFailedCreation (HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException
-	{ // TODO: different reason for failure
+	{
 		request.setAttribute(attributeSuccessfulCreation, false);
 		redirectToJsp(request, response);
 	}

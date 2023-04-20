@@ -98,7 +98,7 @@
             <div id="delete-course-alert" style="display:none;">
                 <span class="close-alert-button" onclick="closeDeleteAlert();">&times;</span>
                 <div class="delete-button-container">
-                    <strong style="font-size: 1.2vw;">Attention! Are you really sure to delete this meeting?</strong>
+                    <strong style="font-size: 1.2vw;">Attention! Are you really sure to delete this course?</strong>
                     <form id="delete-course-form" action="${pageContext.request.contextPath}/professor/delete-course" method="POST">
                     </form>
                 </div>

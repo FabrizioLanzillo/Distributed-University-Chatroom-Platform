@@ -42,7 +42,6 @@ public class StudentSignupServlet extends HttpServlet {
 				_degree,
 				_language);
 		
-		// TODO Hash & salt the password
 		// Try to store the data, if the entry is duplicated (same username) the query will fail
 		r = userEJB.signup(dto);
 

@@ -24,6 +24,8 @@ const messageParameters = {
     1: "text"
 };
 
+
+
 /**
  * this function create an object from the args passed and
  * send it through the websocket
@@ -116,6 +118,9 @@ function handleWebsocketError() {
     }
 }
 
+
+
+
 /**
  * function that execute the connection with the websocket
  * @param _logged_user is the username of the student
@@ -155,6 +160,9 @@ function sendMessage(){
     appendMessageToTheChat("You", message_text, true);
 
 }
+
+
+
 
 /**
  * function that append a message to the div of the chat
@@ -200,6 +208,9 @@ function appendMessageToTheChat(sender_name, message, isMyMessage){
     divMessage.appendChild(divMessageHeader);
     divMessageHeader.appendChild(divMessageHeaderUsername);
     divMessage.appendChild(divMessageContent);
+    
+    // Scroll chat to bottom
+    scrollChatToBottom();
 }
 
 /**
@@ -219,4 +230,12 @@ function updateOnlineStudentsList(studentList){
         li.textContent = student;
         ulOnlineStudents.appendChild(li);
     });
+}
+
+/**
+ * Scroll chat to bottom
+ */
+function scrollChatToBottom() {
+    const chat = document.getElementById("chatroom-chat");
+    chat.scrollTop = chat.scrollHeight;
 }
