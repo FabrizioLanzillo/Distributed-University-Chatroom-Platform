@@ -6,7 +6,13 @@
 
 <head>
     <title>Create course</title>
+    
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/libs/jquery/css/jquery.timepicker.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/professor/create-course.css">
+    
+    <script src="${pageContext.request.contextPath}/assets/libs/jquery/js/jquery-3.6.4.min.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/libs/jquery/js/jquery.timepicker.min.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/javascript/professor/create-course.js"></script>
 </head>
 
 <body>
@@ -42,11 +48,31 @@
                     <input type="text" name="name" required />
                 </label>
                 <br>
+                
+                
+                <div>Meeting hours:</div>
+                <div class="meeting_pickers">
+                    <label>
+                        Weekday:
+                        <select id ="weekday" name="weekday" required></select>
+                    </label>
+                    <label>
+                        From:
+                        <input id="start-time" name="start-time" class="timepicker" required>
+                    </label>
+                    <label>
+                        To:
+                        <input id="end-time" name="end-time" class="timepicker" required disabled>
+                    </label>
+                </div>
+                
+                
                 <label>
                     Description:
                     <textarea name="description" required></textarea>
                 </label>
                 <br>
+                
                 <button type="submit">CREATE</button>
             </form>
         </div>

@@ -1,9 +1,6 @@
 package it.unipi.dsmt.student_platform.ejb;
 
-import it.unipi.dsmt.student_platform.dto.CourseCreationDTO;
-import it.unipi.dsmt.student_platform.dto.CourseDTO;
-import it.unipi.dsmt.student_platform.dto.MinimalCourseDTO;
-import it.unipi.dsmt.student_platform.dto.ProfessorDTO;
+import it.unipi.dsmt.student_platform.dto.*;
 import it.unipi.dsmt.student_platform.interfaces.CourseEJB;
 import jakarta.annotation.Resource;
 import jakarta.ejb.Stateless;
@@ -12,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -356,6 +354,9 @@ public class CourseEJBImpl implements CourseEJB {
 	}
 	
 	
+	
+	
+	
 	/**
 	 * Create a new course.
 	 * @param course object containing the required data to create a course
@@ -363,26 +364,84 @@ public class CourseEJBImpl implements CourseEJB {
 	 */
 	@Override
 	public boolean createCourse(@NotNull CourseCreationDTO course) {
+		List<MeetingSlotCreationDTO> meetingSlots = new ArrayList<>();
+		// Prepare meeting slots
+		for (LocalTime t = course.getStartTime(); t.isBefore(course.getEndTime()); t = t.plusMinutes(30)) {
+			meetingSlots.add(
+					new MeetingSlotCreationDTO(
+							course.getWeekday(),
+							t
+					)
+			);
+		}
+		
 		try (Connection connection = dataSource.getConnection()) {
-			// Check if username and password is correct
-			String query = "INSERT INTO `course` (`name`, `professor`, `description`) " +
-					"VALUES (?, UUID_TO_BIN(?), ?);";
-			
-			try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-				// Set parameters in prepared statement
-				preparedStatement.setString(1, course.getName());
-				preparedStatement.setString(2, course.getProfessorId());
-				preparedStatement.setString(3, course.getDescription());
-				
-				// Execute query
-				return preparedStatement.executeUpdate() == 1;
-				
-			}
+			insertCourseWithMeetingSlots(connection, course, meetingSlots);
+			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
 		}
 	}
+	
+	private void insertCourseWithMeetingSlots(@NotNull Connection connection,
+	                                          @NotNull CourseCreationDTO course,
+	                                          @NotNull List<MeetingSlotCreationDTO> meetingSlots)
+			throws SQLException
+	{
+		// Configure connection for multiple statements
+		connection.setAutoCommit(false);
+		// MySQL queries
+		String insertCourseQuery = "INSERT INTO `course` (`name`, `professor`, `description`) " +
+				"VALUES (?, UUID_TO_BIN(?), ?);";
+		String insertMeetingSlotQuery =
+				"INSERT INTO `meeting_slot` VALUES (UUID_TO_BIN(UUID()), ?, ?, ?)";
+		
+		// Generate statements
+		try (
+				PreparedStatement insertCourseStatement =
+						connection.prepareStatement(insertCourseQuery, Statement.RETURN_GENERATED_KEYS);
+				PreparedStatement insertMeetingSlotStatement =
+						connection.prepareStatement(insertMeetingSlotQuery);
+			)
+		{
+			int courseId;
+			
+			// Insert course
+			insertCourseStatement.setString(1, course.getName());
+			insertCourseStatement.setString(2, course.getProfessorId());
+			insertCourseStatement.setString(3, course.getDescription());
+			int affectedRows = insertCourseStatement.executeUpdate(); // read generated course id
+			if (affectedRows <= 0) {
+				throw new SQLException("affectedRows == 0");
+			}
+			
+			// Retrieve generated course id
+			try (ResultSet keys = insertCourseStatement.getGeneratedKeys()) {
+				if (!keys.next()) {
+					throw new SQLException("Cannot retrieve generated course id");
+				}
+				courseId = keys.getInt(1);
+			}
+			
+			// Insert meeting slots
+			for (var slot : meetingSlots) {
+				insertMeetingSlotStatement.clearParameters();
+				insertMeetingSlotStatement.setInt(1, courseId);
+				insertMeetingSlotStatement.setInt(2, slot.getWeekday());
+				insertMeetingSlotStatement.setTime(3, Time.valueOf(slot.getTime()));
+				insertMeetingSlotStatement.executeUpdate();
+			}
+			
+			// Commit statements
+			connection.commit();
+		} catch (Exception exception) {
+			connection.rollback();
+			throw exception;
+		}
+	}
+	
+	
 	
 	
 	@Override
