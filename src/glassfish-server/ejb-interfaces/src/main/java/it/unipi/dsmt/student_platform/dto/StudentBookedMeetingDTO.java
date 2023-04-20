@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.sql.Time;
 import java.time.LocalDate;
 
+/**
+ * DTO that stores the information of the booked meeting of a student
+ */
 public class StudentBookedMeetingDTO implements Serializable {
 
 	private String BookedMeetingId = "";

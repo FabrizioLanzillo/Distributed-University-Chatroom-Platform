@@ -22,6 +22,15 @@ public class StudentProfileServlet extends HttpServlet {
 	@EJB
 	private BookedMeetingEJB bookedMeetingEJB;
 
+	/**
+	 * function invoked by get and post request to handle them
+	 * in order to retrieve and load the data of the page
+	 * @param request HttpServletRequest object
+	 * @param response HttpServletRequest object
+	 * @param deleteAlert boolean variable to notify that delete has been made
+	 * @throws ServletException if forwarding fails
+	 * @throws IOException if forwarding fails
+	 */
 	private void handleRequest(HttpServletRequest request, HttpServletResponse response, Boolean deleteAlert) throws ServletException, IOException {
 
 		List<StudentBookedMeetingDTO> bookedMeeting;
@@ -49,6 +58,13 @@ public class StudentProfileServlet extends HttpServlet {
 		requestDispatcher.forward(request, response);
 	}
 
+	/**
+	 * Redefinition of the doGet, through the handleRequest invocation
+	 * @param request HttpServletRequest object
+	 * @param response HttpServletRequest object
+	 * @throws ServletException if forwarding fails
+	 * @throws IOException if forwarding fails
+	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -58,6 +74,13 @@ public class StudentProfileServlet extends HttpServlet {
 		handleRequest(request, response, null);
 	}
 
+	/**
+	 * Redefinition of the doPost, through the handleRequest invocation
+	 * @param request HttpServletRequest object
+	 * @param response HttpServletRequest object
+	 * @throws ServletException if forwarding fails
+	 * @throws IOException if forwarding fails
+	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

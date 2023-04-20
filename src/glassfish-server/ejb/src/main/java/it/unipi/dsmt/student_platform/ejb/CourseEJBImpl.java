@@ -72,7 +72,12 @@ public class CourseEJBImpl implements CourseEJB {
 		}
 	}
 
-
+	/**
+	 * function that search the courses by the name of the course or
+	 * by the name of the professor
+	 * @param name represent the name of the course or of the request
+	 * @return the list of the MinimalCourseDTO object
+	 */
 	@Override
 	public List<MinimalCourseDTO> searchCourses (String name) {
 		List<MinimalCourseDTO> courses = new ArrayList<>();
@@ -113,7 +118,12 @@ public class CourseEJBImpl implements CourseEJB {
 		return courses;
 	}
 
-
+	/**
+	 * this function search only the course held by a professor
+	 * @param name is the name of the course
+	 * @param professorId is the id of the professor who is doing the request
+	 * @return the list of the MinimalCourseDTO object
+	 */
 	@Override
 	public List<MinimalCourseDTO> searchCoursesForProfessor (String name, String professorId) {
 		List<MinimalCourseDTO> courses = new ArrayList<>();
@@ -154,7 +164,10 @@ public class CourseEJBImpl implements CourseEJB {
 		return courses;
 	}
 
-
+	/**
+	 * function that return all the courses on the platform
+	 * @return the list of the MinimalCourseDTO object
+	 */
 	@Override
 	public List<MinimalCourseDTO> getAllCourses () {
 		List<MinimalCourseDTO> courses = new ArrayList<>();
@@ -192,7 +205,11 @@ public class CourseEJBImpl implements CourseEJB {
 		return courses;
 	}
 
-
+	/**
+	 * function that return all the courses of a professor
+	 * @param professorId is the id of the professor who is doing the request
+	 * @return the list of the MinimalCourseDTO object
+	 */
 	@Override
 	public List<MinimalCourseDTO> getAllCoursesForProfessor (String professorId) {
 		List<MinimalCourseDTO> courses = new ArrayList<>();
@@ -231,7 +248,11 @@ public class CourseEJBImpl implements CourseEJB {
 		return courses;
 	}
 
-
+	/**
+	 * function that return all the starred courses of a student
+	 * @param id is the id of the student who is doing the request
+	 * @return the list of the MinimalCourseDTO object
+	 */
 	@Override
 	public List<MinimalCourseDTO> getStarredCourses(String id){
 		List<MinimalCourseDTO> courses = new ArrayList<>();
@@ -272,10 +293,15 @@ public class CourseEJBImpl implements CourseEJB {
 		return courses;
 	}
 
+	/**
+	 * function that return the name of the course given its id
+	 * @param id of the course
+	 * @return the name of the course
+	 */
 	@Override
-	public String getCourseName(int id){
+	public @Nullable String getCourseName(int id){
 
-		String couseName = "";
+		String courseName = null;
 
 		try (Connection connection = dataSource.getConnection()) {
 			// Get details of requested course
@@ -290,7 +316,7 @@ public class CourseEJBImpl implements CourseEJB {
 				// Execute query
 				try (ResultSet resultSet = preparedStatement.executeQuery()) {
 					if(resultSet.next()){
-						couseName = resultSet.getString("c.name");
+						courseName = resultSet.getString("c.name");
 					}
 				}
 			}
@@ -298,7 +324,7 @@ public class CourseEJBImpl implements CourseEJB {
 		catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
-		return couseName;
+		return courseName;
 	}
 	
 	/**
@@ -383,6 +409,7 @@ public class CourseEJBImpl implements CourseEJB {
 			return false;
 		}
 	}
+
 	
 	private void insertCourseWithMeetingSlots(@NotNull Connection connection,
 	                                          @NotNull CourseCreationDTO course,
@@ -443,7 +470,11 @@ public class CourseEJBImpl implements CourseEJB {
 	
 	
 	
-	
+		/**
+	 * function that delete a course by its id
+	 * @param id of the course
+	 * @return the result of the request
+	 */
 	@Override
 	public boolean deleteCourse(int id){
 		try (Connection connection = dataSource.getConnection()) {

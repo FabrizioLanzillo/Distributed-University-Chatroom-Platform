@@ -20,6 +20,16 @@ public class AdminCreateProfessorServlet extends HttpServlet {
 
 	@EJB
 	private UserEJB userEJB;
+
+	/**
+	 * function invoked by get and post request to handle them
+	 * in order to retrieve and load the data of the page
+	 * @param request HttpServletRequest object
+	 * @param response HttpServletRequest object
+	 * @param insertAlert boolean variable to notify that insert has been made
+	 * @throws ServletException if forwarding fails
+	 * @throws IOException if forwarding fails
+	 */
 	private void handleRequest(HttpServletRequest request, HttpServletResponse response, Boolean insertAlert) throws ServletException, IOException {
 
 		LoggedUserDTO loggedUserDTO = AccessController.getLoggedUserWithRedirect(request, response);
@@ -40,6 +50,14 @@ public class AdminCreateProfessorServlet extends HttpServlet {
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(targetJSP);
 		requestDispatcher.forward(request, response);
 	}
+
+	/**
+	 * Redefinition of the doGet, through the handleRequest invocation
+	 * @param request HttpServletRequest object
+	 * @param response HttpServletRequest object
+	 * @throws ServletException if forwarding fails
+	 * @throws IOException if forwarding fails
+	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -49,6 +67,13 @@ public class AdminCreateProfessorServlet extends HttpServlet {
 		handleRequest(request, response, null);
 	}
 
+	/**
+	 * Redefinition of the doPost, through the handleRequest invocation
+	 * @param request HttpServletRequest object
+	 * @param response HttpServletRequest object
+	 * @throws ServletException if forwarding fails
+	 * @throws IOException if forwarding fails
+	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

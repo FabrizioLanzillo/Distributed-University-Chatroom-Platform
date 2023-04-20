@@ -22,6 +22,15 @@ public class ProfessorDeleteCourseServlet extends HttpServlet {
 	@EJB
 	private CourseEJB courseEJB;
 
+	/**
+	 * function invoked by get and post request to handle them
+	 * in order to retrieve and load the data of the page
+	 * @param request HttpServletRequest object
+	 * @param response HttpServletRequest object
+	 * @param deleteAlert boolean variable to notify that delete has been made
+	 * @throws ServletException if forwarding fails
+	 * @throws IOException if forwarding fails
+	 */
 	private void handleRequest(HttpServletRequest request, HttpServletResponse response, Boolean deleteAlert) throws ServletException, IOException {
 
 		LoggedUserDTO loggedUserDTO = AccessController.getLoggedUserWithRedirect(request, response);
@@ -44,7 +53,7 @@ public class ProfessorDeleteCourseServlet extends HttpServlet {
 		// passing the courses via get, with the set of an attribute
 		request.setAttribute("courses", courses);
 
-		// check if a delete has been made, and in the case check the response
+		// check if delete has been made, and in the case check the response
 		if(deleteAlert != null){
 			if(deleteAlert == Boolean.TRUE){
 				request.setAttribute("deleteAck", "ok");
@@ -58,6 +67,14 @@ public class ProfessorDeleteCourseServlet extends HttpServlet {
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(targetJSP);
 		requestDispatcher.forward(request, response);
 	}
+
+	/**
+	 * Redefinition of the doGet, through the handleRequest invocation
+	 * @param request HttpServletRequest object
+	 * @param response HttpServletRequest object
+	 * @throws ServletException if forwarding fails
+	 * @throws IOException if forwarding fails
+	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -67,6 +84,13 @@ public class ProfessorDeleteCourseServlet extends HttpServlet {
 		handleRequest(request, response, null);
 	}
 
+	/**
+	 * Redefinition of the doPost, through the handleRequest invocation
+	 * @param request HttpServletRequest object
+	 * @param response HttpServletRequest object
+	 * @throws ServletException if forwarding fails
+	 * @throws IOException if forwarding fails
+	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

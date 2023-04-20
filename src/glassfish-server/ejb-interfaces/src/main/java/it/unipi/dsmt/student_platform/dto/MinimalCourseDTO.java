@@ -4,6 +4,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
+/**
+ * DTO that stores the minimal information of a course in order
+ * to visualize it in the research or in another part of the webapplication
+ */
 public class MinimalCourseDTO implements Serializable {
 
 	private int id;
@@ -43,10 +47,7 @@ public class MinimalCourseDTO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "MinimalCourseDTO{" +
-				"id=" + id +
-				", name='" + name + '\'' +
-				", professor=" + professor +
-				'}';
+		return "Course = " + name + "<br>" +
+				"Professor = " + professor.getSurname() + "<br>";
 	}
 }

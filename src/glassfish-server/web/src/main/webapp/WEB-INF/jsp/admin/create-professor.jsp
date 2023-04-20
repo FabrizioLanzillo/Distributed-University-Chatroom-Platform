@@ -53,28 +53,28 @@
                       action="${pageContext.request.contextPath}/admin/create-professor">
 
                     <div class="insert-field">
-                        <label>Name:</label>
-                        <input type="text" class="input-field" name="name" placeholder="Insert the Name" required />
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" class="input-field" name="name" placeholder="Insert the Name" required />
                     </div>
 
                     <div class="insert-field">
-                        <label>Surname:</label>
-                        <input type="text" class="input-field" name="surname" placeholder="Insert the Surname" required />
+                        <label for="surname">Surname:</label>
+                        <input type="text" id="surname" class="input-field" name="surname" placeholder="Insert the Surname" required />
                     </div>
 
                     <div class="insert-field">
-                        <label>Email:</label>
-                        <input type="text" class="input-field" name="email" placeholder="Insert the Email" required />
+                        <label for="email">Email:</label>
+                        <input type="text" id="email" class="input-field" name="email" placeholder="Insert the Email" required />
                     </div>
 
                     <div class="insert-field">
-                        <label>Username:</label>
-                        <input type="text" class="input-field" name="username" placeholder="Insert the Username" required />
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" class="input-field" name="username" placeholder="Insert the Username" required />
                     </div>
 
                     <div class="insert-field">
-                        <label>Password:</label>
-                        <input type="text" class="input-field" name="password" placeholder="Insert the Password" required />
+                        <label for="password">Password:</label>
+                        <input type="text" id="password" class="input-field" name="password" placeholder="Insert the Password" required />
                     </div>
                     <br>
                     <button type="submit" class="create_account_button">Create Account!</button>

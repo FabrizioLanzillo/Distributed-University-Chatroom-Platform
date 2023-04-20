@@ -14,6 +14,14 @@ import java.io.IOException;
 @WebServlet(name = "AdminPortalServlet", value = "/admin/portal")
 public class AdminPortalServlet extends HttpServlet {
 
+	/**
+	 * function invoked by get and post request to handle them
+	 * in order to retrieve and load the data of the page
+	 * @param request HttpServletRequest object
+	 * @param response HttpServletRequest object
+	 * @throws ServletException if forwarding fails
+	 * @throws IOException if forwarding fails
+	 */
 	private void handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		String targetJSP = "/WEB-INF/jsp/admin/portal.jsp";
@@ -21,6 +29,13 @@ public class AdminPortalServlet extends HttpServlet {
 		requestDispatcher.forward(request, response);
 	}
 
+	/**
+	 * Redefinition of the doGet, through the handleRequest invocation
+	 * @param request HttpServletRequest object
+	 * @param response HttpServletRequest object
+	 * @throws ServletException if forwarding fails
+	 * @throws IOException if forwarding fails
+	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

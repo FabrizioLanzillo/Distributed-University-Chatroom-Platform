@@ -3,6 +3,9 @@ package it.unipi.dsmt.student_platform.dto;
 import java.io.Serializable;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * DTO that stores all the information of a student
+ */
 public class StudentDTO implements Serializable {
 
 	private String id;

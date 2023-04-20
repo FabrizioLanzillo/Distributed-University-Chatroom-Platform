@@ -38,7 +38,7 @@
                     <div class="course-to-delete-search">
                         <%-- Form for the course search --%>
                         <form class="search-courses-form" action="${pageContext.request.contextPath}/professor/delete-course" method="get">
-                            <label class="search-input-label">Search Courses:</label>
+                            <label class="search-input-label" for="search-delete-course-input">Search Courses:</label>
                             <input type="text" id="search-delete-course-input" name="search_input" placeholder="Type the course name...">
                             <button type="submit" class="delete-course-button">Search</button>
                         </form>

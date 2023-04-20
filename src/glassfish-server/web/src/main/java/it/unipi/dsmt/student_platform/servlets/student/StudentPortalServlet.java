@@ -22,6 +22,14 @@ public class StudentPortalServlet extends HttpServlet {
 	@EJB
 	private CourseEJB courseEJB;
 
+	/**
+	 * function invoked by get and post request to handle them
+	 * in order to retrieve and load the data of the page
+	 * @param request HttpServletRequest object
+	 * @param response HttpServletRequest object
+	 * @throws ServletException if forwarding fails
+	 * @throws IOException if forwarding fails
+	 */
 	private void handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		List<MinimalCourseDTO> courses;
@@ -50,6 +58,14 @@ public class StudentPortalServlet extends HttpServlet {
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(targetJSP);
 		requestDispatcher.forward(request, response);
 	}
+
+	/**
+	 * Redefinition of the doGet, through the handleRequest invocation
+	 * @param request HttpServletRequest object
+	 * @param response HttpServletRequest object
+	 * @throws ServletException if forwarding fails
+	 * @throws IOException if forwarding fails
+	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

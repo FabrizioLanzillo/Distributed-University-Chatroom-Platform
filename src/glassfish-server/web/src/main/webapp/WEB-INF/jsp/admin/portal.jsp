@@ -1,4 +1,3 @@
-<%@ page import="java.util.List" %>
 <%@ page import="it.unipi.dsmt.student_platform.dto.*" %>
 <%@ page import="it.unipi.dsmt.student_platform.utility.AccessController" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
