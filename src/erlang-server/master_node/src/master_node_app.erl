@@ -86,7 +86,7 @@ start_mnesia(Nodes) when is_list(Nodes) ->
 		[
 			{attributes, record_info(fields, online_students)},
 			{type, bag},
-			{disc_copies, Nodes}
+			{ram_copies, Nodes}
 		]),
 	io:format("[master_node_app] start_mnesia => create_table result: ~p~n", [Result2]),
 	ok.

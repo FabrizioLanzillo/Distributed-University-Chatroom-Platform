@@ -37,7 +37,7 @@ function sendObjectThroughWebsocket(isWebsocketConfigurationMessage, ...args){
 
     // create a JSON object
     const json_string = {};
-    // generate the params for the type of object websocket vs chat paramas
+    // generate the params for the type of object websocket vs chat params
     for( let i = 0; i < args.length; i++ ){
         const parameter = isWebsocketConfigurationMessage ? websocketConfigurationParameters[i]: messageParameters[i];
         json_string[parameter] = args[i];
@@ -85,6 +85,11 @@ function openWebsocketConnection(){
  */
 function closeWebsocketConnection(){
     stopRefreshWebsocketConnection();
+    console.error("WebSocket connection closed");
+    // Try to connect again to chatroom servers
+    setTimeout(function() {
+        connect(username, course);
+    }, 1000);
 }
 
 /**
@@ -93,7 +98,6 @@ function closeWebsocketConnection(){
  * @param event is the JSON object that has to be parsed
  */
 function receiveObjectThroughWebsocket(event){
-
     // parse of the JSON object received and execute
     const message = JSON.parse(event.data);
     if(message.opcode === MESSAGE){
@@ -113,13 +117,8 @@ function receiveObjectThroughWebsocket(event){
  */
 function handleWebsocketError() {
     if (websocket.readyState === 3) {
-        // Connection closed
+        // Connection is closed
         alert("Error: cannot connect to chatroom server");
-    }
-    else {
-        // Try new connection
-        disconnect();
-        connect(username, course);
     }
     console.log("Websocket error");
 }
@@ -162,9 +161,15 @@ function sendMessage(){
     const input_message = document.getElementById("chatroom-submit-area-input");
     const message_text = input_message.value;
     input_message.value = "";
-
-    sendObjectThroughWebsocket(false, MESSAGE, message_text);
-    appendMessageToTheChat("You", message_text, true);
+    
+    if (websocket.readyState === 3) {
+        // Connection closed
+        alert("Error: the chatroom is offline. Please wait for reconnection");
+    }
+    else {
+        sendObjectThroughWebsocket(false, MESSAGE, message_text);
+        appendMessageToTheChat("You", message_text, true);
+    }
 
 }
 
