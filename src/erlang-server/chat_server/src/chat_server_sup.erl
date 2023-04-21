@@ -22,7 +22,7 @@ init([]) ->
     % Supervisor parameters
     SupFlags = #{strategy => one_for_one,
                  intensity => 1,
-                 period => 1},
+                 period => 60},
     % Specs for child processes
     CowboyListener = #{id => cowboy_listener, % child process name
                         start => {cowboy_listener, start_link, []}, % function that will be executed
