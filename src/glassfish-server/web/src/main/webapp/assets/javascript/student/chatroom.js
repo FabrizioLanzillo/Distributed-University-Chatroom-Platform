@@ -116,6 +116,12 @@ function handleWebsocketError() {
         // Connection closed
         alert("Error: cannot connect to chatroom server");
     }
+    else {
+        // Try new connection
+        disconnect();
+        connect(username, course);
+    }
+    console.log("Websocket error");
 }
 
 
@@ -127,10 +133,11 @@ function handleWebsocketError() {
  * @param _course is the current course where we want chat
  */
 function connect(_logged_user, _course){
-
+    // Save user information
     username = _logged_user;
     course = _course;
-
+    
+    // Setup websocket connection
     websocket = new WebSocket(server_url);
     websocket.onopen = openWebsocketConnection;
     websocket.onclose = closeWebsocketConnection;

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Remove Mnesia database
-rm -r Mnesia*
+#rm -r Mnesia*
 
 # Start Erlang node. Requires the name of the node as argument of the script 
 # 		=> ./run.sh master@<ip-address>

@@ -1,6 +1,8 @@
 -module(cowboy_listener).
 -behaviour(gen_server).
 
+-include("chat.hrl").
+
 -export([start_link/0, init/1, handle_call/3, handle_cast/2]).
 
 
@@ -10,10 +12,14 @@ start_link() ->
 
 
 init(_) ->
+	% Cleanup Mnesia (in case of restoring from a crash)
+	ok = ?MNESIA_MANAGER:remove_logged_students_by_hostname(node()),
+	
 	% Read endpoint and port from configuration file
 	{ok, Url} = application:get_env(websocket_endpoint),
 	{ok, Port} = application:get_env(websocket_port),
 	io:format("[cowboy_listener] init => Start listener on endpoint ~p and port ~p~n", [Url, Port]),
+
 	% Compile the route for the websocket handler
 	Dispatch = cowboy_router:compile([
 		{'_', [
@@ -29,8 +35,10 @@ init(_) ->
 	{ok, []}.
 
 
+
 handle_call(Req, _, State) ->
 	{reply, Req, State}.
+
 
 
 handle_cast(_, State) ->

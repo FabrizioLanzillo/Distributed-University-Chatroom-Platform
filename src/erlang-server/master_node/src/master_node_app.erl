@@ -69,7 +69,7 @@ stop_nodes([Node | T]) ->
 
 %%% MNESIA
 
--record(online_students, {course_id, student_pid, student_name}).
+-record(online_students, {course_id, student_pid, student_name, hostname}).
 
 start_mnesia(Nodes) when is_list(Nodes) ->
 	% Create mnesia schema if doesn't exists
@@ -86,7 +86,7 @@ start_mnesia(Nodes) when is_list(Nodes) ->
 		[
 			{attributes, record_info(fields, online_students)},
 			{type, bag},
-			{ram_copies, Nodes}
+			{disc_copies, Nodes}
 		]),
 	io:format("[master_node_app] start_mnesia => create_table result: ~p~n", [Result2]),
 	ok.

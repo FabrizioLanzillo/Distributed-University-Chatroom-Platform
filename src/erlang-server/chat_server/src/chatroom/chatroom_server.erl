@@ -18,7 +18,7 @@ get_online_students(Course) when is_integer(Course) ->
 % Execute login for user
 login(Pid, Username, Course) when is_pid(Pid), is_integer(Course) ->
 	io:format("[chatroom_server] login => pid ~p, course ~p~n", [Pid, Course]),
-	?MNESIA_MANAGER:join_course(Pid, Username, Course).
+	?MNESIA_MANAGER:join_course(Pid, Username, Course, node()).
 
 
 
@@ -26,7 +26,7 @@ login(Pid, Username, Course) when is_pid(Pid), is_integer(Course) ->
 logout(Pid, Username, Course) when is_pid(Pid), is_integer(Course)->
 	io:format("[chatroom_server] logout => pid ~p, course ~p~n", [Pid, Course]),
 	% Remove the websocket PID from DB list of users inside the chatroom
-	?MNESIA_MANAGER:logout(Pid, Username, Course),
+	?MNESIA_MANAGER:logout(Pid, Username, Course, node()),
 	ok.
 
 
