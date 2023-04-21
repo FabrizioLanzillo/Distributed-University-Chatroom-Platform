@@ -19,6 +19,7 @@ start(_StartType, _StartArgs) ->
 	start_nodes(Nodes),
 	
 	% Print info about mnesia DB
+	timer:sleep(5000),
 	mnesia:info(),
 	
 	% Return current Pid and state
