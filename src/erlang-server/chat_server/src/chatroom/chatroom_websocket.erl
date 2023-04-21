@@ -1,7 +1,6 @@
 -module(chatroom_websocket).
 
 -export([init/2, websocket_handle/2, websocket_info/2, terminate/3]).
--include("chat.hrl").
 
 
 % Cowboy will call init/2 whenever a request is received,
