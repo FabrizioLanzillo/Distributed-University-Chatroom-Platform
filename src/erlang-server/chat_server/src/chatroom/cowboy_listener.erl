@@ -1,8 +1,6 @@
 -module(cowboy_listener).
 -behaviour(gen_server).
 
--include("chat.hrl").
-
 -export([start_link/0, init/1, handle_call/3, handle_cast/2]).
 
 
@@ -13,7 +11,7 @@ start_link() ->
 
 init(_) ->
 	% Cleanup Mnesia (in case of restoring from a crash)
-	ok = ?MNESIA_MANAGER:remove_logged_students_by_hostname(node()),
+	ok = mnesia_manager:remove_logged_students_by_hostname(node()),
 	
 	% Read endpoint and port from configuration file
 	{ok, Url} = application:get_env(websocket_endpoint),

@@ -2,7 +2,6 @@
 %% Module that instantiate a chatroom server using Cowboy library.
 %%%-------------------------------------------------------------------
 -module(chatroom_server).
--include("chat.hrl").
 
 -export([get_online_students/1, login/3, logout/3, send_message/4, send_message_in_chatroom/3]).
 
@@ -11,14 +10,21 @@
 % Get list of currently online users
 get_online_students(Course) when is_integer(Course) ->
 	io:format("[chatroom_server] get_online_students => course ~p~n", [Course]),
-	?MNESIA_MANAGER:get_online_students(Course).
+	Users = mnesia_manager:get_online_students(Course),
+	Message = jsone:encode(
+        #{
+            <<"opcode">> => <<"GET_ONLINE_USERS">>,
+            <<"list">> => Users
+        }
+    ),
+	Message.
 
 
 
 % Execute login for user
 login(Pid, Username, Course) when is_pid(Pid), is_integer(Course) ->
 	io:format("[chatroom_server] login => pid ~p, course ~p~n", [Pid, Course]),
-	?MNESIA_MANAGER:join_course(Pid, Username, Course, node()).
+	mnesia_manager:join_course(Pid, Username, Course, node()).
 
 
 
@@ -26,7 +32,7 @@ login(Pid, Username, Course) when is_pid(Pid), is_integer(Course) ->
 logout(Pid, Username, Course) when is_pid(Pid), is_integer(Course)->
 	io:format("[chatroom_server] logout => pid ~p, course ~p~n", [Pid, Course]),
 	% Remove the websocket PID from DB list of users inside the chatroom
-	?MNESIA_MANAGER:logout(Pid, Username, Course, node()),
+	mnesia_manager:logout(Pid, Username, Course, node()),
 	ok.
 
 
@@ -39,7 +45,7 @@ send_message(PidSender, SenderName, Course, Text)
 		[PidSender, SenderName, Course, Text]
 	),
 	% Get list of currently online users and forward the message to all of them
-	case ?MNESIA_MANAGER:get_online_pid(Course) of
+	case mnesia_manager:get_online_pid(Course) of
 
 		List when is_list(List), List /= [] ->
 			% Prepare the message as a JSON document

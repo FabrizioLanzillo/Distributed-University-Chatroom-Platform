@@ -1,6 +1,5 @@
 -module(mnesia_manager).
 
--include("chat.hrl").
 -export([join_course/4, get_online_pid/1, get_online_students/1, logout/4, remove_logged_students_by_hostname/1]).
 
 -record(online_students, {course_id, student_pid, student_name, hostname}).
