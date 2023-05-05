@@ -65,13 +65,7 @@ handle_login(Map, _State) ->
 % Handle a request for updating online users
 handle_get_online_users(State = {Course, _}) ->
     io:format("[chatroom_websocket] handle_get_online_users => get_online_users request received~n"),
-    Users = chatroom_server:get_online_students(Course),
-    Message = jsone:encode(
-        #{
-            <<"opcode">> => <<"GET_ONLINE_USERS">>,
-            <<"list">> => Users
-        }
-    ),
+    Message = chatroom_server:get_online_students(Course),
     io:format("[chatroom_websocket] handle_get_online_users => Message ~p~n", [Message]),
     {[{text, Message}], State}.
 
